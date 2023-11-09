@@ -13,5 +13,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MainController {
 
     @GetMapping("/park_main")
-    public void mainGet(){log.info("/main/park_main.html");}
+    public void mainGet(){log.info("/main/park_main.html!!");}
 }
