@@ -14,4 +14,6 @@ public class AttractionDTO {
     private String atag_name; // 태그 이름
     private int ano; // 어트랙션 번호
     private String ainfo_detail; // 어트랙션 이용 정보
+
+    private String attraction_thumnail;
 }

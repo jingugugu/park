@@ -14,5 +14,5 @@ public class AttractionVO {
     private int passengersCount; // 탑승인원
     private String ainfo_detail; // 어트랙션 이용 정보
 
-    private String attraction_img; // 어트랙션 이미지
+    private String attraction_thumnail; // 어트랙션 이미지
 }
