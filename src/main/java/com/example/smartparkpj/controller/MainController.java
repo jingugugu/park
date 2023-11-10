@@ -14,4 +14,7 @@ public class MainController {
 
     @GetMapping("/park_main")
     public void mainGet(){log.info("/main/park_main.html!!");}
+
+    @GetMapping("/park2_main")
+    public void mainTestGet(){log.info("/main/park_main.html!!");}
 }
