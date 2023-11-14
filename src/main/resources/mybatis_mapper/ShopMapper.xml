@@ -3,4 +3,16 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.smartparkpj.mapper.ShopMapper">
+    <insert id="addShop" parameterType="com.example.smartparkpj.domain.ShopVO" useGeneratedKeys="true" keyProperty="sno">
+        INSERT INTO shop (shop_menu, shop_time, shop_guide, shop_price, shop_tel, shop_name)
+        VALUES (#{shop_menu}, #{shop_time}, #{shop_guide}, #{shop_price}, #{shop_tel}, #{shop_name})
+    </insert>
+
+    <insert id="addShopImage">
+        INSERT INTO shop_image (uuid, fileName, ord, sno) VALUES (#{uuid}, #{fileName}, #{ord}, #{sno})
+    </insert>
+
+    <select id="getOne" resultType="com.example.smartparkpj.domain.ShopVO">
+        SELECT * FROM shop where sno = #{facility_no}
+    </select>
 </mapper>

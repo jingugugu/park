@@ -15,4 +15,5 @@ public class MarkerDTO {
     private double longitude; // 경도
     private String type; // 시설 타입
     private int facility_no; // 시설 번호
+    private String marker_img; // 마커 아이콘 이미지
 }

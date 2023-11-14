@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AttractionTagDTO {
-    private int atag_no; // 태그 고유번호
-    private String atag_name; // 태그 이름
-    private int ano; // 어트랙션 번호
+public class ReviewImageDTO {
+    private String uuid;
+    private String fileName;
+    private int ord;
+    private int rno;
 }
