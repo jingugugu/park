@@ -24,7 +24,7 @@ import java.util.*;
 @RestController
 @Log4j2
 public class UpDownController {
-    @Value("${com.example.upload.path}")
+    @Value("${com.example.upload.basePath}")
     private String uploadPath;
 
     @ApiOperation(value = "Upload Post", notes = "POST 방식으로 파일 등록")

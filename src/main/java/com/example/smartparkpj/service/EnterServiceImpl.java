@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class MapServiceImpl implements MapService{
+public class EnterServiceImpl implements EnterService {
     private final ModelMapper modelMapper;
 
     private final AttractionMapper attractionMapper;

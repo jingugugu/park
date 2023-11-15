@@ -5,7 +5,7 @@ import com.example.smartparkpj.dto.MarkerDTO;
 
 import java.util.List;
 
-public interface MapService {
+public interface EnterService {
     int add(FacilityDTO facilityDTO);
 
     List<MarkerDTO> getMarkerList();

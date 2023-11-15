@@ -87,7 +87,6 @@ public class MarkerMapperTests {
                 .longitude(Double.parseDouble(longNum))
                 .type("어트랙션")
                 .facility_no(attractionVO.getAno())
-                .marker_img("마커이미지.jpg")
                 .build();
 
         markerMapper.addMarker(markerVO);
