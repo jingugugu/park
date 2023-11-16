@@ -158,10 +158,40 @@
         marker.facilityNo = position.facilityNo;
         marker.type = position.type;
 
-        kakao.maps.event.addListener(marker, 'click', function (){
+        kakao.maps.event.addListener(marker, 'mouseover', function () {
+            // 마우스 오버 이벤트 처리
             openInfoWindow(marker);
         });
+        kakao.maps.event.addListener(marker, 'mouseout', function () {
+            if (currentInfoWindow) {
+                currentInfoWindow.close();
+            }
+        });
+        kakao.maps.event.addListener(marker, 'click', function (){
+            openOverLay(marker);
+        });
         return marker;
+    }
+
+    async function openOverLay(marker){
+        const markerInfo = await getMarkerOne(marker.type, marker.facilityNo);
+        let content = getOverLayContentByType(markerInfo, marker.type);
+    }
+
+    function getOverLayContentType(markerInfo,type) {
+        if (markerInfo) {
+            switch (type){
+                case "어트랙션":
+                    return markerInfo.aname;
+                case "매장":
+                    return markerInfo.shop_name;
+                case "편의시설":
+                default:
+                    return markerInfo.name;
+            }
+        } else {
+            return '<div>해당 정보를 가져올 수 없습니다.</div>';
+        }
     }
     async function openInfoWindow(marker) {
         //현재 열려있는 infowindow 끄기
@@ -172,7 +202,7 @@
         const markerInfo = await getMarkerOne(marker.type, marker.facilityNo);
 
         // 가져온 정보를 이용하여 content 작성
-        let content = getContentByType(markerInfo,marker.type);
+        let content = getWindowContentByType(markerInfo,marker.type);
 
         // InfoWindow 생성
         let infoWindow = new kakao.maps.InfoWindow({
@@ -186,7 +216,7 @@
         currentInfoWindow = infoWindow;
     }
     // 타입에 따라 다른 content를 반환하는 함수
-    function getContentByType(markerInfo,type) {
+    function getWindowContentByType(markerInfo,type) {
         if (markerInfo) {
             switch (type){
                 case "어트랙션":
