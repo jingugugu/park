@@ -18,4 +18,5 @@ public class MainController {
     }
     @GetMapping("/main/park_main")
     public void mainGet(){log.info("/main/park_main.html!~~!");}
+
 }

@@ -11,4 +11,5 @@
     <select id="getOne" resultType="com.example.smartparkpj.domain.ConvenienceVO">
         SELECT * FROM convenience where cno = #{facility_no}
     </select>
+
 </mapper>
