@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -17,5 +19,7 @@ public class ShopDTO {
     private String shop_price; // 매장 가격대
     private String shop_tel; // 매장 연락처
     private String shop_name; // 매장 이름
-    private String shop_thumnail; // 매장 이미지
+
+    private List<String> fileNames; // 이미지 파일이름목록
+
 }
