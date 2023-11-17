@@ -41,6 +41,8 @@ dependencies {
     // modelmapper
     implementation 'org.modelmapper:modelmapper:3.1.0'
 
+    //thumnail
+    implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.19'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // swagger-ui

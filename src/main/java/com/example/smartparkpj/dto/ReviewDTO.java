@@ -20,5 +20,4 @@ public class ReviewDTO {
     private int like_count; // 좋아요 수
     private int ono; // 예매 고유 번호
     private int view_count; // 조회수
-    private String review_thumnail; // 리뷰 포토
 }

@@ -5,15 +5,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class AttractionDTO {
-    private int atag_no; // 태그 고유번호
-    private String atag_name; // 태그 이름
-    private int ano; // 어트랙션 번호
+    private int ano; // 어트랙션 고유번호
+    private String aname; // 어트랙션 이름
+    private String ainfo; // 어트랙션 개요
+    private int passengersCount; // 탑승인원
     private String ainfo_detail; // 어트랙션 이용 정보
 
-    private String attraction_thumnail;
+    private List<String> fileNames; // 이미지 파일이름목록
+    private List<String> tagNames; // 태그 이름목록
 }

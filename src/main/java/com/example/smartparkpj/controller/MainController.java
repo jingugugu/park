@@ -7,11 +7,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/main")
+@RequestMapping("/")
 @Log4j2
 @RequiredArgsConstructor
 public class MainController {
 
-    @GetMapping("/park_main")
+    @GetMapping("")
+    public String main(){
+        return "redirect:/main/park_main";
+    }
+    @GetMapping("/main/park_main")
     public void mainGet(){log.info("/main/park_main.html!~~!");}
+
 }

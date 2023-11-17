@@ -3,4 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.smartparkpj.mapper.ConvenienceMapper">
+    <insert id="addConvenience" parameterType="com.example.smartparkpj.domain.ConvenienceVO" useGeneratedKeys="true" keyProperty="cno">
+        INSERT INTO convenience (name, con_info, con_guide, con_tel, con_img)
+        VALUES (#{name}, #{con_info}, #{con_guide}, #{con_tel}, #{con_img})
+    </insert>
+
+    <select id="getOne" resultType="com.example.smartparkpj.domain.ConvenienceVO">
+        SELECT * FROM convenience where cno = #{facility_no}
+    </select>
+
 </mapper>

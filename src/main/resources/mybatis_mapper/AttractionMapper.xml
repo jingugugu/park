@@ -3,4 +3,20 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.smartparkpj.mapper.AttractionMapper">
+    <insert id="addAttraction" parameterType="com.example.smartparkpj.domain.AttractionVO" useGeneratedKeys="true" keyProperty="ano">
+        INSERT INTO attraction (aname, ainfo, passengersCount, ainfo_detail)
+        VALUES (#{aname}, #{ainfo}, #{passengersCount}, #{ainfo_detail})
+    </insert>
+
+    <insert id="addAttractionImage">
+        INSERT INTO attraction_image (uuid, fileName, ord, ano) VALUES (#{uuid}, #{fileName}, #{ord}, #{ano})
+    </insert>
+
+    <insert id="addAttractionTag">
+        INSERT INTO attraction_tag (atag_name, ano) VALUES (#{atag_name}, #{ano})
+    </insert>
+
+    <select id="getOne" resultType="com.example.smartparkpj.domain.AttractionVO">
+        SELECT * FROM attraction where ano = #{facility_no}
+    </select>
 </mapper>
