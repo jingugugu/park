@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/park.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+<div layout:fragment="content">
+    <h1 style="margin-top: 50px; font-size: 30px"><strong>마이페이지</strong></h1>
+
+    <div class="sign-form">
+        <p th:for="member_name">이름</p>
+        <!--<input type="text" th:value="${member.member_name}" class="form-control" style="width: 250px" disabled>-->
+    </div>
+    <div class="sign-form">
+        <p th:for="birthday">생년월일</p>
+        <!--<input type="text" th:value="${member.birthday}" class="form-control" style="width: 250px" disabled>-->
+    </div>
+    <div class="sign-form">
+        <p th:for="nickName">닉네임</p>
+        <!--<input type="text" th:value="${member.nickName}" class="form-control" style="width: 250px" disabled>-->
+    </div>
+    <div class="sign-form">
+        <p th:for="email">이메일</p>
+        <!--<input type="text" th:value="${member.email_id}" class="form-control" style="width: 250px" disabled>-->
+    </div>
+    <div class="sign-form">
+        <p th:for="phone">연락처</p>
+        <!--<input type="text" th:value="${member.phone}" class="form-control" style="width: 250px" disabled>-->
+    </div>
+
+    <div class="sign-form">
+        <p th:for="addDate">가입날짜</p>
+        <!--<input type="text" th:value="${member.addDate}" class="form-control" style="width: 250px" disabled>-->
+    </div>
+
+</div>
+</head>
+<body>
+
+
+<script layout:fragment="script" th:inline="javascript">
+
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/park.html}">
+>
+<head>
+    <meta charset="UTF-8">
+    <title>고객문의</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1 style="margin-top: 50px; font-size: 30px"><strong>고객문의</strong></h1>
+    <div class="row my-xl-5">
+        <div class="col col-xl-12">
+            <div class="card">
+                <div class="card-header" align="center">
+                    <br>
+                    <h3><b>내 문의</b></h3>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">제목</th>
+                            <th scope="col">문의접수번호</th>
+                            <th scope="col">문의날짜</th>
+                            <th scope="col">상태</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-12 d-flex justify-content-end">
+                <a href="/inquiry/add">
+                    <button type="button" class="btn btn-primary">
+                        문의하기
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+
+</script>
+</body>
+</html>

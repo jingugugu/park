@@ -13,13 +13,13 @@ public class InquiryMapperTests {
     @Autowired
     private InquiryMapper inquiryMapper;
 
-
     @Test
     public void testInsert() {
         InquiryVO inquiryVO = InquiryVO.builder()
                 .title("제목")
                 .content("내용")
                 .mno(1)
+                .state("ㅎㅇ")
                 .build();
         inquiryMapper.addInquiry(inquiryVO);
 

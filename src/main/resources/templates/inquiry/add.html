@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/park.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>문의작성</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h1 style="margin-top: 50px; font-size: 30px"><strong>문의작성</strong></h1>
+  <form name="frmAdd" class="form-horizontal">
+    <!-- 제목 -->
+    <h3 style="margin-top: 50px;">제목</h3>
+    <div class="form-group row align-center">
+      <div class="col-sm-6">
+        <input name="title" type="text" class="form-control" placeholder="제목을 입력하세요">
+      </div>
+    </div>
+    <!-- 내용 -->
+    <div class="form-group row align-center" style="margin-left: 2px">
+        <textarea name="content" id="content" cols="50" rows="5" class="form-control" placeholder="content"
+        style="width: 1100px; height: 500px;"></textarea>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-sm-12 d-flex justify-content-end" >
+        <input type="submit" class="btn btn-primary btn-submit" value=" 등록 ">
+        <input type="reset" class="btn btn-danger btn-danger ml-2" value=" 취소 " onclick="goBack()">
+      </div>
+    </div>
+  </form>
+  <script type="text/javascript" src="/smarteditor2/js/HuskyEZCreator.js" charset="utf-8"></script>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+  // 게시판 에디터 추가 관련 자바스크립트
+  document.addEventListener('DOMContentLoaded', function () {
+    let oEditors = [];
+
+    nhn.husky.EZCreator.createInIFrame({
+      oAppRef: oEditors,
+      elPlaceHolder: "content", // id가 content인 요소를 지정
+      sSkinURI: "/smarteditor2/SmartEditor2Skin.html",
+      fCreator: "createSEditor2"
+    });
+  });
+  /* console.log("게시판 에디터 추가 관련 자바스크립트") */
+
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const btnSubmit = document.querySelector('.btn-submit');
+    const frmAdd = document.querySelector('form[name=frmAdd]');
+
+    btnSubmit.addEventListener('click', function () {
+ /*     e.preventDefault();
+      e.stopPropagation();
+      oEditor.getById['content'].exec("UPDATE_CONTENTS_FIELD",[]);*/
+
+      if (!frmAdd.title.value) {
+        alert("제목을 입력하세요.");
+        return;
+      }
+      if (!frmAdd.content.value) {
+        alert("내용을 입력하세요.");
+        return;
+      }
+      frmAdd.submit();
+    });
+  });
+
+  // 취소버튼
+  function goBack() {
+    window.history.back();
+  }
+</script>
+</body>
+</html>
