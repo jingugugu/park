@@ -3,4 +3,24 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.smartparkpj.mapper.MemberMapper">
+
+    <insert id="register">
+        INSERT INTO member (email_id, password, nickName, member_name, phone, addDate, birthday, profileImg)
+        VALUES (#{email_id}, #{password}, #{nickName}, #{member_name}, #{phone}, now(), #{birthday}, #{profileImg})
+    </insert>
+
+    <insert id="addMember">
+        INSERT INTO member (email_id, password, nickName, member_name, phone, addDate, birthday, profileImg)
+        VALUES (#{email_id}, #{password}, #{nickName}, #{member_name}, #{phone}, now(), #{birthday}, #{profileImg})
+    </insert>
+
+    <insert id="addMemberRole">
+        INSERT INTO member_role_sets (member_mid, role_set)
+        VALUES (#{member_mid}, #{role_set})
+    </insert>
+    
+    <select id="nameCheck" resultType="int">
+        SELECT COUNT(*) FROM member WHERE member_name = #{member}
+    </select>
+
 </mapper>

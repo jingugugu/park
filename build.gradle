@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.7.17'
+    id 'org.springframework.boot' version '2.7.16'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
@@ -54,6 +54,13 @@ dependencies {
 
     //mail
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    implementation 'org.springframework.boot:spring-boot-starter-security' // 스프링 시큐리티
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5' // 스프링 시큐리티 화면에서 인증 처리
+
+    //json관련
+    // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 }
 
 tasks.named('test') {
