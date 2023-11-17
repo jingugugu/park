@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/park.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+<!-- contact info close -->
+<div class=" col-lg-8 col-md-8 col-sm-8 col-xs-12">
+
+    <h1  th:text="${ticketDTO.tname}"></h1>
+    <!--
+    <p>Ticket Info: <span th:text="${ticketDTO.tinfo}"></span></p>
+    <p>Ticket Price: <span th:text="${ticketDTO.tprice}"></span></p>
+    <p>Usage Period: <span th:text="${ticketDTO.use_period}"></span></p>
+    -->
+    <div class="row">
+        <form method="post" >
+            <div class="col-md-6" style="display: none;">
+                <div class="form-group">
+                    <label class="control-label" for="tno">티켓 번호</label>
+                    <input id="tno" name="tno" type="number" class="form-control" th:value="${ticketDTO.tno}" readonly required>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label" for="email_id">이메일</label>
+                    <input id="email_id" name="email_id" type="email" class="form-control" style="width: 200px" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label" for="startDate">방문 가능일자</label>
+                    <input id="startDate" name="startDate" type="date" class="form-control" style="width: 200px" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label" for="people_count">인원수</label>
+                    <input id="people_count" name="people_count" type="number" class="form-control">
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label" for="price">티켓 가격</label>
+                    <!-- 티켓 번호에 따라 Thymeleaf의 조건문을 사용하여 값을 설정합니다. -->
+                    <input id="price" name="price" type="number" class="form-control" readonly
+                           th:value="${ticketDTO.tno == 1 ? 5000 : (ticketDTO.tno == 2 ? 5000 : (ticketDTO.tno == 3 ? 8000 : (ticketDTO.tno == 4 ? 12000 : 0)))}" required>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button id="singlebutton" name="singlebutton" class="modBtn btn btn-primary" onclick="submitForm()">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+<!-- contact form close -->
+<script layout:fragment="script" th:inline="javascript">
+
+    document.querySelector(".modBtn").addEventListener("click",function (e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        // 인원수와 티켓 가격을 가져옴
+        const peopleCountInput = document.getElementById('people_count');
+        const peopleCount = parseInt(peopleCountInput.value);
+        const ticketPrice = parseInt(document.getElementById('price').value);
+
+        // 값이 1보다 작을 때 경고 메시지 표시
+        if (peopleCount < 1) {
+            alert("1 명 이하의 숫자는 결제 등록할 수 없습니다. 다시 입력해주세요.");
+            peopleCountInput.value = 1;  // 기본값으로 초기화
+            return false;
+        }
+
+        // 결제 예상 가격 계산
+        const totalPrice = peopleCount * ticketPrice;
+
+        // Confirm 창에 결제 예상 가격 추가
+        const result = confirm("결제 하시겠습니까?\n결제 가격: " + totalPrice + "원");
+
+        // 확인을 눌렀을 때만 폼 서브밋
+        if (result) {
+            document.querySelector('form').submit();
+        } else {
+            // 취소 시 폼 서브밋 취소
+            return false;
+        }
+    });
+</script>
+</body>
+</html>

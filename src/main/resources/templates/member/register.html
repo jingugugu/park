@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/park.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Contact section-->
+    <section class="bg-light py-5">
+        <div class="container px-5 my-5 px-5">
+            <div class="text-center mb-5">
+                <h2 class="fw-bolder">회원가입</h2>
+                <p class="lead mb-0">회원정보를 입력해 주세요.</p>
+            </div>
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-6">
+                    <form name="registerForm" action="/member/register" method="post">
+                        <p class="lead mb-0">필수 입력 정보</p>
+                        <hr>
+                        <!-- 이메일주소 input-->
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="email_id" name="email_id" type="email" placeholder="name@example.com"/>
+                            <label for="email_id">이메일 ID</label>
+                            <span class="form-check" id="email_id-span" name="email_id-span" style="display: none"/>
+                        </div>
+                        <a href="#" id="eSubmit">인증코드 발송</a>
+
+                        <!-- 이메일주소 인증확인-->
+                        <div class="form-floating mb-3" style="display: none">
+                            <input class="form-control" id="emailConfirm" name="emailConfirm" type="text"/>
+                            <label for="emailConfirm" >이메일 중복확인</label>
+                        </div>
+
+                        <!-- 비밀번호 input-->
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="password" name="password" type="password"
+                                   placeholder="비밀번호를 입력하세요..."/>
+                            <label for="password">비밀번호</label>
+                            <span class="form-check" id="password-span" name="password-span" style="display: none"/>
+                        </div>
+
+                        <!-- 비밀번호 확인 input-->
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="passwordConfirm" name="passwordConfirm" type="password"
+                                   placeholder="비밀번호 확인을 입력하세요..."/>
+                            <label for="passwordConfirm">비밀번호 확인</label>
+                            <span class="form-check" id="passwordRE-span" name="passwordRE-span" style="display: none"/>
+                        </div>
+
+                        <!-- 닉네임 input-->
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="nickName" name="nickName" type="text"
+                                   placeholder="닉네임을 입력하세요..."/>
+                            <label for="nickName">닉네임</label>
+                            <span class="form-check" id="nickName-span" name="nickName-span" style="display: none"/>
+                        </div>
+
+                        <!-- 이름 input-->
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="member_name" name="member_name" type="text"
+                                   placeholder="이름을 입력하세요..."/>
+                            <label for="member_name">이름</label>
+                            <span class="form-check" id="name-span" name="name-span" style="display: none"/>
+                        </div>
+
+                        <!-- 핸드폰번호 input-->
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="phone" name="phone" type="tel"
+                                   placeholder="휴대폰 번호를 입력하세요..."/>
+                            <label for="phone">휴대폰 번호</label>
+                            <span class="form-check" id="phone-span" name="phone-span" style="display: none"/>
+                        </div>
+
+                        <!-- 생년월일 input-->
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="birthday" name="birthday" type="date"
+                                   placeholder="생년월일을 입력하세요..."/>
+                            <label for="birthday">생년월일</label>
+                        </div>
+
+                        <!-- 프로필 이미지 input-->
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="profileImg" name="profileImg" type="date"/>
+                            <label for="profileImg">프로필 사진</label>
+                        </div>
+
+                        <div class="d-grid">
+                            <input type="submit" class="btn btn-primary btn-submit" value=" 회원가입 ">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script layout:fragment="script" th:inline="javascript">
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const btnSubmit = document.querySelector('.btn-submit');
+        const frmAdd = document.querySelector('form[name=registerForm]')
+
+        btnSubmit.addEventListener('click', function() {
+            frmAdd.submit();
+        });
+    });
+
+    const xhr = new XMLHttpRequest(); // ajax 쓰겠다는 코드
+    const confirmCheck = {id: false, pw: false, pw_re: false, name: false, nick: false, ph: false};
+    const form = document.forms.namedItem('frmMember');
+    const inputTags = document.getElementsByTagName('input');
+    const passwd = document.querySelector("input[name=password]");
+    const passwdRe = document.querySelector("input[name=passwordConfirm]");
+    const nickName = document.querySelector("input[name=nickName]");
+    const member = document.querySelector("input[name=member_name]");
+    const phone = document.querySelector("input[name=phone]");
+    const eSubmit = document.querySelector("#eSubmit");
+
+    const checkNick = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]+$/;
+    const checkSpace = /\s/g;
+    const checkPW =  /^(?=.*[a-zA-Z])(?=.*[!@#$%^~*+=-])(?=.*[0-9]).{8,15}$/;
+    const emailPattern = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}/;
+
+    // 이메일 중복확인
+    eSubmit.addEventListener('click', function () {
+        console.log("eSubmit");
+        const email_id = document.querySelector("input[name=email_id]");
+        const emailSpan = document.querySelector("span[name=email_id-span]");
+
+        if (email_id.value === "") {
+            emailSpan.innerHTML = "이메일 형식에 맞지 않습니다.";
+            emailSpan.style.color = "red";
+            emailSpan.style.display = 'block';
+        }
+    })
+
+    // 휴대폰 검사
+    phone.addEventListener('focusout', function () {
+        const phoneSpan = document.querySelector("span[name=phone-span]")
+
+        confirmCheck.ph = false;
+
+        if (phone.value === "") {
+            phoneSpan.innerHTML = "필수 정보 입니다."
+            phoneSpan.style.color = "red";
+            phoneSpan.style.display = 'block';
+        } else {
+            phoneSpan.innerHTML = "사용 가능한 번호 입니다."
+            phoneSpan.style.color = "green";
+            phoneSpan.style.display = 'block';
+            confirmCheck.ph = true;
+        }
+    })
+
+
+    // 이름 검사
+    member.addEventListener('focusout', function () {
+        const nameSpan = document.querySelector("span[name=name-span]")
+        confirmCheck.name = false;
+
+        if (member.value === "") {
+            nameSpan.innerHTML = "필수 정보 입니다."
+            nameSpan.style.color = "red";
+            nameSpan.style.display = 'block';
+        }
+        else if(checkSpace.test(member.value)){
+            nameSpan.innerHTML = "공백을 제거해주세요";
+            nameSpan.style.color = "red";
+            nameSpan.style.display = 'block';
+        }
+        else if(!checkNick.test(member.value)){
+            nameSpan.innerHTML = "특수문자는 사용이 불가능 합니다";
+            nameSpan.style.color = "red";
+            nameSpan.style.display = 'block';
+        }
+        else if (member.value.length < 2 || member.value.length > 10){
+            nameSpan.innerHTML = "2 ~ 10자로 입력해주세요"
+            nameSpan.style.color = "red";
+            nameSpan.style.display = 'block';
+        }
+        else {
+            console.log("-----------------check 화ㄱ-------------------")
+            xhr.open('GET', '/member_rest/nameCheck/' + member.value);
+            xhr.send();
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState !== XMLHttpRequest.DONE)
+                    return;
+
+                if (xhr.status === 200) {
+                    console.log(xhr.response);
+                    const json = JSON.parse(xhr.response);
+                    if (json.result === 'true') {
+                        nameSpan.innerHTML = "이미 있는 이름입니다";
+                        nameSpan.style.color = "red";
+                        nameSpan.style.display = 'block';
+                    }
+                    else {
+                        nameSpan.innerHTML = "";
+                        confirmCheck.name = true;
+                    }
+                } else {
+                    console.error(xhr.status, xhr.statusText);
+                }
+            }
+        }
+    })
+
+
+    //닉네임 유효성 검사
+    nickName.addEventListener('focusout', function () {
+        const nickSpan = document.querySelector("span[name=nickName-span]")
+
+        confirmCheck.nick = false;
+
+        if (nickName.value === "") {
+            nickSpan.innerHTML = "필수 정보 입니다."
+            nickSpan.style.color = "red";
+            nickSpan.style.display = 'block';
+        }
+        else if(checkSpace.test(nickName.value)){
+            nickSpan.innerHTML = "공백을 제거해주세요";
+            nickSpan.style.color = "red";
+            nickSpan.style.display = 'block';
+        }
+        else if(!checkNick.test(nickName.value)){
+            nickSpan.innerHTML = "특수문자는 사용이 불가능 합니다";
+            nickSpan.style.color = "red";
+            nickSpan.style.display = 'block';
+        }
+        else if (nickName.value.length < 2 || nickName.value.length > 10){
+            nickSpan.innerHTML = "2 ~ 10자로 입력해주세요"
+            nickSpan.style.color = "red";
+            nickSpan.style.display = 'block';
+        }
+        else {
+            nickSpan.innerHTML = "사용 가능한 닉네임 입니다."
+            nickSpan.style.color = "green";
+            nickSpan.style.display = 'block';
+        }
+
+    })
+
+
+
+    // 비밀번호 유효성 검사
+    passwd.addEventListener('focusout', function() {
+        const warnPW = document.querySelector("span[name=password-span]")
+        // const pwCheckIcon = document.querySelector('#passwordConfirm-span')
+
+        confirmCheck.pw = false;
+
+        console.log("focusout 실행됨")
+
+        if(passwd.value === ""){
+            console.log("공백 확인됨" + passwd)
+            warnPW.innerHTML = "필수 정보입니다.";
+            warnPW.style.color = "red";
+            warnPW.style.display = 'block';
+        }
+        else if(!checkPW.test(passwd.value) || checkSpace.test(passwd.value)){
+            warnPW.innerHTML = "띄어쓰기 없는 8~15자의 영문 대/소문자, 숫자 또는 특수문자 조합으로 입력하셔야 합니다.";
+            warnPW.style.display = 'block';
+        }
+        else{
+            console.log("비밀번호 사용가능 확인")
+            warnPW.innerHTML = "사용 가능한 비밀번호 입니다.";
+            warnPW.style.color = "green";
+            warnPW.style.display = 'block';
+            confirmCheck.pw = true;
+        }
+    });
+
+    passwdRe.addEventListener('focusout', function () {
+        console.log("passwdRe focusout")
+        const warnPE = document.querySelector("span[name=passwordRE-span]")
+
+        confirmCheck.pw = false;
+
+        if (passwdRe.value !== passwd.value) {
+            warnPE.innerHTML = "비밀번호가 일치하지 않습니다.";
+            warnPE.style.color = "red";
+            warnPE.style.display = 'block';
+
+        } else if (passwdRe.value === "") {
+            warnPE.innerHTML = "필수 정보 입니다.";
+            warnPE.style.color = "red";
+            warnPE.style.display = 'block';
+
+        } else {
+            console.log("비밀번호 일치 확인")
+            warnPE.innerHTML = "비밀번호가 일치 합니다.";
+            warnPE.style.color = "green";
+            warnPE.style.display = 'block';
+            confirmCheck.pw = true;
+        }
+    });
+
+
+
+</script>
+</body>
+</html>
