@@ -3,4 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.smartparkpj.mapper.InquiryMapper">
+
+    <insert id="inquiry" parameterType="com.example.smartparkpj.domain.InquiryVO">
+        INSERT INTO inquiry (title, ino, content, in_addDate)
+        VALUES (#{title}, #{ino}, #{content}, now())
+    </insert>
+
 </mapper>

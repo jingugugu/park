@@ -20,7 +20,7 @@ public class MemberDTO {
     private String phone; // 멤버 연락처
     private LocalDateTime addDate; // 멤버 가입일
     private String birthday; // 멤버 생년월일
-    private String gender; // 멤버 성별
     private String profileImg; // 멤버 프로필 이미지
-    private String uuid; // 자동로그인용 uuid
+    private boolean del; // 탈퇴 여부
+    private boolean social; // 소셜 로그인 자동 회원 가입 여부
 }
