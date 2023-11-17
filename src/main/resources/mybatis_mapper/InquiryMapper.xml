@@ -4,9 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.smartparkpj.mapper.InquiryMapper">
 
-    <insert id="inquiry" parameterType="com.example.smartparkpj.domain.InquiryVO">
-        INSERT INTO inquiry (title, ino, content, in_addDate)
-        VALUES (#{title}, #{ino}, #{content}, now())
+    <insert id="addInquiry" parameterType="com.example.smartparkpj.domain.InquiryVO">
+        INSERT INTO inquiry (title, content, mno, state, in_addDate)
+        VALUES (#{title}, #{content},#{mno}, #{state}, now())
     </insert>
 
 </mapper>
