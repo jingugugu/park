@@ -54,7 +54,7 @@ public class EnterServiceTests {
         tagNames.add("태그2");
         tagNames.add("태그3");
 
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 5; i++) {
             List<String> fileNames = new ArrayList<>();
             fileNames.add(UUID.randomUUID() + "_renoir04.png");
             fileNames.add(UUID.randomUUID() + "_renoir02.png");
@@ -68,30 +68,36 @@ public class EnterServiceTests {
             String randNum = "";
             for (int j = 0; j < 12; j++) {
                 // 마지막 자리에서는 0을 포함하지 않도록 설정
-                if (i == 11) {
+                if(j == 0){
+                    randNum += random.nextInt(3) + 2;
+                }
+                else if (j == 11) {
                     randNum += random.nextInt(9) + 1;
                 } else {
                     randNum += random.nextInt(10);
                 }
             }
-            String latNum = "33.46" + randNum;
+            String latNum = "37.57" + randNum;
 
             randNum = "";
 
             for (int j = 0; j < 12; j++) {
                 // 마지막 자리에서는 0을 포함하지 않도록 설정
-                if (i == 11) {
+                if(j == 0){
+                    randNum += random.nextInt(1);
+                }
+                else if (j == 11) {
                     randNum += random.nextInt(9) + 1;
                 } else {
                     randNum += random.nextInt(10);
                 }
             }
 
-            String longNum = "124.85" + randNum;
+            String longNum = "127.09" + randNum;
             MarkerDTO markerDTO = MarkerDTO.builder()
                     .latitude(Double.parseDouble(latNum))
                     .longitude(Double.parseDouble(longNum))
-                    .type("편의시설") // 해당 타입으로 등록할 시설 설정
+                    .type("어트랙션") // 해당 타입으로 등록할 시설 설정
                     .build();
 
             FacilityDTO facilityDTO = new FacilityDTO();

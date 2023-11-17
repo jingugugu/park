@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.smartparkpj.mapper.MarkerMapper">
     <insert id="addMarker" parameterType="com.example.smartparkpj.domain.MarkerVO" useGeneratedKeys="true" keyProperty="marker_no">
-        INSERT INTO marker (latitude, longitude, type, facility_no, marker_img) VALUES (#{latitude},#{longitude},#{type},#{facility_no}, #{marker_img})
+        INSERT INTO marker (latitude, longitude, type, facility_no) VALUES (#{latitude},#{longitude},#{type},#{facility_no})
     </insert>
 
     <select id="getMarkerList" resultType="com.example.smartparkpj.domain.MarkerVO">
