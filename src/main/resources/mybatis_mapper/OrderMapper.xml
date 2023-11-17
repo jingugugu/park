@@ -3,4 +3,21 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.smartparkpj.mapper.OrderMapper">
+
+    <insert id="insert">
+        INSERT INTO `order` (orderCode, tno, email_id, orderDate, startDate, endDate, finished, people_count, has_ability, price)
+        VALUES
+            (
+                #{orderCode},
+                #{tno},
+                #{email_id},
+                #{orderDate},
+                #{startDate},
+                #{endDate},
+                #{finished},
+                #{people_count},
+                #{has_ability},
+                #{price}
+            )
+    </insert>
 </mapper>
