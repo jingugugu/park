@@ -2,7 +2,7 @@ package com.example.smartparkpj.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,26 +10,44 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
-
-    private PasswordEncoder passwordEncoder;
-
-    public CustomUserDetailService() {
-        this.passwordEncoder = new BCryptPasswordEncoder();
-    }
+    private final MemberMapper memberMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+
+
         log.info("loadUserByUsername" + username);
 
-        UserDetails userDetails = User.builder()
-                .username("user1")
-//                .password("1111")
-                .password(passwordEncoder.encode("1111")) // 패스워드 인코딩 필요
-                .authorities("ROLE_USER")
-                .build();
-        return userDetails;
+        // 작성한 매퍼를 이요해서 VO 객체를 반환
+        MemberVO memberVO = memberMapper.selectMember(username);
+        if (memberVO == null) {
+            throw new UsernameNotFoundException("username not found,,,,");
+        }
+        // 권한 관련 객체 생성
+        Collection<SimpleGrantedAuthority> grantedAuthorityArrayList = new ArrayList<>();
+        grantedAuthorityArrayList.add(new SimpleGrantedAuthority("ROLE_USER")); // 우선 user 권한으로 지정
+
+        // UserDetails 타입의 객체를 생성후 반환
+        MemberSecurityDTO memberSecurityDTO = new MemberSecurityDTO(
+                memberVO.getEmail_id(),
+                memberVO.getPassword(),
+                memberVO.getNickName(),
+                memberVO.getMember_name(),
+                memberVO.getPhone(),
+                memberVO.getBirthday(),
+                memberVO.getProfileImg(),
+                grantedAuthorityArrayList
+        );
+        log.info(memberSecurityDTO);
+        return memberSecurityDTO;
+
     }
 }

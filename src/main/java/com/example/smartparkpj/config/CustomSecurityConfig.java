@@ -1,6 +1,7 @@
 package com.example.smartparkpj.config;
 
 import com.example.smartparkpj.security.CustomUserDetailService;
+import com.example.smartparkpj.security.handler.LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -30,6 +32,9 @@ public class CustomSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         log.info("------------------- Configure ------------------");
 
+        // 사용자 로그인 추가
+        httpSecurity.formLogin().loginPage("/member/login").successHandler(getLoginSuccessHandler());
+
         // 커스텀 로그인 페이지
         httpSecurity.formLogin()
                 .loginPage("/member/login"); // 로그인을 진행할 페이지
@@ -44,8 +49,6 @@ public class CustomSecurityConfig {
                 .tokenValiditySeconds(60 * 60 * 24 * 30);
 
         return httpSecurity.build();
-        // filterChain() 메소드가 동작하면 이전과 달리 /board/list 에 바로 접근 가능.
-        // '/login' 에는 접근이 안 됨.
     }
 
     @Bean
@@ -66,5 +69,11 @@ public class CustomSecurityConfig {
         JdbcTokenRepositoryImpl repository = new JdbcTokenRepositoryImpl();
         repository.setDataSource(dataSource);
         return repository;
+    }
+
+    // 로그인 성공시 특정 url 로 이동
+    @Bean
+    public AuthenticationSuccessHandler getLoginSuccessHandler() {
+        return new LoginSuccessHandler();
     }
 }

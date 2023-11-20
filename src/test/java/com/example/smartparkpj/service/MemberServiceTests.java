@@ -62,10 +62,17 @@ public class MemberServiceTests {
     }
 
     @Test
-    public void nameCheck() {
+    public void nameCheckTest() {
         String name = "testName";
-        MemberVO check = memberService.nameCheck(name);
+        boolean check = memberService.nameCheck(name);
         log.info(check);
         log.info(memberService.nameCheck(name));
+    }
+
+    @Test
+    public void nickCheckTest() {
+        String nick = "testNick";
+        boolean check = memberService.nickCheck(nick);
+        log.info(check);
     }
 }

@@ -63,9 +63,21 @@ public class MemberMapperTests {
     @Test
     public void nameCheck() {
         String name = "testName";
-        MemberVO check = memberMapper.nameCheck(name);
+        int check = memberMapper.nameCheck(name);
         log.info(check);
-        log.info(memberMapper.nameCheck(name));
+    }
+
+    @Test
+    public void nickCheck() {
+        String nick = " testName";
+        int check = memberMapper.nickCheck(nick);
+        log.info(check);
+    }
+
+    @Test
+    public void selectMemberTest() {
+        MemberVO memberVO = memberMapper.selectMember("test");
+        log.info(memberVO);
     }
 
 }

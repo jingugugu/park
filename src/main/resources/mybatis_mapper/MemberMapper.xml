@@ -23,4 +23,12 @@
         SELECT COUNT(*) FROM member WHERE member_name = #{member}
     </select>
 
+    <select id="nickCheck" resultType="int">
+        SELECT COUNT(*) FROM member WHERE nickName = #{nickName}
+    </select>
+
+    <select id="selectMember" resultType="com.example.smartparkpj.domain.MemberVO">
+        SELECT * FROM member WHERE email_id = #{email_id}
+    </select>
+
 </mapper>

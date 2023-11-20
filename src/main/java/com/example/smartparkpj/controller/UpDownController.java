@@ -24,8 +24,10 @@ import java.util.*;
 @RestController
 @Log4j2
 public class UpDownController {
-    @Value("${com.example.upload.basePath}")
+    @Value("${com.example.smartparkpj.upload.path}")
     private String uploadPath;
+
+
 
     @ApiOperation(value = "Upload Post", notes = "POST 방식으로 파일 등록")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

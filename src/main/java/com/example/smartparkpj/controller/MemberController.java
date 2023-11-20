@@ -28,17 +28,17 @@ public class MemberController {
 
     //로그인 페이지, 회원가입 페이지
     //회원가입, 회원수정, 로그인, 로그아웃, 회원탈퇴
-//    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')") // 회원만 접근할수 있게 하는 코드
     @GetMapping("/login")
     public void login() {
+        // 로그인 페이지 출력
         log.info("/member/login,,,,,");
     }
 
 
     @GetMapping("/register")
-    public void registerGET(String error, String logout){
-        log.info("/member/registerGET,,,,,");
-        log.info("logout: " + logout);
+    public void registerGET(){
+
     }
 
     @GetMapping("/register2")
@@ -70,7 +70,5 @@ public class MemberController {
             return "false";
         }
     }
-
-
 
 }

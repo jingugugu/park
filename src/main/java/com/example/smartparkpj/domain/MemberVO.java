@@ -15,8 +15,8 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString
 public class MemberVO {
-    private int mno; // 멤버 고유번호
 
+    private int mno; // 멤버 고유번호
     @Id
     private String email_id; // 멤버 이메일아이디
     private String password; // 멤버 비밀번호

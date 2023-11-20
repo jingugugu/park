@@ -59,5 +59,13 @@ public class MemberServiceImpl implements MemberService{
         }
     }
 
+    @Override
+    public boolean nickCheck(String nickName) {
+        if (memberMapper.nickCheck(nickName) >= 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
