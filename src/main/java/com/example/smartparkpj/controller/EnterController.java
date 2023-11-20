@@ -36,14 +36,4 @@ public class EnterController {
         return object;
     }
 
-    @ApiOperation(value = "map POST", notes = "POST 방식으로 시설 등록")
-    @PostMapping(value = "/map", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Integer> add(@Valid @RequestBody FacilityDTO facilityDTO){
-
-        Map<String, Integer> resultMap = new HashMap<>();
-        int marker_no = enterService.add(facilityDTO);
-
-        resultMap.put("marker_no",marker_no);
-        return resultMap;
-    }
 }
