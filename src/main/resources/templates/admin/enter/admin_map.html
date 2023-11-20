@@ -151,97 +151,217 @@
         <!-- 시설 등록 폼 -->
         <div id="facilityDiv">
             <h3>시설 등록</h3>
-            <!-- 여기에 시설 등록 폼의 필드들을 추가하세요 -->
-            <form id="AttractionRegisterForm" action="/admin/enter/addAttraction" method="post">
-                <div class="form-floating mb-3">
-                    <span class="facilityType">타입</span>
-                    <input class="form-control" id="attraction-type" name="type" type="text"
-                           placeholder="타입" readonly/>
-                    <span class="form-check" id="attraction-type-span" name="attraction-type-span" style="display: none"/>
-                </div>
-                <div class="form-floating mb-3">
-                    <span class="aname">위도</span>
-                    <input class="form-control" id="latitude" name="latitude" type="text"
-                           placeholder="위도" readonly/>
-                    <span class="form-check" id="latitude-span" name="latitude-span" style="display: none"/>
-                </div>
-                <div class="form-floating mb-3">
-                    <span class="longitude">경도</span>
-                    <input class="form-control" id="longitude" name="longitude" type="text"
-                           placeholder="경도" readonly/>
-                    <span class="form-check" id="longitude-span" name="longitude-span" style="display: none"/>
-                </div>
-                <div class="form-floating mb-3">
-                    <span class="aname">어트랙션 이름</span>
-                    <input class="form-control" id="aname" name="aname" type="text"
-                           placeholder="어트랙션 이름"/>
-                    <span class="form-check" id="aname-span" name="aname-span" style="display: none"/>
-                </div>
-                <div class="form-floating mb-3">
-                    <span class="ainfo">어트랙션 개요</span>
-                    <input class="form-control" id="ainfo" name="ainfo" type="text"
-                           placeholder="어트랙션 개요"/>
-                    <span class="form-check" id="ainfo-span" name="ainfo-span" style="display: none"/>
-                </div>
-                <div class="form-floating mb-3">
-                    <span class="ainfo_details">탑승 상세정보</span>
-                    <textarea class="form-control" rows="5" id="ainfo_details" name="ainfo_details"></textarea>
-                    <span class="form-check" id="ainfo_details-span" name="ainfo_details-span" style="display: none"/>
-                </div>
-                <div class="form-floating mb-3">
-                    <span class="passengersCount">탑승인원</span>
-                    <input class="form-control" id="passengersCount" name="passengersCount" type="number"
-                           placeholder="탑승인원"/>
-                    <span class="form-check" id="passengersCount-span" name="passengersCount-span" style="display: none"/>
-                </div>
-                <div class="form-floating mb-3">
-                    <span class="attraction_image">어트랙션 이미지</span>
-                    <div class="float-end uploadHidden">
-                        <button type="button" class="btn btn-primary uploadFileBtn">Add Files</button>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col ">
-                        <div class="container-fluid d-flex uploadResult" style="flex-wrap: wrap;">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-floating mb-3">
-                    <span class="tag-input-span">태그</span>
-                    <div class="tag-input-container" id="tagInputContainer">
-                    </div>
-                    <span class="form-check" id="tags-span" name="tags-span" style="display: none"></span>
-                    <button type="button" class="btn btn-default" id="tag-addBtn" onclick="addTagInput()">태그 추가</button>
-                </div>
-                <div class="my-4">
-                    <div class="float-end">
-                        <button type="button" class="btn btn-primary attraction-submit-btn">등록</button>
-                        <button type="reset" class="btn btn-secondary">초기화</button>
-                    </div>
-                </div>
-            </form>
+            <!-- 탭 네비게이션 -->
+            <ul class="nav nav-tabs" id="facilityTabs">
+                <li class="nav-item">
+                    <a class="nav-link active" id="attractionTab" data-bs-toggle="tab" href="#attractionForm" onclick="changeFormType('attraction-type', '어트랙션')">어트랙션</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="shopTab" data-bs-toggle="tab" href="#shopForm" onclick="changeFormType('shop-type', '매장')">매장</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="conTab" data-bs-toggle="tab" href="#conForm" onclick="changeFormType('con-type', '편의시설')">편의시설</a>
+                </li>
+            </ul>
 
-            <div class="modal uploadModal" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Upload File</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- 탭 컨텐츠 -->
+            <div class="tab-content">
+                <!-- 어트랙션 폼 -->
+                <div class="tab-pane fade show active" id="attractionForm">
+                    <!-- 어트랙션 폼 내용 -->
+                    <form id="AttractionRegisterForm" action="/admin/enter/addAttraction" method="post">
+                        <div class="form-floating mb-3">
+                            <span class="facilityType">타입</span>
+                            <input class="form-control" id="attraction-type" name="type" type="text" value="어트랙션"
+                                   placeholder="타입" readonly/>
+                            <span class="form-check" id="attraction-type-span" name="attraction-type-span" style="display: none"/>
                         </div>
-                        <div class="modal-body">
-                            <div class="input-group mb-3">
-                                <input type="file" name="files" class="form-control" multiple>
+                        <div class="form-floating mb-3">
+                            <span class="latitude-span">위도</span>
+                            <input class="form-control latitude" name="latitude" type="number" step="0.0000000000001"
+                                   placeholder="위도" readonly/>
+                            <span class="form-check latitude-span" name="latitude-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="longitude-spn">경도</span>
+                            <input class="form-control longitude" name="longitude" type="number" step="0.0000000000001"
+                                   placeholder="경도" readonly/>
+                            <span class="form-check longitude-span" name="longitude-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="aname">어트랙션 이름</span>
+                            <input class="form-control" id="aname" name="aname" type="text"
+                                   placeholder="어트랙션 이름"/>
+                            <span class="form-check" id="aname-span" name="aname-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="ainfo">어트랙션 개요</span>
+                            <input class="form-control" id="ainfo" name="ainfo" type="text"
+                                   placeholder="어트랙션 개요"/>
+                            <span class="form-check" id="ainfo-span" name="ainfo-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="ainfo_detail">탑승 상세정보</span>
+                            <textarea class="form-control" rows="5" id="ainfo_detail" name="ainfo_detail"></textarea>
+                            <span class="form-check" id="ainfo_detail-span" name="ainfo_detail-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="passengersCount">탑승인원</span>
+                            <input class="form-control" id="passengersCount" name="passengersCount" type="number"
+                                   placeholder="탑승인원"/>
+                            <span class="form-check" id="passengersCount-span" name="passengersCount-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="attraction_image">어트랙션 이미지</span>
+                            <div class="float-end uploadAttractionHidden">
+                                <button type="button" class="btn btn-primary uploadAttractionFileBtn">Add Files</button>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary uploadBtn">Upload</button>
-                            <button type="button" class="btn btn-outline-dark closeUploadBtn ">Close</button>
+                        <div class="row mt-3">
+                            <div class="col ">
+                                <div class="container-fluid d-flex uploadAttractionResult" style="flex-wrap: wrap;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="tag-input-span">태그</span>
+                            <div class="tag-input-container" id="tagInputContainer">
+                            </div>
+                            <span class="form-check" id="tags-span" name="tags-span" style="display: none"></span>
+                            <button type="button" class="btn btn-default" id="tag-addBtn" onclick="addTagInput()">태그 추가</button>
+                        </div>
+                        <div class="my-4">
+                            <div class="float-end">
+                                <button type="button" class="btn btn-primary attraction-submit-btn">등록</button>
+                                <button type="reset" class="btn btn-secondary">초기화</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal uploadAttractionModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Upload File</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="input-group mb-3">
+                                        <input type="file" name="attractionFiles" class="form-control" multiple>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary uploadAttractionBtn">Upload</button>
+                                    <button type="button" class="btn btn-outline-dark closeUploadBtn ">Close</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                 </div>
+
+                <!-- 매장 폼 -->
+                <div class="tab-pane fade" id="shopForm">
+                    <!-- 매장 폼 내용 -->
+                    <form id="ShopRegisterForm" action="/admin/enter/addShop" method="post">
+                        <div class="form-floating mb-3">
+                            <span class="facilityType">타입</span>
+                            <input class="form-control" id="shop-type" name="type" type="text"
+                                   placeholder="타입" readonly/>
+                            <span class="form-check" id="shop-type-span" name="shop-type-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="latitude-span">위도</span>
+                            <input class="form-control latitude" name="latitude" type="number" step="0.0000000000001"
+                                   placeholder="위도" readonly/>
+                            <span class="form-check latitude-span" name="latitude-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="longitude-span">경도</span>
+                            <input class="form-control longitude" name="longitude" type="number" step="0.0000000000001"
+                                   placeholder="경도" readonly/>
+                            <span class="form-check longitude-span" name="longitude-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="shop_name">매장 이름</span>
+                            <input class="form-control" id="shop_name" name="shop_name" type="text"
+                                   placeholder="매장 이름"/>
+                            <span class="form-check" id="shop_name-span" name="shop_name-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="shop_menu">매장 메뉴</span>
+                            <input class="form-control" id="shop_menu" name="shop_menu" type="text"
+                                   placeholder="매장 메뉴"/>
+                            <span class="form-check" id="shop_menu-span" name="shop_menu-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="shop_time">운영시간</span>
+                            <input class="form-control" id="shop_time" name="shop_time" type="text"
+                                   placeholder="운영 시간"/>
+                            <span class="form-check" id="shop_time-span" name="shop_time-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="shop_guide">매장 가이드</span>
+                            <input class="form-control" id="shop_guide" name="shop_guide" type="text"
+                                   placeholder="매장 가이드"/>
+                            <span class="form-check" id="shop_guide-span" name="shop_guide-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="shop_price">가격대</span>
+                            <input class="form-control" id="shop_price" name="shop_price" type="text"
+                                   placeholder="가격대"/>
+                            <span class="form-check" id="shop_price-span" name="shop_price-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="shop_tel">연락처</span>
+                            <input class="form-control" id="shop_tel" name="shop_tel" type="tel"
+                                   placeholder="연락처"/>
+                            <span class="form-check" id="shop_tel-span" name="shop_tel-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="shop_image">매장 이미지</span>
+                            <div class="float-end uploadShopHidden">
+                                <button type="button" class="btn btn-primary uploadShopFileBtn">Add Files</button>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col ">
+                                <div class="container-fluid d-flex uploadShopResult" style="flex-wrap: wrap;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="my-4">
+                            <div class="float-end">
+                                <button type="button" class="btn btn-primary shop-submit-btn">등록</button>
+                                <button type="reset" class="btn btn-secondary">초기화</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal uploadShopModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Upload File</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="input-group mb-3">
+                                        <input type="file" name="shopFiles" class="form-control" multiple>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary uploadShopBtn">Upload</button>
+                                    <button type="button" class="btn btn-outline-dark closeUploadBtn ">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- 다른 탭 추가 가능 -->
             </div>
+            <!-- 여기에 시설 등록 폼의 필드들을 추가하세요 -->
         </div>
-    </div>
+
     <p id="result"></p>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6e208eb09fba9417845ed12cf12f3aef"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -250,6 +370,11 @@
 </div>
 <script layout:fragment="script" th:inline="javascript">
 
+    function changeFormType(typeInputId, facilityType) {
+        // 선택된 폼의 type input의 값을 변경
+        const typeInput = document.getElementById(typeInputId);
+        typeInput.value = facilityType;
+    }
 
     function addTagInput() {
         const tagInputContainer = document.getElementById('tagInputContainer');
@@ -275,17 +400,24 @@
         tagInputContainer.appendChild(tagInputWrapper);
     }
 
-    const uploadModal = new bootstrap.Modal(document.querySelector('.uploadModal'));
+    const uploadAttractionModal = new bootstrap.Modal(document.querySelector('.uploadAttractionModal'));
+    const uploadShopModal = new bootstrap.Modal(document.querySelector('.uploadShopModal'));
 
-    document.querySelector('.uploadFileBtn').addEventListener('click',function(e){
+    document.querySelector('.uploadAttractionFileBtn').addEventListener('click',function(e){
         e.stopPropagation();
         e.preventDefault();
-        uploadModal.show();
+        uploadAttractionModal.show();
     });
 
-    document.querySelector('.uploadBtn').addEventListener('click',function (e){
+    document.querySelector('.uploadShopFileBtn').addEventListener('click',function(e){
+        e.stopPropagation();
+        e.preventDefault();
+        uploadShopModal.show();
+    });
+
+    document.querySelector('.uploadAttractionBtn').addEventListener('click',function (e){
         const formObj = new FormData();
-        const fileInput = document.querySelector("input[name='files']");
+        const fileInput = document.querySelector("input[name='attractionFiles']");
 
         console.log(fileInput.files);
 
@@ -298,28 +430,67 @@
         uploadToServer(formObj).then(result => {
             console.log(result);
             for (const uploadResult of result){
-                showUploadFile(uploadResult);
+                showUploadAttractionFile(uploadResult);
             }
-            uploadModal.hide();
+            uploadAttractionModal.hide();
         }).catch(e => {
-            uploadModal.hide();
+            uploadAttractionModal.hide();
         })
     });
 
-    const uploadResult = document.querySelector('.uploadResult');
+    document.querySelector('.uploadShopBtn').addEventListener('click',function (e){
+        const formObj = new FormData();
+        const fileInput = document.querySelector("input[name='shopFiles']");
 
-    function showUploadFile({uuid, fileName, link}){
+        console.log(fileInput.files);
+
+        const files = fileInput.files;
+
+        for (let i = 0; i < files.length; i++){
+            formObj.append("files",files[i]);
+        }
+
+        uploadToServer(formObj).then(result => {
+            console.log(result);
+            for (const uploadResult of result){
+                showUploadShopFile(uploadResult);
+            }
+            uploadShopModal.hide();
+        }).catch(e => {
+            uploadShopModal.hide();
+        })
+    });
+
+    const uploadAttractionResult = document.querySelector('.uploadAttractionResult');
+    const uploadShopResult = document.querySelector('.uploadShopResult');
+
+
+    function showUploadAttractionFile({uuid, fileName, link}){
         const str = `<div class="card col-4">
                 <div class="card-header d-flex justify-content-center">
                     ${fileName}
                     <button type="button" class="btn btn-danger" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
                     </div>
                     <div class="card-body">
-                        <img src="/view/${link}" data-src="${uuid+"_"+fileName}" >
+                        <img class="attractionImages" src="/view/${link}" data-src="${uuid+"_"+fileName}" >
                     </div>
                 </div>`;
 
-        uploadResult.innerHTML += str;
+        uploadAttractionResult.innerHTML += str;
+    }
+
+    function showUploadShopFile({uuid, fileName, link}){
+        const str = `<div class="card col-4">
+                <div class="card-header d-flex justify-content-center">
+                    ${fileName}
+                    <button type="button" class="btn btn-danger" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
+                    </div>
+                    <div class="card-body">
+                        <img class="shopImages" src="/view/${link}" data-src="${uuid+"_"+fileName}" >
+                    </div>
+                </div>`;
+
+        uploadShopResult.innerHTML += str;
     }
 
     function removeFile(uuid, fileName, obj){
@@ -339,7 +510,13 @@
         e.stopPropagation();
 
         // 1. 섬네일 영역에서 img태그의 data-src 속성 들고옴
-        const uploadFiles = uploadResult.querySelectorAll('img');
+        const uploadFiles = uploadAttractionResult.querySelectorAll('img');
+        // 매장 이미지 전부 삭제
+        const removeFiles = uploadShopResult.querySelectorAll('img');
+        removeFiles.forEach((e) =>{
+            const removeFile = e.getAttribute('data-src').split("_");
+            removeFileToServer(removeFile[0],removeFile[1]);
+        })
         let str = '';
         for (let i = 0; i < uploadFiles.length; i++){
             const uploadFile = uploadFiles[i];
@@ -349,11 +526,40 @@
         }
 
         // 2. ADD Files 버튼 영역에 태그 추가
-        const target = document.querySelector('.uploadHidden');
+        const target = document.querySelector('.uploadAttractionHidden');
         target.innerHTML = str;
 
         // 3. submit() 처리
         const formObj = document.querySelector('#AttractionRegisterForm');
+        formObj.submit();
+    })
+
+    document.querySelector('.shop-submit-btn').addEventListener('click',function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        // 1. 섬네일 영역에서 img태그의 data-src 속성 들고옴
+        const uploadFiles = uploadShopResult.querySelectorAll('img');
+        // 어트랙션 이미지 전부 삭제
+        const removeFiles = uploadAttractionResult.querySelectorAll('img');
+        removeFiles.forEach((e) =>{
+            const removeFile = e.getAttribute('data-src').split("_");
+            removeFileToServer(removeFile[0],removeFile[1]);
+        })
+        let str = '';
+        for (let i = 0; i < uploadFiles.length; i++){
+            const uploadFile = uploadFiles[i];
+            const imgLink = uploadFile.getAttribute('data-src');
+
+            str +=`<input type='hidden' name='fileNames' value="${imgLink}">`;
+        }
+
+        // 2. ADD Files 버튼 영역에 태그 추가
+        const target = document.querySelector('.uploadShopHidden');
+        target.innerHTML = str;
+
+        // 3. submit() 처리
+        const formObj = document.querySelector('#ShopRegisterForm');
         formObj.submit();
     })
     const mapContainer = document.getElementById('map'), // 지도를 표시할 div
@@ -541,6 +747,7 @@
         currentOverlay = overLay;
         // 커스텀 오버레이를 지도에 표시합니다
         overLay.setMap(map);
+        document.getElementById("facilityImage").src = "/view/" + markerInfo.fileNames[0]; // 이미지 동적 생성
     }
 
     function getOverLayContentByType(markerInfo,type) {
@@ -549,7 +756,7 @@
                 case "어트랙션":
                     return `<div id="facilityOverlay">
                             <h3 id="facilityName">${markerInfo.aname}</h3>
-                            <img id="facilityImage" src="https://example.com/attraction-image.jpg" alt="어트랙션 이미지">
+                            <img id="facilityImage" alt="어트랙션 이미지">
                             <button id="reviewButton" onclick="showReviews()">리뷰 목록</button>
                             <button id="detailButton" onclick="showDetail()">상세 보기</button>
                             <button id="closeButton" onclick="closeOverlay()">닫기</button>
@@ -760,8 +967,14 @@
 
         console.log(document.querySelector('#attraction-type'));
         document.querySelector('#attraction-type').value = facilityMarker.type;
-        document.querySelector('#latitude').value = facilityMarker.getPosition().getLat();
-        document.querySelector('#longitude').value = facilityMarker.getPosition().getLng();
+        document.querySelectorAll('.latitude').forEach((e) => {
+            e.value = facilityMarker.getPosition().getLat();
+        })
+        document.querySelectorAll('.longitude').forEach((e) => {
+            e.value = facilityMarker.getPosition().getLng();
+        })
+        // document.querySelector('.latitude').value = facilityMarker.getPosition().getLat();
+        // document.querySelector('.longitude').value = facilityMarker.getPosition().getLng();
 
         let message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
         message += '경도는 ' + latlng.getLng() + ' 입니다';
@@ -786,8 +999,8 @@
     });
     kakao.maps.event.addListener(facilityMarker, 'dragend', function() {
         // 마커가 드래그 끝났을 때의 처리
-        document.querySelector('#latitude').value = facilityMarker.getPosition().getLat();
-        document.querySelector('#longitude').value = facilityMarker.getPosition().getLng();
+        document.querySelector('.latitude').value = facilityMarker.getPosition().getLat();
+        document.querySelector('.longitude').value = facilityMarker.getPosition().getLng();
         // 여기서 폼 업데이트 또는 다른 작업을 수행할 수 있습니다.
     });
 </script>

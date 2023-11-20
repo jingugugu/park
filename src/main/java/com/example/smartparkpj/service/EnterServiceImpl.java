@@ -119,11 +119,43 @@ public class EnterServiceImpl implements EnterService {
             if(type.equals("어트랙션")){
                 AttractionVO attractionVO = attractionMapper.getOne(facility_no);
                 AttractionDTO attractionDTO = modelMapper.map(attractionVO,AttractionDTO.class);
+                List<AttractionImageVO> attractionImageVOList = attractionMapper.getImageList(facility_no);
+                List<AttractionTagVO> attractionTagVOList = attractionMapper.getTagList(facility_no);
+
+                if(attractionImageVOList != null){
+                    List<String> fileNames = new ArrayList<>();
+                    for(AttractionImageVO attractionImageVO : attractionImageVOList){
+                        String fileName = attractionImageVO.getUuid() + "_" + attractionImageVO.getFileName();
+
+                        fileNames.add(fileName);
+                    }
+                    attractionDTO.setFileNames(fileNames);
+                }
+
+                if(attractionTagVOList != null){
+                    List<String> tagNames = new ArrayList<>();
+                    for(AttractionTagVO attractionTagVO : attractionTagVOList){
+                        String tagName = attractionTagVO.getAtag_name();
+
+                        tagNames.add(tagName);
+                    }
+                    attractionDTO.setTagNames(tagNames);
+                }
                 return attractionDTO;
             }
             else if(type.equals("매장")){
                 ShopVO shopVO = shopMapper.getOne(facility_no);
                 ShopDTO shopDTO = modelMapper.map(shopVO, ShopDTO.class);
+                List<ShopImageVO> shopImageVOList = shopMapper.getImageList(facility_no);
+                if(shopImageVOList != null){
+                    List<String> fileNames = new ArrayList<>();
+                    for(ShopImageVO shopImageVO : shopImageVOList){
+                        String fileName = shopImageVO.getUuid() + "_" + shopImageVO.getFileName();
+
+                        fileNames.add(fileName);
+                    }
+                    shopDTO.setFileNames(fileNames);
+                }
                 return shopDTO;
             }
             else{

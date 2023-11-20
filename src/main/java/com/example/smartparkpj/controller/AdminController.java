@@ -3,6 +3,8 @@ package com.example.smartparkpj.controller;
 import com.example.smartparkpj.dto.AttractionDTO;
 import com.example.smartparkpj.dto.FacilityDTO;
 import com.example.smartparkpj.dto.MarkerDTO;
+import com.example.smartparkpj.dto.ShopDTO;
+import com.example.smartparkpj.service.AdminService;
 import com.example.smartparkpj.service.EnterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,7 +23,7 @@ import java.util.Map;
 @Log4j2
 @RequiredArgsConstructor
 public class AdminController {
-    final private EnterService enterService;
+    final private AdminService adminService;
 
     @GetMapping("")
     public String adminMain(){return "redirect:/admin/enter/admin_map";}
@@ -35,10 +37,20 @@ public class AdminController {
     public String addAttraction(AttractionDTO attractionDTO, MarkerDTO markerDTO){
 
         log.info("addAttraction---------------- : " + attractionDTO + markerDTO);
-//        int marker_no = enterService.add(facilityDTO);
+        adminService.addAttraction(attractionDTO,markerDTO);
 
-//        resultMap.put("marker_no",marker_no);
         return "redirect:/admin/enter/admin_map";
 
     }
+
+    @PostMapping("/enter/addShop")
+    public String addShop(ShopDTO shopDTO, MarkerDTO markerDTO){
+
+        log.info("addShop---------------- : " + shopDTO + markerDTO);
+        adminService.addShop(shopDTO,markerDTO);
+
+        return "redirect:/admin/enter/admin_map";
+
+    }
+
 }

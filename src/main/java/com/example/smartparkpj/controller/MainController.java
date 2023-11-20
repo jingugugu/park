@@ -2,6 +2,7 @@ package com.example.smartparkpj.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,9 @@ public class MainController {
         return "redirect:/main/park_main";
     }
     @GetMapping("/main/park_main")
-    public void mainGet(){log.info("/main/park_main.html!~~!");}
+    public void mainGet(Authentication authentication){
+        log.info("/main/park_main.html!~~!");
+        log.info("autttt---------------" + authentication);
+    }
 
 }

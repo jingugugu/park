@@ -292,6 +292,7 @@
         currentOverlay = overLay;
         // 커스텀 오버레이를 지도에 표시합니다
         overLay.setMap(map);
+        document.getElementById("facilityImage").src = "/view/" + markerInfo.fileNames[0]; // 이미지 동적 생성
     }
 
     function getOverLayContentByType(markerInfo,type) {
@@ -300,7 +301,7 @@
                 case "어트랙션":
                     return `<div id="facilityOverlay">
                             <h3 id="facilityName">${markerInfo.aname}</h3>
-                            <img id="facilityImage" src="https://example.com/attraction-image.jpg" alt="어트랙션 이미지">
+                            <img id="facilityImage" alt="어트랙션 이미지">
                             <button id="reviewButton" onclick="showReviews()">리뷰 목록</button>
                             <button id="detailButton" onclick="showDetail()">상세 보기</button>
                             <button id="closeButton" onclick="closeOverlay()">닫기</button>

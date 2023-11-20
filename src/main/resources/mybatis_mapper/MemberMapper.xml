@@ -15,7 +15,7 @@
     </insert>
 
     <insert id="addMemberRole">
-        INSERT INTO member_role_sets (member_mid, role_set)
+        INSERT INTO member_role_set (member_mid, role_set)
         VALUES (#{member_mid}, #{role_set})
     </insert>
     

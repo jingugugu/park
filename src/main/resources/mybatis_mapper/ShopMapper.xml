@@ -15,4 +15,8 @@
     <select id="getOne" resultType="com.example.smartparkpj.domain.ShopVO">
         SELECT * FROM shop where sno = #{facility_no}
     </select>
+
+    <select id="getImageList" resultType="com.example.smartparkpj.domain.ShopImageVO">
+        SELECT * FROM shop_image where sno = #{facility_no}
+    </select>
 </mapper>

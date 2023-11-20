@@ -24,10 +24,8 @@ import java.util.*;
 @RestController
 @Log4j2
 public class UpDownController {
-    @Value("${com.example.smartparkpj.upload.path}")
+    @Value("${com.example.upload.tempPath}")
     private String uploadPath;
-
-
 
     @ApiOperation(value = "Upload Post", notes = "POST 방식으로 파일 등록")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -46,13 +44,13 @@ public class UpDownController {
                 try{
                     multipartFile.transferTo(savePath);
 
-                    // 이미지 파일이면 섬네일 생성
-                    if (Files.probeContentType(savePath).startsWith("image")){
-                        log.info(Files.probeContentType(savePath));
-                        isImage = true;
-                        File thumbFile = new File(uploadPath, "s_" + uuid + "_" + originalName);
-                        Thumbnailator.createThumbnail(savePath.toFile(), thumbFile, 200, 200);
-                    }
+//                    // 이미지 파일이면 섬네일 생성
+//                    if (Files.probeContentType(savePath).startsWith("image")){
+//                        log.info(Files.probeContentType(savePath));
+//                        isImage = true;
+//                        File thumbFile = new File(uploadPath, "s_" + uuid + "_" + originalName);
+//                        Thumbnailator.createThumbnail(savePath.toFile(), thumbFile, 200, 200);
+//                    }
                 } catch (IOException e){
                     throw new RuntimeException(e);
                 }
@@ -73,6 +71,7 @@ public class UpDownController {
         Resource resource = new FileSystemResource(uploadPath + File.separator + fileName);
 
         String resourceName = resource.getFilename();
+        log.info("view file ================" + resourceName);
         HttpHeaders headers = new HttpHeaders();
 
         try {
@@ -97,10 +96,10 @@ public class UpDownController {
             removed = resource.getFile().delete(); // 이미지 삭제
 
             log.info("removed : " + resource.getFile());
-            if(contentType.startsWith("image")){
-                File thumbFile = new File(uploadPath + File.separator + "s_" + fileName);
-                thumbFile.delete(); // 섬네일 삭제
-            }
+//            if(contentType.startsWith("image")){
+//                File thumbFile = new File(uploadPath + File.separator + "s_" + fileName);
+//                thumbFile.delete(); // 섬네일 삭제
+//            }
         } catch (IOException e){
             log.error(e.getMessage());
         }

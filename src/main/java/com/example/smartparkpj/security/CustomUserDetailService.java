@@ -1,5 +1,8 @@
 package com.example.smartparkpj.security;
 
+import com.example.smartparkpj.domain.MemberVO;
+import com.example.smartparkpj.mapper.MemberMapper;
+import com.example.smartparkpj.security.dto.MemberSecurityDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

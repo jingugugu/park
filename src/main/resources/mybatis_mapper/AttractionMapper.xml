@@ -19,4 +19,12 @@
     <select id="getOne" resultType="com.example.smartparkpj.domain.AttractionVO">
         SELECT * FROM attraction where ano = #{facility_no}
     </select>
+
+    <select id="getImageList" resultType="com.example.smartparkpj.domain.AttractionImageVO">
+        SELECT * FROM attraction_image where ano = #{facility_no}
+    </select>
+
+    <select id="getTagList" resultType="com.example.smartparkpj.domain.AttractionTagVO">
+        SELECT * FROM attraction_tag where ano = #{facility_no}
+    </select>
 </mapper>
