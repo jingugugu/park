@@ -32,8 +32,6 @@ public class OrderMapperTests {
                 .orderDate(date)
                 .startDate(now)
                 .endDate(now)
-                .has_ability(1)
-                .finished(1)
                 .price(15000)
                 .people_count(3)
                 .build();
