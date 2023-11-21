@@ -10,7 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class OrderVO { 
+public class OrderVO {
     private int ono; // 예매 고유번호
     private String orderCode; // 예매코드
     private int tno; // 티켓 고유번호
