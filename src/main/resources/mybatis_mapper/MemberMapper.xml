@@ -31,4 +31,8 @@
         SELECT * FROM member WHERE email_id = #{email_id}
     </select>
 
+    <select id="selectOne" resultType="com.example.smartparkpj.domain.MemberVO">
+        SELECT * FROM member WHERE mno = #{mno}
+    </select>
+
 </mapper>

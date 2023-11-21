@@ -12,9 +12,108 @@
 </head>
 <body>
 <div layout:fragment="content">
-  <h1>Test</h1>
+
+    <tr th:each="review : ${responseDTO.dtoList}">
+        <td th:text="${review.rno}"></td>
+        <td th:text="${review.content}"></td>
+        <!-- 다른 필드들에 대한 데이터 추가 -->
+    </tr>
+    <!--comments start-->
+    <div class="comment-area">
+        <div class="row">
+            <div class=" col-lg-12 col-md-12">
+                <div class="comment-title">
+                    <li th:each="review : ${responseDTO.dtoList}">
+                    <h2 th:text="${review.nickName}"></h2>
+                    <ul class="comment-list">
+                            <div class="comment-author"></div>
+                            <div class="comment-info">
+                                <h4 class="user-title">Cassandra Craft</h4>
+                                <div class="meta">
+                                    <div class="comment-meta-date">31 March, 2017</div>
+                                </div>
+                                <div class="comment-content">
+                                    <p th:text="${review.content}"></p>
+                                </div>
+                                <a href="#" class="reply-link">좋아요</a> </div><!--좋아요 작업 해줘야함-->
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="float-end" >
+        <ul class="pagination flex-wrap" style="display: flex">
+            <li class="page-item" th:if="${responseDTO.prev}">
+                <a class="page-link" th:data-num="${responseDTO.start - 1}">Previos</a>
+            </li>
+            <th:block th:each="i:${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'">
+                    <a class="page-link" th:data-num="${i}">[[${i}]]</a>
+                </li>
+            </th:block>
+            <li class="page-item" th:if="${responseDTO.next}">
+                <a class="page-link" th:data-num="${responseDTO.end +1}">NEXT</a>
+            </li>
+        </ul>
+    </div>
+    <!--comments close-->
+    <div class="leave-comments">
+        <h2 class="comment-title">리뷰 작성하기</h2>
+        <form>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label" for="textarea">Comments</label>
+                        <textarea class="form-control" id="textarea" name="textarea" rows="6" style="height: 200px;"></textarea>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label" for="name">Name</label>
+                        <input id="name" name="name" type="text" class="form-control">
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <button id="singlebutton" name="singlebutton" class="btn btn-primary btn-sm">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 <script layout:fragment="script" th:inline="javascript">
+    document.querySelector(".pagination").addEventListener("click",function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const target = e.target;
+
+        if (target.tagName !== 'A') {
+            return;
+        }
+        const num = target.getAttribute("data-num");
+
+        const formObj = document.querySelector("form");
+
+        formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`;
+
+        formObj.submit();
+    },false)
+    document.querySelector(".clearBtn").addEventListener("click",function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        self.location='/board/list';
+    })
+    //show modal
+    const  result = [[${result}]];
+    const modal = new bootstrap.Modal(document.querySelector(".modal"));
+    modal.show();
+    if(result) {
+    }
 </script>
 </body>
 </html>

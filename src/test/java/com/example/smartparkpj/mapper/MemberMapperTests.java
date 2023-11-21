@@ -80,4 +80,9 @@ public class MemberMapperTests {
         log.info(memberVO);
     }
 
+    @Test
+    public void selectOneTest(){
+        MemberVO memberVO = memberMapper.selectOne(3);
+        log.info(memberVO);
+    }
 }

@@ -15,5 +15,7 @@ public interface MemberMapper {
     boolean login(String email_id, String password);
     MemberVO selectMember(String email_id);
 
+    MemberVO selectOne(int mno); //리뷰에 닉네임 들고 오기위해 하나 만듭니다 (고지훈)
+
     // 로그인 (UserDetails 유저 정보 생성) -> 마이페이지 -> 정보수정 (페이지) -> 컨트롤러에서 실제로 정보수정
 }
