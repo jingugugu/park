@@ -14,5 +14,6 @@ public class ConvenienceVO {
     private String con_guide; // 편의시설 이용기준
     private String con_tel; // 편의시설 연락처
     private String con_img; // 편의시설 아이콘
+    private float avgScore; // 평점
 
 }

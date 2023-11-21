@@ -27,4 +27,16 @@
     <select id="getTagList" resultType="com.example.smartparkpj.domain.AttractionTagVO">
         SELECT * FROM attraction_tag where ano = #{facility_no}
     </select>
+
+    <update id="editAttraction">
+        UPDATE attraction SET aname = #{aname}, ainfo = #{ainfo}, ainfo_detail = #{ainfo_detail}, passengersCount = #{passengersCount}
+        WHERE ano = #{ano}
+    </update>
+
+    <delete id="removeTags">
+        DELETE FROM attraction_tag WHERE ano = #{ano}
+    </delete>
+    <delete id="removeImages">
+        DELETE FROM attraction_image WHERE ano = #{ano}
+    </delete>
 </mapper>

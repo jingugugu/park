@@ -20,4 +20,10 @@ public interface AttractionMapper {
     List<AttractionImageVO> getImageList(int facility_no); // 이미지 리스트 가져오기
 
     List<AttractionTagVO> getTagList(int facility_no); // 태그 리스트 가져오기
+
+    void editAttraction(AttractionVO attractionVO);
+
+    void removeTags(int ano);
+
+    void removeImages(int ano);
 }

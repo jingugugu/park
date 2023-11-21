@@ -10,4 +10,8 @@
     <select id="getMarkerList" resultType="com.example.smartparkpj.domain.MarkerVO">
         SELECT * FROM marker
     </select>
+
+    <update id="editMarker">
+        UPDATE marker SET latitude = #{latitude}, longitude = #{longitude} WHERE marker_no = #{marker_no}
+    </update>
 </mapper>

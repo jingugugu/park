@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/park.html}">
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #mapwrap{
+            display: flex;
+            flex-direction: row;
+            position:relative;
+            overflow:hidden;
+        }
+        .category, .category *{margin:0;padding:0;color:#000;}
+        .category {
+            overflow:hidden;
+            position:absolute;top:10px;left:10px;width:205px;height:65px;z-index:10;border:1px solid black;font-family:'Malgun Gothic','맑은 고딕',sans-serif;font-size:12px;text-align:center;background-color:#fff;}
+        .category .menu_selected {background:#FF5F4A;color:#fff;border-left:1px solid #915B2F;border-right:1px solid #915B2F;margin:0 -1px;}
+        .category li{list-style:none;float:left;width:50px;height:50px;padding-top:5px;cursor:pointer;}
+        .category .ico_comm {display:block;margin:0 auto 2px;width:22px;height:26px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png') no-repeat;}
+        .category .ico_coffee {background-position:-10px 0;}
+        .category .ico_store {background-position:-10px -36px;}
+        .category .ico_carpark {background-position:-10px -72px;}
+
+        .wrap {
+            position: absolute;
+            left: 0;
+            bottom: 40px;
+            width: 288px;
+            height: 132px;
+            margin-left: -144px;
+            text-align: left;
+            overflow: hidden;
+            font-size: 12px;
+            font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+        .wrap * {padding: 0;margin: 0;}
+        .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+        .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+        .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+        .info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+        .info .close:hover {cursor: pointer;}
+        .info .body {position: relative;overflow: hidden;}
+        .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+        .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+        .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+        .info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+        .info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+        .info .link {color: #5085BB;}
+    </style>
+    <style>
+        #facilityOverlay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: white;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #facilityOverlay h3 {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        #facilityOverlay img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        #facilityOverlay button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        #closeButton {
+            width: 100%;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+        }
+    </style>
+    <style>
+        #facilityDiv{
+            margin-left: 10px;
+        }
+        .input-group>.form-control{
+            width: 100%;
+        }
+        .tag-input{
+            display: flex;
+            flex-direction: row;
+        }
+        .remove-tag{
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            width: 20%;
+            color: white;
+            background-color: red;
+            margin: 0 0 15px 10px;
+            line-height: 1.8;
+            border-radius: 3px;
+        }
+        .remove-tag:hover{
+            cursor: pointer;
+            background-color: #ab0303;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div id="mapwrap">
+        <div id="map" style="width:800px;height:800px;"></div>
+        <div class="category">
+            <ul>
+                <li id="allMenu" onclick="changeMarker('all')">
+                    <span class="ico_comm ico_coffee"></span>
+                    전체
+                </li>
+                <li id="attractionMenu" onclick="changeMarker('attraction')">
+                    <span class="ico_comm ico_coffee"></span>
+                    어트랙션
+                </li>
+                <li id="shopMenu" onclick="changeMarker('shop')">
+                    <span class="ico_comm ico_store"></span>
+                    매장
+                </li>
+                <li id="conMenu" onclick="changeMarker('con')">
+                    <span class="ico_comm ico_carpark"></span>
+                    편의시설
+                </li>
+            </ul>
+        </div>
+        <!-- 시설 수정 폼 -->
+        <div id="facilityDiv">
+            <h3>시설 수정</h3>
+            <!-- 탭 네비게이션 -->
+            <ul class="nav nav-tabs" id="facilityTabs">
+                <li class="nav-item">
+                    <span class="nav-link active" id="attractionTab">어트랙션</span>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link" id="shopTab">매장</span>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link" id="conTab">편의시설</span>
+                </li>
+            </ul>
+
+            <!-- 탭 컨텐츠 -->
+            <div class="tab-content">
+                <!-- 어트랙션 폼 -->
+                <div class="tab-pane fade show active" id="attractionForm">
+                    <!-- 어트랙션 폼 내용 -->
+                    <form id="AttractionRegisterForm" action="/admin/enter/editAttraction" method="post">
+                        <div class="form-floating mb-3">
+                            <span class="facilityType">타입</span>
+                            <input class="form-control" id="attraction-type" name="type" type="text" value="어트랙션"
+                                   placeholder="타입" readonly/>
+                            <input type="hidden" id="ano" name="ano"/>
+                            <span class="form-check" id="attraction-type-span" name="attraction-type-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="latitude-span">위도</span>
+                            <input class="form-control latitude" name="latitude" type="number" step="0.0000000000001"
+                                   placeholder="위도" readonly/>
+                            <span class="form-check latitude-span" name="latitude-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="longitude-spn">경도</span>
+                            <input class="form-control longitude" name="longitude" type="number" step="0.0000000000001"
+                                   placeholder="경도" readonly/>
+                            <span class="form-check longitude-span" name="longitude-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="aname">어트랙션 이름</span>
+                            <input class="form-control" id="aname" name="aname" type="text"
+                                   placeholder="어트랙션 이름"/>
+                            <span class="form-check" id="aname-span" name="aname-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="ainfo">어트랙션 개요</span>
+                            <input class="form-control" id="ainfo" name="ainfo" type="text"
+                                   placeholder="어트랙션 개요"/>
+                            <span class="form-check" id="ainfo-span" name="ainfo-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="ainfo_detail">탑승 상세정보</span>
+                            <textarea class="form-control" rows="5" id="ainfo_detail" name="ainfo_detail"></textarea>
+                            <span class="form-check" id="ainfo_detail-span" name="ainfo_detail-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="passengersCount">탑승인원</span>
+                            <input class="form-control" id="passengersCount" name="passengersCount" type="number"
+                                   placeholder="탑승인원"/>
+                            <span class="form-check" id="passengersCount-span" name="passengersCount-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="attraction_image">어트랙션 이미지</span>
+                            <div class="float-end uploadAttractionHidden">
+                                <button type="button" class="btn btn-primary uploadAttractionFileBtn">Add Files</button>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col ">
+                                <div class="container-fluid d-flex uploadAttractionResult" style="flex-wrap: wrap;">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="tag-input-span">태그</span>
+                            <div class="tag-input-container" id="tagInputContainer">
+                            </div>
+                            <span class="form-check" id="tags-span" name="tags-span" style="display: none"></span>
+                            <button type="button" class="btn btn-default" id="tag-addBtn" onclick="addTagInput()">태그 추가</button>
+                        </div>
+                        <div class="my-4">
+                            <div class="float-end">
+                                <button type="button" class="btn btn-primary attraction-submit-btn">수정</button>
+                                <button type="reset" class="btn btn-secondary">초기화</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal uploadAttractionModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Upload File</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="input-group mb-3">
+                                        <input type="file" name="attractionFiles" class="form-control" multiple>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary uploadAttractionBtn">Upload</button>
+                                    <button type="button" class="btn btn-outline-dark closeUploadBtn ">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- 매장 폼 -->
+                <div class="tab-pane fade show" id="shopForm">
+                    <!-- 매장 폼 내용 -->
+                    <form id="ShopRegisterForm" action="/admin/enter/editShop" method="post">
+                        <div class="form-floating mb-3">
+                            <span class="facilityType">타입</span>
+                            <input class="form-control" id="shop-type" name="type" type="text"
+                                   placeholder="타입" readonly/>
+                            <span class="form-check" id="shop-type-span" name="shop-type-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="latitude-span">위도</span>
+                            <input class="form-control latitude" name="latitude" type="number" step="0.0000000000001"
+                                   placeholder="위도" readonly/>
+                            <span class="form-check latitude-span" name="latitude-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="longitude-span">경도</span>
+                            <input class="form-control longitude" name="longitude" type="number" step="0.0000000000001"
+                                   placeholder="경도" readonly/>
+                            <span class="form-check longitude-span" name="longitude-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="shop_name">매장 이름</span>
+                            <input class="form-control" id="shop_name" name="shop_name" type="text"
+                                   placeholder="매장 이름"/>
+                            <span class="form-check" id="shop_name-span" name="shop_name-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="shop_menu">매장 메뉴</span>
+                            <input class="form-control" id="shop_menu" name="shop_menu" type="text"
+                                   placeholder="매장 메뉴"/>
+                            <span class="form-check" id="shop_menu-span" name="shop_menu-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="shop_time">운영시간</span>
+                            <input class="form-control" id="shop_time" name="shop_time" type="text"
+                                   placeholder="운영 시간"/>
+                            <span class="form-check" id="shop_time-span" name="shop_time-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="shop_guide">매장 가이드</span>
+                            <input class="form-control" id="shop_guide" name="shop_guide" type="text"
+                                   placeholder="매장 가이드"/>
+                            <span class="form-check" id="shop_guide-span" name="shop_guide-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="shop_price">가격대</span>
+                            <input class="form-control" id="shop_price" name="shop_price" type="text"
+                                   placeholder="가격대"/>
+                            <span class="form-check" id="shop_price-span" name="shop_price-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="shop_tel">연락처</span>
+                            <input class="form-control" id="shop_tel" name="shop_tel" type="tel"
+                                   placeholder="연락처"/>
+                            <span class="form-check" id="shop_tel-span" name="shop_tel-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="shop_image">매장 이미지</span>
+                            <div class="float-end uploadShopHidden">
+                                <button type="button" class="btn btn-primary uploadShopFileBtn">Add Files</button>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col ">
+                                <div class="container-fluid d-flex uploadShopResult" style="flex-wrap: wrap;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="my-4">
+                            <div class="float-end">
+                                <button type="button" class="btn btn-primary shop-submit-btn">수정</button>
+                                <button type="reset" class="btn btn-secondary">초기화</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal uploadShopModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Upload File</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="input-group mb-3">
+                                        <input type="file" name="shopFiles" class="form-control" multiple>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary uploadShopBtn">Upload</button>
+                                    <button type="button" class="btn btn-outline-dark closeUploadBtn ">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                <!-- 편의시설 폼 -->
+                <div class="tab-pane fade show" id="conForm">
+                    <!-- 편의시설 폼 내용 -->
+                    <form id="ConRegisterForm" action="/admin/enter/editConvenience" method="post">
+                        <div class="form-floating mb-3">
+                            <span class="facilityType">타입</span>
+                            <input class="form-control" id="con-type" name="type" type="text" value="편의시설"
+                                   placeholder="타입" readonly/>
+                            <span class="form-check" id="con-type-span" name="con-type-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="latitude-span">위도</span>
+                            <input class="form-control latitude" name="latitude" type="number" step="0.0000000000001"
+                                   placeholder="위도" readonly/>
+                            <span class="form-check latitude-span" name="latitude-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="longitude-spn">경도</span>
+                            <input class="form-control longitude" name="longitude" type="number" step="0.0000000000001"
+                                   placeholder="경도" readonly/>
+                            <span class="form-check longitude-span" name="longitude-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="con_name">편의시설 이름</span>
+                            <input class="form-control" id="con_name" name="name" type="text"
+                                   placeholder="편의시설 이름"/>
+                            <span class="form-check" id="con_name-span" name="con_name-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="con_info">편의시설 개요</span>
+                            <input class="form-control" id="con_info" name="con_info" type="text"
+                                   placeholder="어트랙션 개요"/>
+                            <span class="form-check" id="con_info-span" name="con_info-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="con_guide">편의시설 가이드</span>
+                            <textarea class="form-control" rows="5" id="con_guide" name="con_guide"></textarea>
+                            <span class="form-check" id="con_guide-span" name="con_guide-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="con_tel">연락처</span>
+                            <input class="form-control" id="con_tel" name="con_tel" type="tel"
+                                   placeholder="연락처"/>
+                            <span class="form-check" id="con_tel-span" name="con_tel-span" style="display: none"/>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <span class="con_img">편의시설 대표이미지</span>
+                            <div class="float-end uploadConHidden">
+                                <button type="button" class="btn btn-primary uploadConFileBtn">Add Files</button>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col ">
+                                <div class="container-fluid d-flex uploadConResult" style="flex-wrap: wrap;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="my-4">
+                            <div class="float-end">
+                                <button type="button" class="btn btn-primary con-submit-btn">수정</button>
+                                <button type="reset" class="btn btn-secondary">초기화</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal uploadConModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Upload File</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="input-group mb-3">
+                                        <input type="file" name="conFile" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary uploadConBtn">Upload</button>
+                                    <button type="button" class="btn btn-outline-dark closeUploadBtn ">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <!-- 다른 탭 추가 가능 -->
+            </div>
+            <!-- 여기에 시설 등록 폼의 필드들을 추가하세요 -->
+        </div>
+
+    <p id="result"></p>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6e208eb09fba9417845ed12cf12f3aef"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/js/map.js"></script>
+    <script src="/js/admin/enter.js"></script>
+</div>
+<script layout:fragment="script" th:inline="javascript">
+
+    function changeFormType(typeInputId, facilityType) {
+        // 선택된 폼의 type input의 값을 변경
+        const typeInput = document.getElementById(typeInputId);
+        typeInput.value = facilityType;
+    }
+
+    function addTagInput() {
+        const tagInputContainer = document.getElementById('tagInputContainer');
+
+        const tagInputWrapper = document.createElement('div');
+        tagInputWrapper.className = 'tag-input';
+
+        const tagInput = document.createElement('input');
+        tagInput.className = 'form-control';
+        tagInput.type = 'text';
+        tagInput.name = 'tagNames'; // 배열 형태로 전송
+
+        const removeTagButton = document.createElement('span');
+        removeTagButton.className = 'remove-tag';
+        removeTagButton.innerHTML = 'x';
+        removeTagButton.onclick = function () {
+            tagInputContainer.removeChild(tagInputWrapper);
+        };
+
+        tagInputWrapper.appendChild(tagInput);
+        tagInputWrapper.appendChild(removeTagButton);
+
+        tagInputContainer.appendChild(tagInputWrapper);
+    }
+
+    const uploadAttractionModal = new bootstrap.Modal(document.querySelector('.uploadAttractionModal'));
+    const uploadShopModal = new bootstrap.Modal(document.querySelector('.uploadShopModal'));
+    const uploadConModal = new bootstrap.Modal(document.querySelector('.uploadConModal'));
+
+    document.querySelector('.uploadAttractionFileBtn').addEventListener('click',function(e){
+        e.stopPropagation();
+        e.preventDefault();
+        uploadAttractionModal.show();
+    });
+
+    document.querySelector('.uploadShopFileBtn').addEventListener('click',function(e){
+        e.stopPropagation();
+        e.preventDefault();
+        uploadShopModal.show();
+    });
+
+    document.querySelector('.uploadConFileBtn').addEventListener('click',function (e){
+        e.stopPropagation();
+        e.preventDefault();
+        uploadConModal.show();
+    });
+
+    document.querySelector('.uploadAttractionBtn').addEventListener('click',function (e){
+        const formObj = new FormData();
+        const fileInput = document.querySelector("input[name='attractionFiles']");
+
+        console.log(fileInput.files);
+
+        const files = fileInput.files;
+
+        for (let i = 0; i < files.length; i++){
+            formObj.append("files",files[i]);
+        }
+
+        uploadToServer(formObj).then(result => {
+            console.log(result);
+            for (const uploadResult of result){
+                showUploadAttractionFile(uploadResult);
+            }
+            uploadAttractionModal.hide();
+        }).catch(e => {
+            uploadAttractionModal.hide();
+        })
+    });
+
+    document.querySelector('.uploadShopBtn').addEventListener('click',function (e){
+        const formObj = new FormData();
+        const fileInput = document.querySelector("input[name='shopFiles']");
+
+        console.log(fileInput.files);
+
+        const files = fileInput.files;
+
+        for (let i = 0; i < files.length; i++){
+            formObj.append("files",files[i]);
+        }
+
+        uploadToServer(formObj).then(result => {
+            console.log(result);
+            for (const uploadResult of result){
+                showUploadShopFile(uploadResult);
+            }
+            uploadShopModal.hide();
+        }).catch(e => {
+            uploadShopModal.hide();
+        })
+    });
+
+    document.querySelector('.uploadConBtn').addEventListener('click',function (e){
+        const formObj = new FormData();
+        const fileInput = document.querySelector("input[name='conFile']");
+
+        console.log(fileInput.files);
+
+        const files = fileInput.files;
+
+        for (let i = 0; i < files.length; i++){
+            formObj.append("files",files[i]);
+        }
+
+        uploadToServer(formObj).then(result => {
+            console.log(result);
+            for (const uploadResult of result){
+                showUploadConFile(uploadResult);
+            }
+            uploadConModal.hide();
+        }).catch(e => {
+            uploadConModal.hide();
+        })
+
+        // 기존 이미지 삭제
+        const removeFiles = uploadConResult.querySelectorAll('img');
+        removeFiles.forEach((e) =>{
+            const removeFile = e.getAttribute('data-src').split("_");
+            removeFileToServer(removeFile[0],removeFile[1]);
+        })
+    });
+
+    const uploadAttractionResult = document.querySelector('.uploadAttractionResult');
+    const uploadShopResult = document.querySelector('.uploadShopResult');
+    const uploadConResult = document.querySelector('.uploadConResult');
+
+
+    function showUploadAttractionFile({uuid, fileName, link}){
+        const str = `<div class="card col-4">
+                <div class="card-header d-flex justify-content-center">
+                    ${fileName}
+                    <button type="button" class="btn btn-danger" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
+                    </div>
+                    <div class="card-body">
+                        <img class="attractionImages" src="/view/${link}" data-src="${uuid+"_"+fileName}" >
+                    </div>
+                </div>`;
+
+        uploadAttractionResult.innerHTML += str;
+    }
+
+    function showUploadShopFile({uuid, fileName, link}){
+        const str = `<div class="card col-4">
+                <div class="card-header d-flex justify-content-center">
+                    ${fileName}
+                    <button type="button" class="btn btn-danger" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
+                    </div>
+                    <div class="card-body">
+                        <img class="shopImages" src="/view/${link}" data-src="${uuid+"_"+fileName}" >
+                    </div>
+                </div>`;
+
+        uploadShopResult.innerHTML += str;
+    }
+
+    function showUploadConFile({uuid, fileName, link}){
+        uploadConResult.innerHTML = ""; // 기존 이미지 없애기
+        const str = `<div class="card col-4">
+                <div class="card-header d-flex justify-content-center">
+                    ${fileName}
+                    <button type="button" class="btn btn-danger" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
+                    </div>
+                    <div class="card-body">
+                        <img class="ConImage" src="/view/${link}" data-src="${uuid+"_"+fileName}" >
+                    </div>
+                </div>`;
+
+        uploadConResult.innerHTML += str;
+    }
+
+    let removeFileList = [];
+
+    function removeFile(uuid, fileName, obj){
+        console.log(uuid);
+        console.log(fileName);
+        console.log(obj);
+
+        const targetDiv = obj.closest('.card');
+        console.log(targetDiv);
+        removeFileList.push({uuid,fileName});
+        targetDiv.remove();
+        // removeFileToServer(uuid, fileName).then(data => {
+        //
+        // })
+    }
+
+    document.querySelector('.attraction-submit-btn').addEventListener('click',function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        // 1. 섬네일 영역에서 img태그의 data-src 속성 들고옴
+        const uploadFiles = uploadAttractionResult.querySelectorAll('img');
+        // 매장 이미지 전부 삭제
+        const removeShopFiles = uploadShopResult.querySelectorAll('img');
+        removeShopFiles.forEach((e) =>{
+            const removeFile = e.getAttribute('data-src').split("_");
+            removeFileToServer(removeFile[0],removeFile[1]);
+        })
+        // 편의시설 이미지 전부 삭제
+        const removeConFiles = uploadConResult.querySelectorAll('img');
+        removeConFiles.forEach((e) =>{
+            const removeFile = e.getAttribute('data-src').split("_");
+            removeFileToServer(removeFile[0],removeFile[1]);
+        })
+        let str = '';
+        for (let i = 0; i < uploadFiles.length; i++){
+            const uploadFile = uploadFiles[i];
+            const imgLink = uploadFile.getAttribute('data-src');
+
+            str +=`<input type='hidden' name='fileNames' value="${imgLink}">`;
+        }
+
+        // 삭제 리스트의 파일 제거
+        callRemoveFiles();
+        // 2. ADD Files 버튼 영역에 태그 추가
+        const target = document.querySelector('.uploadAttractionHidden');
+        target.innerHTML = str;
+
+        // 3. submit() 처리
+        const formObj = document.querySelector('#AttractionRegisterForm');
+        formObj.submit();
+    })
+
+    function callRemoveFiles(){
+        removeFileList.forEach(({uuid, fileName}) => {
+            removeFileToServer(uuid, fileName);
+        })
+    }
+
+    document.querySelector('.shop-submit-btn').addEventListener('click',function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        // 1. 섬네일 영역에서 img태그의 data-src 속성 들고옴
+        const uploadFiles = uploadShopResult.querySelectorAll('img');
+        // 어트랙션 이미지 전부 삭제
+        const removeAttractionFiles = uploadAttractionResult.querySelectorAll('img');
+        removeAttractionFiles.forEach((e) =>{
+            const removeFile = e.getAttribute('data-src').split("_");
+            removeFileToServer(removeFile[0],removeFile[1]);
+        })
+        // 편의시설 이미지 전부 삭제
+        const removeConFiles = uploadConResult.querySelectorAll('img');
+        removeConFiles.forEach((e) =>{
+            const removeFile = e.getAttribute('data-src').split("_");
+            removeFileToServer(removeFile[0],removeFile[1]);
+        })
+        let str = '';
+        for (let i = 0; i < uploadFiles.length; i++){
+            const uploadFile = uploadFiles[i];
+            const imgLink = uploadFile.getAttribute('data-src');
+
+            str +=`<input type='hidden' name='fileNames' value="${imgLink}">`;
+        }
+
+        // 2. ADD Files 버튼 영역에 태그 추가
+        const target = document.querySelector('.uploadShopHidden');
+        target.innerHTML = str;
+
+        // 3. submit() 처리
+        const formObj = document.querySelector('#ShopRegisterForm');
+        formObj.submit();
+    })
+
+    document.querySelector('.con-submit-btn').addEventListener('click',function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        // 1. 섬네일 영역에서 img태그의 data-src 속성 들고옴
+        const uploadFiles = uploadConResult.querySelectorAll('img');
+
+        // 어트랙션 이미지 전부 삭제
+        const removeAttractionFiles = uploadAttractionResult.querySelectorAll('img');
+        removeAttractionFiles.forEach((e) =>{
+            const removeFile = e.getAttribute('data-src').split("_");
+            removeFileToServer(removeFile[0],removeFile[1]);
+        })
+
+        // 매장 이미지 전부 삭제
+        const removeShopFiles = uploadShopResult.querySelectorAll('img');
+        removeShopFiles.forEach((e) =>{
+            const removeFile = e.getAttribute('data-src').split("_");
+            removeFileToServer(removeFile[0],removeFile[1]);
+        })
+
+        let str = '';
+        for (let i = 0; i < uploadFiles.length; i++){
+            const uploadFile = uploadFiles[i];
+            const imgLink = uploadFile.getAttribute('data-src');
+
+            str +=`<input type='hidden' name='con_img' value="${imgLink}">`;
+        }
+
+        // 2. ADD Files 버튼 영역에 태그 추가
+        const target = document.querySelector('.uploadConHidden');
+        target.innerHTML = str;
+
+        // 3. submit() 처리
+        const formObj = document.querySelector('#ConRegisterForm');
+        formObj.submit();
+    })
+
+    //------------------------------- end form method ------------------------------------
+
+    // --------------------------------- start map method --------------------------------
+    const mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new kakao.maps.LatLng(37.5737743777278, 127.09021276693346), // 지도의 중심좌표
+            level: 2, // 지도의 확대 레벨
+            draggable: true
+        };
+
+    const map = new kakao.maps.Map(mapContainer, mapOption);
+
+    // ------------------ 지도 생성 완료 -------------
+    // ------------------ 폴리곤 생성 시작 -----------
+    const yongmaPath = [
+        new kakao.maps.LatLng(37.575197932494845, 127.090234294764),
+        new kakao.maps.LatLng(37.57511495305705, 127.08975874170041),
+        new kakao.maps.LatLng(37.57511053625666, 127.08964270324813),
+        new kakao.maps.LatLng(37.57507683705223, 127.08952662975364),
+        new kakao.maps.LatLng(37.57502963354657, 127.08939638984882),
+        new kakao.maps.LatLng(37.57498686849193, 127.08935388764398),
+        new kakao.maps.LatLng(37.574881001748025, 127.0893537611494),
+        new kakao.maps.LatLng(37.57376196545188, 127.0887581186884),
+        new kakao.maps.LatLng(37.57364257739401, 127.08876646705936),
+        new kakao.maps.LatLng(37.5732753926207, 127.08880565134191),
+        new kakao.maps.LatLng(37.57319199744768, 127.08887630242155),
+        new kakao.maps.LatLng(37.57301832991067, 127.08917607579352),
+        new kakao.maps.LatLng(37.57297092076093, 127.08931751905813),
+        new kakao.maps.LatLng(37.572990804466656, 127.08982977219632),
+        new kakao.maps.LatLng(37.57298393278669, 127.08997975375027),
+        new kakao.maps.LatLng(37.572968098494556, 127.09006746456839),
+        new kakao.maps.LatLng(37.57294100603644, 127.09014950178842),
+        new kakao.maps.LatLng(37.57287108818788, 127.0902682771776),
+        new kakao.maps.LatLng(37.572814750099624, 127.090302169058),
+        new kakao.maps.LatLng(37.5727787081801, 127.09030495552835),
+        new kakao.maps.LatLng(37.572715653760596, 127.09028506948857),
+        new kakao.maps.LatLng(37.572429646607326, 127.09020831488684),
+        new kakao.maps.LatLng(37.57237107983926, 127.09021107421898),
+        new kakao.maps.LatLng(37.572292219077525, 127.09024210876957),
+        new kakao.maps.LatLng(37.572249335280226, 127.09035525576829),
+        new kakao.maps.LatLng(37.57227600461224, 127.0908250629367),
+        new kakao.maps.LatLng(37.57226233494854, 127.09102597413849),
+        new kakao.maps.LatLng(37.572212524518164, 127.09135701967206),
+        new kakao.maps.LatLng(37.57220560920897, 127.09156076884089),
+        new kakao.maps.LatLng(37.57218523800786, 127.09168809237688),
+        new kakao.maps.LatLng(37.57249361049113, 127.09196863822575),
+        new kakao.maps.LatLng(37.57262653133324, 127.09193767186872),
+        new kakao.maps.LatLng(37.57317648932498, 127.09148554735954),
+        new kakao.maps.LatLng(37.573615868376926, 127.09129930350993),
+        new kakao.maps.LatLng(37.57368123418111, 127.09124278285428),
+        new kakao.maps.LatLng(37.573683582841724, 127.09111826471563),
+        new kakao.maps.LatLng(37.57377596308727, 127.09108158692855),
+        new kakao.maps.LatLng(37.57380076224516, 127.09105331685889),
+        new kakao.maps.LatLng(37.573857098357486, 127.09102225512619),
+        new kakao.maps.LatLng(37.57460493398125, 127.09100901505285),
+        new kakao.maps.LatLng(37.57471759961835, 127.09095538098634),
+        new kakao.maps.LatLng(37.57486420051579, 127.09070934341783),
+        new kakao.maps.LatLng(37.57489798342423, 127.0907150445331),
+        new kakao.maps.LatLng(37.57519792816828, 127.09023995491908)
+    ]
+    const polygon = new kakao.maps.Polygon({
+        path:yongmaPath, // 그려질 다각형의 좌표 배열입니다
+        strokeWeight: 3, // 선의 두께입니다
+        strokeColor: '#f69f9f', // 선의 색깔입니다
+        strokeOpacity: 0.8, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+        strokeStyle: 'solid', // 선의 스타일입니다
+        fillColor: '#befc9c', // 채우기 색깔입니다
+        fillOpacity: 0.7 // 채우기 불투명도 입니다
+    });
+
+    polygon.setMap(map);
+    // -------------------- 폴리곤 생성 완료 ------------------
+    // -------------------- 마커 생성 시작 -------------------
+
+    const markerList = []; // 마커 리스트 저장 배열
+    let currentInfoWindow = null; // 현재 열려있는 윈도우인포
+    let currentOverlay = null; // 현재 열려있는 오버레이
+
+    // 시설 마커 위치 배열
+    const attractionPositions = [];
+    const shopPositions = [];
+    const conPositions = [];
+
+
+    setMarkers(); // 마커 설정 시작
+
+    // 마커 리스트
+    console.log(markerList);
+    console.log(attractionPositions);
+    console.log(shopPositions);
+    console.log(conPositions);
+
+    function setMarkers(){
+        getMarkers().then(markers => { // 마커 리스트 받아오기
+            console.log('Markers:', markers);
+            // 배열에 결과를 추가합니다.
+            markerList.push(...markers);
+            setMarkerPositions(markerList);
+            createAttractionMarkers();
+            createShopMarkers();
+            createConMarkers();
+            changeMarker('all');
+        });
+    }
+    function setMarkerPositions(markers){ // 마커 좌표 지정
+        markers.forEach(function (markerDTO){
+            if(markerDTO.type === "어트랙션"){
+                attractionPositions.push({
+                    position: new kakao.maps.LatLng(markerDTO.latitude, markerDTO.longitude),
+                    facilityNo: markerDTO.facility_no,
+                    type: markerDTO.type});
+            }
+            else if(markerDTO.type === "매장"){
+                shopPositions.push({
+                    position: new kakao.maps.LatLng(markerDTO.latitude, markerDTO.longitude),
+                    facilityNo: markerDTO.facility_no,
+                    type: markerDTO.type});
+            }
+            else{
+                conPositions.push({
+                    position: new kakao.maps.LatLng(markerDTO.latitude, markerDTO.longitude),
+                    facilityNo: markerDTO.facility_no,
+                    type: markerDTO.type});
+            }
+        })
+    }
+
+    // 시설 마커 배열
+    const attractionMarkers = [];
+    const shopMarkers = [];
+    const conMarkers = [];
+    var markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png';  // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
+
+    // 마커 이미지 생성 후 리턴
+    function createMarkerImage(src, size, options) {
+        let markerImage = new kakao.maps.MarkerImage(src, size, options);
+        return markerImage;
+    }
+
+    // 마커 최종본 생성 후 리턴
+    function createMarker(position, image) {
+        let marker = new kakao.maps.Marker({
+            position: position.position,
+            image: image,
+            clickable: true
+        });
+        marker.facilityNo = position.facilityNo;
+        marker.type = position.type;
+
+        kakao.maps.event.addListener(marker, 'mouseover', function () {
+            // 마우스 오버 이벤트 등록
+            openInfoWindow(marker); // 윈도우인포 열기
+        });
+        kakao.maps.event.addListener(marker, 'mouseout', function () {
+            // 마우스 아웃 이벤트 등록
+            if (currentInfoWindow) {
+                currentInfoWindow.close(); // 윈도우인포 닫기
+            }
+        });
+        kakao.maps.event.addListener(marker, 'click', function (){
+            removeFileList = [];
+            // 마우스 클릭 이벤트 등록
+            openTabAndFillForm(marker);
+            // openOverLay(marker); // 오버레이 열기
+        });
+        return marker;
+    }
+
+    function openTabAndFillForm(marker) {
+        // 해당 탭 열기
+        activateTab(marker.type);
+
+        // 폼에 데이터 채우기
+        fillFormWithData(marker);
+    }
+
+    function activateTab(tabType) {
+        // <div className="tab-pane fade show active" id="attractionForm">
+        // 모든 탭 비활성화
+        document.querySelectorAll('.nav-link').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        // 모든 폼 비활성화
+        document.querySelectorAll('.tab-pane').forEach(form => {
+            form.classList.remove('active');
+        })
+
+        // 전달받은 타입에 해당하는 탭 활성화
+        if(tabType === '어트랙션'){
+            document.getElementById('attractionTab').classList.add('active');
+            document.getElementById('attractionForm').classList.add('active');
+        }
+        else if(tabType === '매장'){
+            document.getElementById('shopTab').classList.add('active');
+            document.getElementById('shopForm').classList.add('active');
+        }
+        else{
+            document.getElementById('conTab').classList.add('active');
+            document.getElementById('conForm').classList.add('active');
+        }
+    }
+
+    async function fillFormWithData(marker) {
+
+        document.querySelectorAll('.latitude').forEach((e) => {
+            e.value = marker.getPosition().getLat();
+        })
+        document.querySelectorAll('.longitude').forEach((e) => {
+            e.value = marker.getPosition().getLng();
+        })
+
+        const markerInfo = await getMarkerOne(marker.type, marker.facilityNo);
+        switch (marker.type) {
+            case '어트랙션':
+                changeFormType("attraction-type", marker.type);
+                document.getElementById('ano').value = markerInfo.ano;
+                document.getElementById('aname').value = markerInfo.aname;
+                document.getElementById('ainfo').value = markerInfo.ainfo;
+                document.getElementById('ainfo_detail').value = markerInfo.ainfo_detail;
+                document.getElementById('passengersCount').value = markerInfo.passengersCount;
+                document.getElementById('tagInputContainer').innerHTML = "";
+                markerInfo.tagNames.forEach( (tagName) =>{
+                    addTagInput();
+                    document.getElementById('tagInputContainer').lastElementChild.firstElementChild.value = tagName;
+                })
+                uploadAttractionResult.innerHTML = "";
+                markerInfo.fileNames.forEach( (fileName) =>{
+                    const arr = fileName.split('_');
+
+                        const str = `<div class="card col-4">
+                            <div class="card-header d-flex justify-content-center">
+                                ${arr[1]}
+                                <button type="button" class="btn btn-danger"
+                                        onclick="removeFile('${arr[0]}', '${arr[1]}', this)">X</button>
+                            </div>
+                            <div class="card-body">
+                                <img src="/view/s_${fileName}/어트랙션/${markerInfo.ano}" data-src="${fileName}">
+                            </div>
+                            </div>`
+                        uploadAttractionResult.innerHTML += str;
+                })
+                break;
+            case '매장':
+                changeFormType("shop-type", marker.type);
+
+                break;
+            case '편의시설':
+            default:
+                changeFormType("con-type", marker.type);
+
+                break;
+        }
+        // 여기에 폼에 데이터를 채우는 로직을 추가합니다.
+        // 예: 마커 정보를 이용하여 폼의 각 필드에 데이터를 채웁니다.
+    }
+    // --------------------오버레이 관련 ----------------------
+    async function openOverLay(marker){ // 오버레이 열기
+
+        // 기존에 열린 오버레이가 있으면 닫기
+        if (currentOverlay) {
+            currentOverlay.setMap(null);
+        }
+        const markerInfo = await getMarkerOne(marker.type, marker.facilityNo);
+        let content = getOverLayContentByType(markerInfo, marker.type);
+
+        let overLay = new kakao.maps.CustomOverlay({
+            position: marker.getPosition(),
+            content: content,
+            xAnchor: 0.3,
+            yAnchor: 0.91
+        });
+
+        currentOverlay = overLay;
+        // 커스텀 오버레이를 지도에 표시합니다
+        overLay.setMap(map);
+        if(marker.type === "어트랙션") {
+            document.getElementById("facilityImage").src = "/view/" + markerInfo.fileNames[0] + "/" + marker.type + "/" + markerInfo.aname; // 이미지 동적 생성
+        }
+        else if(marker.type === "매장"){
+            document.getElementById("facilityImage").src = "/view/" + markerInfo.fileNames[0] + "/" + marker.type + "/" + markerInfo.shop_name; // 이미지 동적 생성
+        }
+        else{
+            document.getElementById("facilityImage").src = "/view/" + markerInfo.con_img + "/" + marker.type + "/" + markerInfo.name; // 이미지 동적 생성
+        }
+    }
+
+    function getOverLayContentByType(markerInfo,type) { // 오버레이 내용 등록
+        if (markerInfo) {
+            switch (type){
+                case "어트랙션":
+                    return `<div id="facilityOverlay">
+                            <h3 id="facilityName">${markerInfo.aname}</h3>
+                            <img id="facilityImage" alt="어트랙션 이미지">
+                            <button id="reviewButton" onclick="showReviews()">리뷰 목록</button>
+                            <button id="detailButton" onclick="showDetail()">상세 보기</button>
+                            <button id="closeButton" onclick="closeOverlay()">닫기</button>
+                            </div>`;
+                case "매장":
+                    return `<div id="facilityOverlay">
+                            <h3 id="facilityName">${markerInfo.shop_name}</h3>
+                            <img id="facilityImage" src="https://example.com/attraction-image.jpg" alt="매장 이미지">
+                            <button id="reviewButton" onclick="showReviews()">리뷰 목록</button>
+                            <button id="detailButton" onclick="showDetail()">상세 보기</button>
+                            <button id="closeButton" onclick="closeOverlay()">닫기</button>
+                            </div>`;
+                case "편의시설":
+                default:
+                    return `<div id="facilityOverlay">
+                            <h3 id="facilityName">${markerInfo.name}</h3>
+                            <img id="facilityImage" src="https://example.com/attraction-image.jpg" alt="편의시설 이미지">
+                            <button id="reviewButton" onclick="showReviews()">리뷰 목록</button>
+                            <button id="detailButton" onclick="showDetail()">상세 보기</button>
+                            <button id="closeButton" onclick="closeOverlay()">닫기</button>
+                            </div>`;
+            }
+        } else {
+            return '<div>해당 정보를 가져올 수 없습니다.</div>';
+        }
+    }
+
+    function closeOverlay() {
+        // 기존에 열린 오버레이가 있으면 닫기
+        if (currentOverlay) {
+            currentOverlay.setMap(null);
+        }
+    }
+    // -----------------------윈도우 마커 관련 ------------------
+    async function openInfoWindow(marker) {
+        //현재 열려있는 infowindow 끄기
+        if (currentInfoWindow) {
+            currentInfoWindow.close();
+        }
+        // 마커 정보를 가져오기
+        const markerInfo = await getMarkerOne(marker.type, marker.facilityNo);
+
+        // 가져온 정보를 이용하여 content 작성
+        let content = getWindowContentByType(markerInfo,marker.type);
+
+        // InfoWindow 생성
+        let infoWindow = new kakao.maps.InfoWindow({
+            content: content,
+            position: marker.getPosition(),
+            removable: true
+        });
+
+        // 지도에 InfoWindow 표시
+        infoWindow.open(map, marker);
+        currentInfoWindow = infoWindow;
+    }
+    function getWindowContentByType(markerInfo,type) { // 윈도우마커 내용 등록
+        if (markerInfo) {
+            switch (type){
+                case "어트랙션":
+                    return markerInfo.aname;
+                case "매장":
+                    return markerInfo.shop_name;
+                case "편의시설":
+                default:
+                    return markerInfo.name;
+            }
+        } else {
+            return '<div>해당 정보를 가져올 수 없습니다.</div>';
+        }
+    }
+
+    // ---------------- 마커 생성 ----------------------
+    function createAttractionMarkers(){ // 어트랙션 마커
+        for(let i = 0; i < attractionPositions.length; i++){
+
+            let imageSize = new kakao.maps.Size(22, 26),
+                imageOptions = {
+                    spriteOrigin: new kakao.maps.Point(10, 0),
+                    spriteSize: new kakao.maps.Size(36, 98)
+                };
+            let markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions)
+            let marker = createMarker(attractionPositions[i], markerImage);
+
+            attractionMarkers.push(marker);
+        }
+    }
+
+    function createShopMarkers(){ // 매장 마커
+        for(let i = 0; i < shopPositions.length; i++){
+
+            let imageSize = new kakao.maps.Size(22, 26),
+                imageOptions = {
+                    spriteOrigin: new kakao.maps.Point(8, 0),
+                    spriteSize: new kakao.maps.Size(36, 98)
+                };
+            let markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions)
+            let marker = createMarker(shopPositions[i], markerImage);
+
+            shopMarkers.push(marker);
+        }
+    }
+
+    function createConMarkers(){ // 편의시설 마커
+        for(let i = 0; i < conPositions.length; i++){
+
+            let imageSize = new kakao.maps.Size(22, 26),
+                imageOptions = {
+                    spriteOrigin: new kakao.maps.Point(7, 0),
+                    spriteSize: new kakao.maps.Size(36, 98)
+                };
+            let markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions)
+            let marker = createMarker(conPositions[i], markerImage);
+
+            conMarkers.push(marker);
+        }
+    }
+    // ------------- 맵에 마커 등록 ---------------
+    function setAttractionMarkers(map) {
+        for (let i = 0; i < attractionMarkers.length; i++) {
+            attractionMarkers[i].setMap(map);
+        }
+    }
+
+    function setShopMarkers(map) {
+        for (let i = 0; i < shopMarkers.length; i++) {
+            shopMarkers[i].setMap(map);
+        }
+    }
+
+    function setConMarkers(map) {
+        for (let i = 0; i < conMarkers.length; i++) {
+            conMarkers[i].setMap(map);
+        }
+    }
+
+    // 카테고리 별 마커 표시
+    function changeMarker(type){
+        console.log("changeMarker ready...");
+
+        const attractionMenu = document.getElementById('attractionMenu');
+        const shopMenu = document.getElementById('shopMenu');
+        const conMenu = document.getElementById('conMenu');
+        const allMenu = document.getElementById('allMenu');
+
+        // 커피숍 카테고리가 클릭됐을 때
+        if (type === 'attraction') {
+
+            // 커피숍 카테고리를 선택된 스타일로 변경하고
+            attractionMenu.className = 'menu_selected';
+
+            // 편의점과 주차장 카테고리는 선택되지 않은 스타일로 바꿉니다
+            shopMenu.className = '';
+            conMenu.className = '';
+            allMenu.className = '';
+
+            // 커피숍 마커들만 지도에 표시하도록 설정합니다
+            setAttractionMarkers(map);
+            setShopMarkers(null);
+            setConMarkers(null);
+
+        } else if (type === 'shop') { // 편의점 카테고리가 클릭됐을 때
+
+            // 편의점 카테고리를 선택된 스타일로 변경하고
+            attractionMenu.className = '';
+            shopMenu.className = 'menu_selected';
+            conMenu.className = '';
+            allMenu.className = '';
+
+            // 편의점 마커들만 지도에 표시하도록 설정합니다
+            setAttractionMarkers(null);
+            setShopMarkers(map);
+            setConMarkers(null);
+
+        } else if (type === 'con') { // 주차장 카테고리가 클릭됐을 때
+
+            // 주차장 카테고리를 선택된 스타일로 변경하고
+            attractionMenu.className = '';
+            shopMenu.className = '';
+            conMenu.className = 'menu_selected';
+            allMenu.className = '';
+
+            // 주차장 마커들만 지도에 표시하도록 설정합니다
+            setAttractionMarkers(null);
+            setShopMarkers(null);
+            setConMarkers(map);
+        } else if(type === 'all'){
+            console.log("changeMarker all");
+            attractionMenu.className = '';
+            shopMenu.className = '';
+            conMenu.className = '';
+            allMenu.className = 'menu_selected';
+            setAttractionMarkers(map);
+            setShopMarkers(map);
+            setConMarkers(map);
+        }
+    }
+
+
+    // 폴리곤 클릭 이벤트
+    kakao.maps.event.addListener(polygon, 'click', function(mouseEvent){
+        console.log("폴리곤클릭클릭" +polygon);
+
+        const latlng = mouseEvent.latLng;
+
+        if (currentOverlay) { // 열려있는 오버레이를 닫는다.
+            currentOverlay.setMap(null);
+        }
+
+        let message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+        message += '경도는 ' + latlng.getLng() + ' 입니다';
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = message;
+
+        // 클릭한 위치의 마커 객체를 가져옵니다
+        let target = mouseEvent.target;
+
+        // 마커를 클릭한 경우에만 실행
+        if (target instanceof kakao.maps.Marker) {
+            // 마커의 custom 속성에서 시설번호와 타입을 가져옵니다
+            let facilityNo = target.facilityNo;
+            let type = target.type;
+
+            // 가져온 정보를 이용하여 상세 정보를 요청하거나 출력합니다
+            console.log('Facility No:', facilityNo);
+            console.log('Type:', type);
+        }
+    })
+    // 맵 클릭 이벤트
+    kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+
+        // 클릭한 위도, 경도 정보를 가져옵니다
+        const latlng = mouseEvent.latLng;
+
+        console.log("맵클릭" +polygon);
+
+
+        let message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+        message += '경도는 ' + latlng.getLng() + ' 입니다';
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = message;
+
+        // 클릭한 위치의 마커 객체를 가져옵니다
+        let target = mouseEvent.target;
+
+        // 마커를 클릭한 경우에만 실행
+        if (target instanceof kakao.maps.Marker) {
+            // 마커의 custom 속성에서 시설번호와 타입을 가져옵니다
+            let facilityNo = target.facilityNo;
+            let type = target.type;
+
+            // 가져온 정보를 이용하여 상세 정보를 요청하거나 출력합니다
+            console.log('Facility No:', facilityNo);
+            console.log('Type:', type);
+        }
+
+    });
+
+</script>
+</body>
+</html>
