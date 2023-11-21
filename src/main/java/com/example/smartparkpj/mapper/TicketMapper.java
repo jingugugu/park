@@ -11,4 +11,8 @@ public interface TicketMapper {
     List<TicketVO> selectAll();
 
     TicketVO selectOne(int tno);
+
+    void delet(int tno);
+
+    void insert(TicketVO ticketVO);
 }

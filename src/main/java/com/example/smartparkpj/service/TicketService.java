@@ -10,4 +10,8 @@ public interface TicketService {
     List<TicketDTO> getAll();
 
     TicketDTO getOne(int tno);
+
+    void remove(int tno);
+
+    void add(TicketDTO ticketDTO);
 }

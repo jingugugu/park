@@ -18,9 +18,9 @@ public class OrderVO {
     private Date orderDate; // 예매일
     private LocalDateTime startDate; // 방문가능일자(from)
     private LocalDateTime endDate; // 방문가능일자(to)
-    private int finished; // 만료여부
+    private boolean finished; // 만료여부
     private int people_count; // 인원수
-    private int has_ability; // 리뷰 작성 가능 여부
+    private boolean has_ability; // 리뷰 작성 가능 여부
     private int price;//총가격
 
 }

@@ -32,19 +32,22 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label" for="email_id">이메일</label>
-                    <input id="email_id" name="email_id" type="email" class="form-control" style="width: 200px" required>
+                    <input id="email_id" name="email_id" type="email" class="form-control"
+                           th:value="${#authentication.principal.email_id}" style="width: 200px" readonly required>
                 </div>
             </div>
+
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label" for="startDate">방문 가능일자</label>
                     <input id="startDate" name="startDate" type="date" class="form-control" style="width: 200px" required>
                 </div>
             </div>
+
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label" for="people_count">인원수</label>
-                    <input id="people_count" name="people_count" type="number" class="form-control">
+                    <input id="people_count" name="people_count" type="number" class="form-control" oninput="checkMinValue(this)">
                 </div>
             </div>
 
@@ -53,7 +56,12 @@
                     <label class="control-label" for="price">티켓 가격</label>
                     <!-- 티켓 번호에 따라 Thymeleaf의 조건문을 사용하여 값을 설정합니다. -->
                     <input id="price" name="price" type="number" class="form-control" readonly
-                           th:value="${ticketDTO.tno == 1 ? 5000 : (ticketDTO.tno == 2 ? 5000 : (ticketDTO.tno == 3 ? 8000 : (ticketDTO.tno == 4 ? 12000 : 0)))}" required>
+                           th:value="${ticketDTO.tno == 1 ? 5000 :
+                                      (ticketDTO.tno == 2 ? 5000 :
+                                      (ticketDTO.tno == 3 ? 8000 :
+                                      (ticketDTO.tno == 4 ? 12000 :
+                                      (ticketDTO.tno == 5 ? 21000 :
+                                      (ticketDTO.tno == 6 ? 38000 : 0)))))}" required>
                 </div>
             </div>
 
@@ -69,20 +77,37 @@
 <!-- contact form close -->
 <script layout:fragment="script" th:inline="javascript">
 
+    // 현재 날짜를 가져오는 함수/현재 날짜 이전 의 날짜는 선택 못하게 설정
+    function getCurrentDate() {
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const yyyy = today.getFullYear();
+
+        return yyyy + '-' + mm + '-' + dd;
+    }
+
+    // 페이지 로드 시 실행되는 함수
+    document.addEventListener('DOMContentLoaded', function() {
+        // 오늘 이전의 날짜를 선택하지 못하도록 설정
+        document.getElementById('startDate').setAttribute('min', getCurrentDate());
+    });
+
+    //결제 부분 서폿팅 기능들
     document.querySelector(".modBtn").addEventListener("click",function (e){
         e.preventDefault();
         e.stopPropagation();
 
         // 인원수와 티켓 가격을 가져옴
         const peopleCountInput = document.getElementById('people_count');
-        const peopleCount = parseInt(peopleCountInput.value);
+        let peopleCount = parseInt(peopleCountInput.value);
         const ticketPrice = parseInt(document.getElementById('price').value);
 
         // 값이 1보다 작을 때 경고 메시지 표시
         if (peopleCount < 1) {
-            alert("1 명 이하의 숫자는 결제 등록할 수 없습니다. 다시 입력해주세요.");
-            peopleCountInput.value = 1;  // 기본값으로 초기화
-            return false;
+            alert("1 명 이하의 숫자는 결제 등록할 수 없습니다. 1명으로 초기화합니다.");
+            peopleCount = 1;  // 1명으로 초기화
+            peopleCountInput.value = peopleCount;  // 입력 필드에 반영
         }
 
         // 결제 예상 가격 계산
@@ -99,6 +124,13 @@
             return false;
         }
     });
+
+    function checkMinValue(input) {
+        if (input.value < 1) {
+            alert("1 명 이하의 숫자는 결제 등록할 수 없습니다. 다시 입력 부탁 드립니다.");
+            input.value = 1;
+        }
+    }
 </script>
 </body>
 </html>

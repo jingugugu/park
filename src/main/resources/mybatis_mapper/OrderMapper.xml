@@ -5,19 +5,30 @@
 <mapper namespace="com.example.smartparkpj.mapper.OrderMapper">
 
     <insert id="insert">
-        INSERT INTO `order` (orderCode, tno, email_id, orderDate, startDate, endDate, finished, people_count, has_ability, price)
+        INSERT INTO `order` (orderCode, tno, email_id, orderDate, startDate, endDate, people_count, price)
         VALUES
             (
                 #{orderCode},
                 #{tno},
                 #{email_id},
-                #{orderDate},
+                now(),
                 #{startDate},
                 #{endDate},
-                #{finished},
                 #{people_count},
-                #{has_ability},
                 #{price}
             )
     </insert>
+
+    <select id="selectOneAll" resultType="com.example.smartparkpj.domain.OrderVO">
+        select * from `order` where email_id = #{email_id}
+    </select>
+
+    <select id="updateFinished" resultType="com.example.smartparkpj.domain.OrderVO">
+        UPDATE `order` SET finished = 0 WHERE email_id = #{email_id}
+    </select>
+
+
+    <select id="updateHasAbility" resultType="com.example.smartparkpj.domain.OrderVO">
+        UPDATE `order` SET has_ability = 0 WHERE email_id = #{email_id}
+    </select>
 </mapper>

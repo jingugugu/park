@@ -12,4 +12,12 @@
         select * from ticket where tno = #{tno}
     </select>
 
+    <select id="delet" resultType="com.example.smartparkpj.domain.OrderVO">
+        DELETE from ticket WHERE tno = #{tno}
+    </select>
+
+    <select id="insert" resultType="com.example.smartparkpj.domain.OrderVO">
+        INSERT into ticket(tno, tname, tinfo, tprice, ticket_type, use_period)
+        VALUES(#{tno}, #{tname}, #{tinfo}, #{tprice}, #{ticket_type}, #{use_period})
+    </select>
 </mapper>

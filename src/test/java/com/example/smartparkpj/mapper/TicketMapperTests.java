@@ -26,5 +26,21 @@ public class TicketMapperTests {
         log.info(ticketVO);
     }
 
+    @Test
+    public void deletTest(){
+        ticketMapper.delet(6);
+    }
 
+    @Test
+    public void insertTest(){
+        TicketVO ticketVO = TicketVO.builder()
+                .tno(6)
+                .tname("이벤트 멤버쉽")
+                .tinfo("12~22시 사용가능")
+                .tprice(35000)
+                .ticket_type("event")
+                .use_period(12)
+                .build();
+        ticketMapper.insert(ticketVO);
+    }
 }

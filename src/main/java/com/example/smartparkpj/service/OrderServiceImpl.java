@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -43,6 +45,12 @@ public class OrderServiceImpl implements OrderService{
         }else if(orderDTO.getTno() == 4){dateString = "12:00:00";
             dateStringEnd = 10;
             endTime = 30;
+        }else if(orderDTO.getTno() == 5){dateString = "12:00:00";
+            dateStringEnd = 10;
+            endTime = 180;
+        }else if(orderDTO.getTno() == 6){dateString = "12:00:00";
+            dateStringEnd = 10;
+            endTime = 360;
         }
         // DateTimeFormatter를 사용하여 원하는 형식 정의
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -70,11 +78,30 @@ public class OrderServiceImpl implements OrderService{
                 .orderDate(date)
                 .startDate(startDateTime)
                 .endDate(endDate)
-                .has_ability(finishedChek)
-                .finished(has_abilityChek)
                 .price(orderDTO.getPrice()*orderDTO.getPeople_count())
                 .people_count(orderDTO.getPeople_count())
                 .build();
         orderMapper.insert(orderVO);
+    }
+
+    @Override
+    public List<OrderDTO> getOneAll(String email_id) {
+        List<OrderVO> voLsit = orderMapper.selectOneAll(email_id);
+        List<OrderDTO> dtoList = new ArrayList<>();
+        for(OrderVO orderVO : voLsit){
+            OrderDTO orderDTO = modelMapperConfig.map(orderVO, OrderDTO.class);
+        dtoList.add(orderDTO);
+        }
+        return dtoList;
+    }
+
+    @Override
+    public void modifyFinished(String orderVO) {
+        orderMapper.updateFinished(orderVO);
+    }
+
+    @Override
+    public void modifyHasAbility(String orderVO) {
+        orderMapper.updateHasAbility(orderVO);
     }
 }

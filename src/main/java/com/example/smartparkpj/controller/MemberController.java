@@ -2,8 +2,10 @@ package com.example.smartparkpj.controller;
 
 import com.example.smartparkpj.domain.MemberVO;
 import com.example.smartparkpj.dto.MemberDTO;
+import com.example.smartparkpj.dto.OrderDTO;
 import com.example.smartparkpj.service.MailSenderService;
 import com.example.smartparkpj.service.MemberService;
+import com.example.smartparkpj.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,10 @@ import org.springframework.http.MediaType;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 
 @RequestMapping("/member")
 @Log4j2
@@ -26,6 +32,9 @@ public class MemberController {
     private final MemberService memberService;
     private final MailSenderService mailSenderService;
 
+    //로그인 할때 메서드 발생 이 필요한 부분
+    private final OrderService orderService;
+
     //로그인 페이지, 회원가입 페이지
     //회원가입, 회원수정, 로그인, 로그아웃, 회원탈퇴
 //    @PreAuthorize("hasRole('USER')") // 회원만 접근할수 있게 하는 코드
@@ -34,7 +43,6 @@ public class MemberController {
         // 로그인 페이지 출력
         log.info("/member/login,,,,,");
     }
-
 
     @GetMapping("/register")
     public void registerGET(){

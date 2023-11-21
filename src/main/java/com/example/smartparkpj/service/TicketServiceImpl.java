@@ -37,4 +37,18 @@ public class TicketServiceImpl implements TicketService{
 
         return ticketDTO;
     }
+
+    @Override
+    public void remove(int tno) {
+        ticketMapper.delet(tno);
+    }
+
+    @Override
+    public void add(TicketDTO ticketDTO) {
+        log.info("service.....DTO" + ticketDTO);
+        TicketVO ticketVO = modelMapperConfig.map(ticketDTO, TicketVO.class);
+        log.info("service......" + ticketVO);
+        ticketMapper.insert(ticketVO);
+    }
 }
+

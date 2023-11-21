@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/park.html}">
+>
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <!-- service-section start -->
+  <div class="space-medium">
+    <div class="container">
+      <div class="row">
+        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="section-title text-center">
+            <h1>티켓 리스트</h1>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- service start -->
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" th:each="ticket : ${ticketDTO}">
+          <div class="service-block">
+            <div class="service-content">
+              <h3 th:text="${ticket.tname}" class="title"></h3>
+              <p th:text="${ticket.tinfo}"></p>
+              <!-- 예약하기 버튼에 ticket_type 값을 전달하도록 수정 -->
+              <div th:text=" ${ticket.tprice} + '원'"></div>
+              <td><a th:href="|@{/admin/remove(tno =${ticket.tno})}&${link}|">삭제하기</a></td>
+            </div>
+          </div>
+        </div>
+      </div>
+      <td><a th:href="|@{/admin/ticket/adminAddTicket}|">티켓 추가</a></td>
+      <!-- service close-->
+    </div>
+  </div>
+</div>
+<!-- service-section close -->
+</div>
+<script layout:fragment="script" th:inline="javascript">
+</script>
+</body>
+</html>
