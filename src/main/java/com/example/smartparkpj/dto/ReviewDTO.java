@@ -19,6 +19,6 @@ public class ReviewDTO {
     private int like_count; // 좋아요 수 0
     private int score; //별점 0
     private int fno;// 시설 넘버0
-    private String type;//시설 타입
+    private String facility_no;//시설 타입
     private String nickName;//조인 용 가져온 닉네임(member 값)
 }

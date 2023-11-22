@@ -1,5 +1,6 @@
 package com.example.smartparkpj.mapper;
 
+import com.example.smartparkpj.domain.OrderVO;
 import com.example.smartparkpj.domain.ReviewVO;
 import com.example.smartparkpj.dto.PageRequestDTO;
 import com.example.smartparkpj.dto.PageResponseDTO;
@@ -13,4 +14,7 @@ public interface ReviewMapper {
     List<ReviewVO> selectLsit(PageRequestDTO pageRequestDTO);
 
     int getCount(PageRequestDTO pageRequestDTO);
+
+    void insert(ReviewVO reviewVO);
+
 }

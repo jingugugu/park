@@ -31,4 +31,16 @@ public class ReviewMapperTests {
     public void getCount(){
         reviewMapper.getCount(PageRequestDTO.builder().build());
     }
+
+    @Test
+    public void insertTest(){
+        ReviewVO reviewVO = ReviewVO.builder() //content, mno, addDate, score, fno, type
+                .content("test")
+                .mno(4)
+                .score(5)
+                .facility_no(45)
+                .type("test")
+                .build();
+        reviewMapper.insert(reviewVO);
+    }
 }
