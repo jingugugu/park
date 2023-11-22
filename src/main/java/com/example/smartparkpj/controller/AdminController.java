@@ -109,64 +109,59 @@ public class AdminController {
 
     }
 
-    private void moveFile(String imgName,String type, String folderName){
-        log.info("moveFile: " + imgName);
-        try{
-            //임시 경로
-            FileInputStream fileInputStream = new FileInputStream(uploadTempPath + File.separator + imgName);
+    @PostMapping("/enter/editShop")
+    public String editShop(ShopDTO shopDTO, MarkerDTO markerDTO){
 
-            // 저장될 경로 설정
-            String resultPath = "";
-            if(type.equals("어트랙션")) {
-                resultPath = uploadAttractionPath + File.separator + folderName;
-            }
-            else if(type.equals("매장")){
-                resultPath = uploadShopPath + File.separator + folderName;
-            }
-            else if(type.equals("편의시설")){
-                resultPath = uploadConveniencePath + File.separator + folderName;
-            }
-            File resultFolder = new File(resultPath);
-            if(!resultFolder.exists()){
-                resultFolder.mkdirs();
-            }
-            else{
-                clearFolder(resultFolder);
-            }
-
-            FileOutputStream fileOutputStream = new FileOutputStream(resultPath + File.separator + imgName);
-
-
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
-            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-
-            int i;
-            while ((i = bufferedInputStream.read()) != -1) {
-                bufferedOutputStream.write(i);
-            }
-            bufferedInputStream.close();
-            bufferedOutputStream.close();
-            fileInputStream.close();
-            fileOutputStream.close();
-
-            Files.delete(Paths.get(uploadTempPath + File.separator + imgName));
-        } catch (IOException e){
-            e.printStackTrace();
+        log.info("editShop------------------: " + shopDTO + markerDTO);
+        adminService.editShop(shopDTO, markerDTO);
+        for (String imgName : shopDTO.getFileNames()){
+            moveFile(imgName,markerDTO.getType(),"S" + shopDTO.getSno());
+            moveFile("s_" + imgName,markerDTO.getType(),"S" + shopDTO.getSno());
         }
+
+        return "redirect:/admin/enter/admin_edit_map";
+
     }
 
-    private static void clearFolder(File folder) { // 폴더 비우기
-        File[] files = folder.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    clearFolder(file);
-                } else {
-                    file.delete();
-                }
-            }
-        }
+    @PostMapping("/enter/editConvenience")
+    public String editConvenience(ConvenienceDTO convenienceDTO, MarkerDTO markerDTO){
+        log.info("editConvenience------------------: " + convenienceDTO + markerDTO);
+        adminService.editConvenience(convenienceDTO, markerDTO);
+        String imgName = convenienceDTO.getCon_img();
+        moveFile(imgName,markerDTO.getType(),"C" + convenienceDTO.getCno());
+        moveFile("s_" + imgName,markerDTO.getType(),"C" + convenienceDTO.getCno());
+
+
+        return "redirect:/admin/enter/admin_edit_map";
+
     }
+
+    @PostMapping("/enter/removeAttraction")
+    public String removeAttraction(AttractionDTO attractionDTO, MarkerDTO markerDTO){
+        log.info("removeAttraction--------------: " + attractionDTO + markerDTO);
+        adminService.removeAttraction(attractionDTO, markerDTO);
+        removeFolder(markerDTO.getType(), attractionDTO.getAno()); // 해당 어트랙션 폴더 삭제
+        return "redirect:/admin/enter/admin_edit_map";
+    }
+
+    @PostMapping("/enter/removeShop")
+    public String removeShop(ShopDTO shopDTO, MarkerDTO markerDTO){
+        log.info("removeShop--------------: " + shopDTO + markerDTO);
+        adminService.removeShop(shopDTO, markerDTO);
+        removeFolder(markerDTO.getType(), shopDTO.getSno()); // 해당 어트랙션 폴더 삭제
+        return "redirect:/admin/enter/admin_edit_map";
+    }
+
+    @PostMapping("/enter/removeConvenience")
+    public String removeShop(ConvenienceDTO convenienceDTO, MarkerDTO markerDTO){
+        log.info("removeCon--------------: " + convenienceDTO + markerDTO);
+        adminService.removeConvenience(convenienceDTO, markerDTO);
+        removeFolder(markerDTO.getType(), convenienceDTO.getCno()); // 해당 어트랙션 폴더 삭제
+        return "redirect:/admin/enter/admin_edit_map";
+    }
+
+
+
 
     @GetMapping("/ticket/adminTicket")
     public void managerListGet(Model model){
@@ -207,5 +202,87 @@ public class AdminController {
 
         return "redirect:/admin/ticket/adminTicket";
     }
+
+    private void moveFile(String imgName,String type, String folderName){
+        log.info("moveFile: " + imgName);
+        try{
+            //임시 경로
+            FileInputStream fileInputStream = new FileInputStream(uploadTempPath + File.separator + imgName);
+
+            // 저장될 경로 설정
+            String resultPath = "";
+            if(type.equals("어트랙션")) {
+                resultPath = uploadAttractionPath + File.separator + folderName;
+            }
+            else if(type.equals("매장")){
+                resultPath = uploadShopPath + File.separator + folderName;
+            }
+            else if(type.equals("편의시설")){
+                resultPath = uploadConveniencePath + File.separator + folderName;
+            }
+            File resultFolder = new File(resultPath);
+            if(!resultFolder.exists()){
+                resultFolder.mkdirs();
+            }
+            FileOutputStream fileOutputStream = new FileOutputStream(resultPath + File.separator + imgName);
+
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+
+            int i;
+            while ((i = bufferedInputStream.read()) != -1) {
+                bufferedOutputStream.write(i);
+            }
+            bufferedInputStream.close();
+            bufferedOutputStream.close();
+            fileInputStream.close();
+            fileOutputStream.close();
+
+            Files.delete(Paths.get(uploadTempPath + File.separator + imgName));
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void removeFolder(String type, int no) {
+        String deletePath = "";
+
+        if (type.equals("어트랙션")) {
+            deletePath = uploadAttractionPath + File.separator + "A" + no;
+        } else if (type.equals("매장")) {
+            deletePath = uploadShopPath + File.separator + "S" + no;
+        } else {
+            deletePath = uploadConveniencePath + File.separator + "C" + no;
+        }
+
+        // 삭제할 폴더의 경로로 File 객체를 생성
+        File folderToDelete = new File(deletePath);
+
+        // 폴더 내용물을 먼저 삭제
+        deleteFolderContents(folderToDelete);
+
+        // 폴더를 삭제
+        if (folderToDelete.delete()) {
+            System.out.println("폴더가 성공적으로 삭제되었습니다.");
+        } else {
+            System.out.println("폴더 삭제에 실패했습니다.");
+        }
+    }
+
+    // 폴더 내용물을 삭제하는 메서드
+    private void deleteFolderContents(File folder) {
+        File[] files = folder.listFiles();
+
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    deleteFolderContents(file);
+                } else {
+                    file.delete();
+                }
+            }
+        }
+    }
+
 
 }

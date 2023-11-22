@@ -39,4 +39,8 @@
     <delete id="removeImages">
         DELETE FROM attraction_image WHERE ano = #{ano}
     </delete>
+
+    <delete id="removeAttraction">
+        DELETE FROM attraction WHERE ano = #{ano}
+    </delete>
 </mapper>

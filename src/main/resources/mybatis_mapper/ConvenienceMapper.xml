@@ -12,4 +12,14 @@
         SELECT * FROM convenience where cno = #{facility_no}
     </select>
 
+    <update id="editConvenience">
+        UPDATE convenience SET name = #{name}, con_info = #{con_info}, con_guide = #{con_guide}, con_tel = #{con_tel},
+                               con_img = #{con_img}
+        WHERE cno = #{cno}
+    </update>
+
+    <delete id="removeConvenience">
+        DELETE FROM convenience WHERE cno = #{cno}
+    </delete>
+
 </mapper>

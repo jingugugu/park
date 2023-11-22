@@ -28,6 +28,12 @@ public class UpDownController {
     private String uploadBasePath;
     @Value("${com.example.upload.tempPath}")
     private String uploadPath;
+    @Value("${com.example.upload.AttractionPath}")
+    private String uploadAttractionPath;
+    @Value("${com.example.upload.ShopPath}")
+    private String uploadShopPath;
+    @Value("${com.example.upload.ConveniencePath}")
+    private String uploadConveniencePath;
 
 
     @ApiOperation(value = "Upload Post", notes = "POST 방식으로 파일 등록")
@@ -134,6 +140,45 @@ public class UpDownController {
             log.info("removed : " + resource.getFile());
             if(contentType.startsWith("image")){
                 File thumbFile = new File(uploadPath + File.separator + "s_" + fileName);
+                thumbFile.delete(); // 섬네일 삭제
+            }
+        } catch (IOException e){
+            log.error(e.getMessage());
+        }
+        resultMap.put("result", removed);
+        return resultMap;
+    }
+
+    @ApiOperation(value = "remove default 파일", notes = "DELETE 방식으로 파일 삭제")
+    @DeleteMapping(value = "/remove/{fileName}/{type}/{folderName}")
+    public Map<String, Boolean> removeDefaultFile(@PathVariable String fileName, @PathVariable String type, @PathVariable String folderName){
+        log.info("remove default value ======= " + fileName, type,folderName);
+        String deletePath = uploadPath;
+
+        if(type.equals("어트랙션")){
+            deletePath = uploadAttractionPath;
+        }
+        else if(type.equals("매장")){
+            deletePath = uploadShopPath;
+        }
+        else if(type.equals("편의시설")){
+            deletePath = uploadConveniencePath;
+        }
+
+        log.info("remove default value file path ======= " + deletePath);
+        Resource resource = new FileSystemResource(deletePath + File.separator + folderName + File.separator + fileName);
+
+        String resourceName = resource.getFilename();
+        log.info("filename = " +resourceName);
+        Map<String, Boolean> resultMap = new HashMap<>();
+        boolean removed = false;
+        try {
+            String contentType = Files.probeContentType(resource.getFile().toPath());
+            removed = resource.getFile().delete(); // 이미지 삭제
+
+            log.info("removed : " + resource.getFile());
+            if(contentType.startsWith("image")){
+                File thumbFile = new File(deletePath + File.separator + folderName + File.separator + "s_" + fileName);
                 thumbFile.delete(); // 섬네일 삭제
             }
         } catch (IOException e){

@@ -12,4 +12,6 @@ public interface MarkerMapper {
     List<MarkerVO> getMarkerList(); // 마커 목록
 
     void editMarker(MarkerVO markerVO);
+
+    void removeMarker(int marker_no);
 }

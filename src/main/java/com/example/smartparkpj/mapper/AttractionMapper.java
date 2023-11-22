@@ -26,4 +26,5 @@ public interface AttractionMapper {
     void removeTags(int ano);
 
     void removeImages(int ano);
+    void removeAttraction(int ano);
 }
