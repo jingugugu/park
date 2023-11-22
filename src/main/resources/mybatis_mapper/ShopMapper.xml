@@ -19,4 +19,18 @@
     <select id="getImageList" resultType="com.example.smartparkpj.domain.ShopImageVO">
         SELECT * FROM shop_image where sno = #{facility_no}
     </select>
+
+    <update id="editShop">
+        UPDATE shop SET shop_name = #{shop_name}, shop_menu = #{shop_menu}, shop_guide = #{shop_guide}, shop_price = #{shop_price},
+                        shop_tel = #{shop_tel}, shop_time = #{shop_time}
+        WHERE sno = #{sno}
+    </update>
+
+    <delete id="removeImages">
+        DELETE FROM shop_image WHERE sno = #{sno}
+    </delete>
+
+    <delete id="removeShop">
+        DELETE FROM shop WHERE sno = #{sno}
+    </delete>
 </mapper>

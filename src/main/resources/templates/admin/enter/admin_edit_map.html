@@ -167,13 +167,14 @@
             <!-- 탭 컨텐츠 -->
             <div class="tab-content">
                 <!-- 어트랙션 폼 -->
-                <div class="tab-pane fade show active" id="attractionForm">
+                <div class="tab-pane fade show" id="attractionForm">
                     <!-- 어트랙션 폼 내용 -->
                     <form id="AttractionRegisterForm" action="/admin/enter/editAttraction" method="post">
                         <div class="form-floating mb-3">
                             <span class="facilityType">타입</span>
                             <input class="form-control" id="attraction-type" name="type" type="text" value="어트랙션"
                                    placeholder="타입" readonly/>
+                            <input type="hidden" name="marker_no">
                             <input type="hidden" id="ano" name="ano"/>
                             <span class="form-check" id="attraction-type-span" name="attraction-type-span" style="display: none"/>
                         </div>
@@ -236,7 +237,9 @@
                             <div class="float-end">
                                 <button type="button" class="btn btn-primary attraction-submit-btn">수정</button>
                                 <button type="reset" class="btn btn-secondary">초기화</button>
+                                <button type="button" class="btn btn-danger attraction-remove-btn">삭제</button>
                             </div>
+
                         </div>
                     </form>
                     <div class="modal uploadAttractionModal" tabindex="-1">
@@ -269,6 +272,8 @@
                             <span class="facilityType">타입</span>
                             <input class="form-control" id="shop-type" name="type" type="text"
                                    placeholder="타입" readonly/>
+                            <input type="hidden" name="marker_no">
+                            <input type="hidden" id="sno" name="sno"/>
                             <span class="form-check" id="shop-type-span" name="shop-type-span" style="display: none"/>
                         </div>
                         <div class="form-floating mb-3">
@@ -335,6 +340,7 @@
                             <div class="float-end">
                                 <button type="button" class="btn btn-primary shop-submit-btn">수정</button>
                                 <button type="reset" class="btn btn-secondary">초기화</button>
+                                <button type="button" class="btn btn-danger shop-remove-btn">삭제</button>
                             </div>
                         </div>
                     </form>
@@ -366,6 +372,8 @@
                             <span class="facilityType">타입</span>
                             <input class="form-control" id="con-type" name="type" type="text" value="편의시설"
                                    placeholder="타입" readonly/>
+                            <input type="hidden" name="marker_no">
+                            <input type="hidden" id="cno" name="cno"/>
                             <span class="form-check" id="con-type-span" name="con-type-span" style="display: none"/>
                         </div>
                         <div class="form-floating mb-3">
@@ -419,6 +427,7 @@
                             <div class="float-end">
                                 <button type="button" class="btn btn-primary con-submit-btn">수정</button>
                                 <button type="reset" class="btn btn-secondary">초기화</button>
+                                <button type="button" class="btn btn-danger con-remove-btn">삭제</button>
                             </div>
                         </div>
                     </form>
@@ -576,6 +585,10 @@
             uploadConModal.hide();
         })
 
+        if(document.querySelector('input[name=default-con-img]') != null){
+            removeFileList.push(document.querySelector('input[name=default-con-img]').value);
+        }
+        console.log("편의시설" + removeFileList);
         // 기존 이미지 삭제
         const removeFiles = uploadConResult.querySelectorAll('img');
         removeFiles.forEach((e) =>{
@@ -640,12 +653,25 @@
         console.log(obj);
 
         const targetDiv = obj.closest('.card');
-        console.log(targetDiv);
-        removeFileList.push({uuid,fileName});
         targetDiv.remove();
-        // removeFileToServer(uuid, fileName).then(data => {
-        //
-        // })
+        removeFileToServer(uuid, fileName).then(data => {
+
+        })
+    }
+
+    // 기존 파일 삭제 리스트 추가
+    function removeDefaultFile(filename, obj){
+        const targetDiv = obj.closest('.card');
+        removeFileList.push(filename);
+        targetDiv.remove();
+    }
+
+    // 기존 파일 실제로 삭제
+    function callRemoveDefaultFiles(type,folderName){
+        removeFileList.forEach((fileName) => {
+            console.log("기존 파일 : " + fileName + " 삭제!!");
+            removeDefaultFileToServer(fileName,type,folderName);
+        })
     }
 
     document.querySelector('.attraction-submit-btn').addEventListener('click',function(e){
@@ -674,8 +700,9 @@
             str +=`<input type='hidden' name='fileNames' value="${imgLink}">`;
         }
 
+        const folderName = "A" + document.querySelector('input[name=ano]').value;
         // 삭제 리스트의 파일 제거
-        callRemoveFiles();
+        callRemoveDefaultFiles('어트랙션',folderName);
         // 2. ADD Files 버튼 영역에 태그 추가
         const target = document.querySelector('.uploadAttractionHidden');
         target.innerHTML = str;
@@ -685,15 +712,28 @@
         formObj.submit();
     })
 
-    function callRemoveFiles(){
-        removeFileList.forEach(({uuid, fileName}) => {
-            removeFileToServer(uuid, fileName);
-        })
-    }
+    document.querySelector('.attraction-remove-btn').addEventListener('click',function (e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        if(!confirm("해당 시설의 모든 정보 및 마커 정보, 이미지들을 삭제합니다. 정말로 삭제하시겠습니까?")){
+            return;
+        }
+
+        const formObj = document.querySelector('#AttractionRegisterForm');
+
+        formObj.action = '/admin/enter/removeAttraction';
+        formObj.method = 'post';
+        formObj.submit();
+
+    })
+
+
 
     document.querySelector('.shop-submit-btn').addEventListener('click',function(e){
         e.preventDefault();
         e.stopPropagation();
+
 
         // 1. 섬네일 영역에서 img태그의 data-src 속성 들고옴
         const uploadFiles = uploadShopResult.querySelectorAll('img');
@@ -717,6 +757,10 @@
             str +=`<input type='hidden' name='fileNames' value="${imgLink}">`;
         }
 
+        const folderName = "S" + document.querySelector('input[name=sno]').value;
+        // 삭제 리스트의 파일 제거
+        callRemoveDefaultFiles('매장',folderName);
+
         // 2. ADD Files 버튼 영역에 태그 추가
         const target = document.querySelector('.uploadShopHidden');
         target.innerHTML = str;
@@ -724,6 +768,22 @@
         // 3. submit() 처리
         const formObj = document.querySelector('#ShopRegisterForm');
         formObj.submit();
+    })
+
+    document.querySelector('.shop-remove-btn').addEventListener('click',function (e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        if(!confirm("해당 시설의 모든 정보 및 마커 정보, 이미지들을 삭제합니다. 정말로 삭제하시겠습니까?")){
+            return;
+        }
+
+        const formObj = document.querySelector('#ShopRegisterForm');
+
+        formObj.action = '/admin/enter/removeShop';
+        formObj.method = 'post';
+        formObj.submit();
+
     })
 
     document.querySelector('.con-submit-btn').addEventListener('click',function(e){
@@ -747,6 +807,10 @@
             removeFileToServer(removeFile[0],removeFile[1]);
         })
 
+        const folderName = "C" + document.querySelector('input[name=cno]').value;
+        // 삭제 리스트의 파일 제거
+        callRemoveDefaultFiles('편의시설',folderName);
+
         let str = '';
         for (let i = 0; i < uploadFiles.length; i++){
             const uploadFile = uploadFiles[i];
@@ -762,6 +826,22 @@
         // 3. submit() 처리
         const formObj = document.querySelector('#ConRegisterForm');
         formObj.submit();
+    })
+
+    document.querySelector('.con-remove-btn').addEventListener('click',function (e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        if(!confirm("해당 시설의 모든 정보 및 마커 정보, 이미지들을 삭제합니다. 정말로 삭제하시겠습니까?")){
+            return;
+        }
+
+        const formObj = document.querySelector('#ConRegisterForm');
+
+        formObj.action = '/admin/enter/removeConvenience';
+        formObj.method = 'post';
+        formObj.submit();
+
     })
 
     //------------------------------- end form method ------------------------------------
@@ -873,18 +953,21 @@
             if(markerDTO.type === "어트랙션"){
                 attractionPositions.push({
                     position: new kakao.maps.LatLng(markerDTO.latitude, markerDTO.longitude),
+                    marker_no: markerDTO.marker_no,
                     facilityNo: markerDTO.facility_no,
                     type: markerDTO.type});
             }
             else if(markerDTO.type === "매장"){
                 shopPositions.push({
                     position: new kakao.maps.LatLng(markerDTO.latitude, markerDTO.longitude),
+                    marker_no: markerDTO.marker_no,
                     facilityNo: markerDTO.facility_no,
                     type: markerDTO.type});
             }
             else{
                 conPositions.push({
                     position: new kakao.maps.LatLng(markerDTO.latitude, markerDTO.longitude),
+                    marker_no: markerDTO.marker_no,
                     facilityNo: markerDTO.facility_no,
                     type: markerDTO.type});
             }
@@ -903,15 +986,27 @@
         return markerImage;
     }
 
+    let initialMarkerPositions = {}; // 최초 마커 위치를 저장할 객체
+
     // 마커 최종본 생성 후 리턴
     function createMarker(position, image) {
         let marker = new kakao.maps.Marker({
             position: position.position,
             image: image,
-            clickable: true
+            clickable: true,
+            draggable: false // 기본적으로 드래그 불가능
         });
         marker.facilityNo = position.facilityNo;
         marker.type = position.type;
+        marker.marker_no = position.marker_no;
+
+        // 최초 마커 위치 저장
+        initialMarkerPositions[marker.marker_no] = position.position;
+
+        kakao.maps.event.addListener(marker, 'dragend', function () {
+            // 드래그가 끝났을 때 이벤트 등록
+            updateFormWithMarkerPosition(marker);
+        });
 
         kakao.maps.event.addListener(marker, 'mouseover', function () {
             // 마우스 오버 이벤트 등록
@@ -928,8 +1023,56 @@
             // 마우스 클릭 이벤트 등록
             openTabAndFillForm(marker);
             // openOverLay(marker); // 오버레이 열기
+
+            makeMarkerDraggable(marker); // 클릭한 마커를 드래그 가능하도록 설정
+
+            // 다른 모든 마커들을 드래그 불가능하도록 설정
+            attractionMarkers.forEach(function (otherMarker) {
+                if (otherMarker !== marker) {
+                    makeMarkerNotDraggable(otherMarker); // 드래그 불가능하도록 설정
+                    // 최초 위치로 되돌리기
+                    otherMarker.setPosition(initialMarkerPositions[otherMarker.marker_no]);
+                }
+            });
+
+            shopMarkers.forEach(function (otherMarker) {
+                if (otherMarker !== marker) {
+                    makeMarkerNotDraggable(otherMarker); // 드래그 불가능하도록 설정
+                    // 최초 위치로 되돌리기
+                    otherMarker.setPosition(initialMarkerPositions[otherMarker.marker_no]);
+                }
+            });
+
+            conMarkers.forEach(function (otherMarker) {
+                if (otherMarker !== marker) {
+                    makeMarkerNotDraggable(otherMarker); // 드래그 불가능하도록 설정
+                    // 최초 위치로 되돌리기
+                    otherMarker.setPosition(initialMarkerPositions[otherMarker.marker_no]);
+                }
+            });
         });
         return marker;
+    }
+
+    // 마커를 드래그 가능하도록 설정하는 함수
+    function makeMarkerDraggable(marker) {
+        marker.setDraggable(true);
+    }
+
+    // 마커를 드래그 불가능하도록 설정하고 최초 위치로 되돌리는 함수
+    function makeMarkerNotDraggable(marker) {
+        marker.setDraggable(false);
+        marker.setPosition(initialMarkerPositions[marker.marker_no]);
+    }
+
+    // 마커의 위치를 폼에 업데이트
+    function updateFormWithMarkerPosition(marker) {
+        document.querySelectorAll('.latitude').forEach((e) => {
+            e.value = marker.getPosition().getLat();
+        })
+        document.querySelectorAll('.longitude').forEach((e) => {
+            e.value = marker.getPosition().getLng();
+        })
     }
 
     function openTabAndFillForm(marker) {
@@ -975,6 +1118,10 @@
             e.value = marker.getPosition().getLng();
         })
 
+        document.querySelectorAll('input[name=marker_no]').forEach((e) =>{
+            e.value = marker.marker_no;
+        })
+
         const markerInfo = await getMarkerOne(marker.type, marker.facilityNo);
         switch (marker.type) {
             case '어트랙션':
@@ -997,7 +1144,7 @@
                             <div class="card-header d-flex justify-content-center">
                                 ${arr[1]}
                                 <button type="button" class="btn btn-danger"
-                                        onclick="removeFile('${arr[0]}', '${arr[1]}', this)">X</button>
+                                        onclick="removeDefaultFile('${fileName}', this)">X</button>
                             </div>
                             <div class="card-body">
                                 <img src="/view/s_${fileName}/어트랙션/${markerInfo.ano}" data-src="${fileName}">
@@ -1008,11 +1155,53 @@
                 break;
             case '매장':
                 changeFormType("shop-type", marker.type);
+                document.getElementById('sno').value = markerInfo.sno;
+                document.getElementById('shop_name').value = markerInfo.shop_name;
+                document.getElementById('shop_menu').value = markerInfo.shop_menu;
+                document.getElementById('shop_time').value = markerInfo.shop_time;
+                document.getElementById('shop_guide').value = markerInfo.shop_guide;
+                document.getElementById('shop_price').value = markerInfo.shop_price;
+                document.getElementById('shop_tel').value = markerInfo.shop_tel;
+                uploadShopResult.innerHTML = "";
+                markerInfo.fileNames.forEach( (fileName) =>{
+                    const arr = fileName.split('_');
 
+                    const str = `<div class="card col-4">
+                            <div class="card-header d-flex justify-content-center">
+                                ${arr[1]}
+                                <button type="button" class="btn btn-danger"
+                                        onclick="removeDefaultFile('${fileName}', this)">X</button>
+                            </div>
+                            <div class="card-body">
+                                <img src="/view/s_${fileName}/매장/${markerInfo.sno}" data-src="${fileName}">
+                            </div>
+                            </div>`
+                    uploadShopResult.innerHTML += str;
+                })
                 break;
             case '편의시설':
             default:
                 changeFormType("con-type", marker.type);
+                document.getElementById('cno').value = markerInfo.cno;
+                document.getElementById('con_name').value = markerInfo.name;
+                document.getElementById('con_info').value = markerInfo.con_info;
+                document.getElementById('con_guide').value = markerInfo.con_guide;
+                document.getElementById('con_tel').value = markerInfo.con_tel;
+                uploadConResult.innerHTML = "";
+                const con_img = markerInfo.con_img
+                const arr = con_img.split('_');
+                const str = `<div class="card col-4">
+                        <div class="card-header d-flex justify-content-center">
+                        <input type="hidden" name="default-con-img" value="${con_img}"/>
+                            ${arr[1]}
+                            <button type="button" class="btn btn-danger"
+                                    onclick="removeDefaultFile('${con_img}', this)">X</button>
+                        </div>
+                        <div class="card-body">
+                            <img src="/view/s_${con_img}/편의시설/${markerInfo.cno}" data-src="${con_img}">
+                        </div>
+                        </div>`
+                uploadConResult.innerHTML += str;
 
                 break;
         }

@@ -16,4 +16,10 @@ public interface ShopMapper {
     ShopVO getOne(int facility_no);
 
     List<ShopImageVO> getImageList(int facility_no);
+
+    void editShop(ShopVO shopVO);
+
+    void removeImages(int sno);
+
+    void removeShop(int sno);
 }

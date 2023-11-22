@@ -14,4 +14,8 @@
     <update id="editMarker">
         UPDATE marker SET latitude = #{latitude}, longitude = #{longitude} WHERE marker_no = #{marker_no}
     </update>
+
+    <delete id="removeMarker">
+        delete from marker where marker_no = #{marker_no}
+    </delete>
 </mapper>
