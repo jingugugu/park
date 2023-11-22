@@ -6,6 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @SpringBootTest
 @Log4j2
 public class InquiryMapperTests {
@@ -16,13 +20,44 @@ public class InquiryMapperTests {
     @Test
     public void testInsert() {
         InquiryVO inquiryVO = InquiryVO.builder()
-                .title("제목")
-                .content("내용")
+                .title("나는 3번 타이틀")
+                .content("3번내용이지")
                 .mno(1)
-                .state("ㅎㅇ")
                 .build();
         inquiryMapper.addInquiry(inquiryVO);
 
         log.info(inquiryMapper);
     }
+
+    @Test
+    public void testSelectAll() {
+        int mno = 1;
+        List<InquiryVO> inquiryVOS = inquiryMapper.selectAll(mno);
+
+        log.info("testSelectAll-------------------------------");
+        log.info(inquiryVOS);
+    }
+
+    @Test
+    public void testSelectOne() {
+        int ino = 14;
+        InquiryVO inquiryVO = inquiryMapper.selectOne(ino);
+
+        log.info("testSelectOne-------------------------------");
+        log.info(inquiryVO);
+
+    }
+
+    @Test
+    public void testUpdateAnswer() {
+        InquiryVO inquiryVO = InquiryVO.builder()
+                .ino(14)
+                .answer("답변을 등록했음 Tlqkf!")
+                .answer_addDate(LocalDateTime.now())
+                .build();
+        inquiryMapper.addAnswer(inquiryVO);
+
+        log.info(inquiryVO);
+    }
+
 }

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/park.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>문의 수정</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <!--<h3 style="margin-top: 50px; margin-bottom: 30px"><strong>내가 작성한 문의</strong></h3>-->
+    <form th:action="@{/inquiry/modify}" method="post" id="f1">
+        <input type="hidden" name="ino" th:value="${inquiryDTO.ino}">
+        <input type="hidden" name="mno" th:value="${inquiryDTO.mno}">
+        <input type="hidden" name="answer" th:value="${inquiryDTO.answer}">
+        <div class="form-group row align-center justify-content-center">
+            <div class="card col-xl-12" style="margin-top: 50px;">
+                <div class="card-title">
+                    <div class="form-group row align-center align-middle">
+                        <div class="col-sm-6">
+                            <input style="margin-top: 25px" name="title" type="text" class="form-control" th:value="${inquiryDTO.title}"
+                                   placeholder="제목을 입력하세요">
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+                <div class="card-body">
+                    <textarea style="height: 200px; width: 1060px" placeholder="내용을 입력해주세요" name="content" th:text="${inquiryDTO.content}"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row" style="margin-top: 20px; display: flex; justify-content: flex-end;">
+            <input type="submit" class="btn btn-default btn-primary submitBtn" value=" 완료 " onclick="return confirmSubmit()">
+            <input type="button" class="btn btn-danger removeBtn ml-2" value=" 삭제 ">
+            <input type="reset" class="btn btn-danger cancelBtn ml-2" value=" 취소 " onclick="return confirmCancel()">
+        </div>
+        </form>
+    </div>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+
+    // 문의글 수정 관련
+    const formObj = document.querySelector("#f1");
+
+    function confirmSubmit() {
+        const answerValue = document.querySelector("[name='answer']").value;
+
+        if (answerValue === null || answerValue.trim() === '') {    // answer 값이 null 이거나 공백일 경우만 삭제가능
+            if (confirm('글 수정을 완료 하시겠습니까?')) {
+                return true;
+            } else {
+                alert('글 수정에 실패하였습니다.');
+                return false;
+            }
+        } else {    // 링크를 타고 들어와 주작을 하는 경우 방지
+            alert('잘못된 접근입니다.');
+            return false;
+        }
+    }
+
+    function confirmCancel() {
+        if (confirm('글 수정을 취소하시겠습니까?')) {
+            goBack(); // 확인을 눌렀을 때 뒤로 가는 동작
+        } else {
+            return false; // 취소를 눌렀을 때 아무 동작 없이 그대로 놔두기
+        }
+    }
+
+    document.querySelector('.removeBtn').addEventListener('click', function (e) {
+        const answerValue = document.querySelector("[name='answer']").value;
+        e.preventDefault();
+        e.stopPropagation();
+/*        if (confirm('글을 삭제하시겠습니까?')) {
+            document.getElementById('f1').submit(); // 확인을 눌렀을 때 폼 제출
+        } else {
+            return false; // 취소를 눌렀을 때 아무 동작 없이 그대로 놔두기
+        }*/
+        if (answerValue === null || answerValue.trim() === '') {  // answer 값이 null 이거나 공백일 경우만 삭제 가능
+            if (confirm('글을 삭제하시겠습니까?')) {
+                document.getElementById('f1').submit(); // 확인을 눌렀을 때 폼 제출
+                return true;
+            } else {
+                alert('글 수정에 실패하였습니다.');
+                return false;
+            }
+        } else {    // 링크를 타고 들어와 주작을 하는 경우 방지
+            alert('잘못된 접근입니다.');
+            return false;
+        }
+
+        formObj.action = `/inquiry/remove`;
+        formObj.method = 'post';
+        formObj.submit();
+    })
+
+    // 취소버튼을 눌렀을때 뒤로감
+    function goBack() {
+        window.history.back();
+    }
+
+</script>
+</body>
+</html>

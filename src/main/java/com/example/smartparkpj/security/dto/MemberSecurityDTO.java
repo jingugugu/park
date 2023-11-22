@@ -31,10 +31,11 @@ public class MemberSecurityDTO extends User {
 
 
     // 수정이 필요한 값은 필수로 들어갸아함. 일단 뭘 수정하고 할지 잘 모르니 다 넣어봄
-    public MemberSecurityDTO(String username, String password, String nickName,
+    public MemberSecurityDTO(int mno, String username, String password, String nickName,
                              String member_name, String phone, String birthday, String profileImg,
                              Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
+        this.mno = mno;
         this.email_id = username;
         this.password = password;
         this.nickName = nickName;

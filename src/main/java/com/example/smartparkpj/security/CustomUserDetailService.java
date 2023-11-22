@@ -40,6 +40,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
         // UserDetails 타입의 객체를 생성후 반환
         MemberSecurityDTO memberSecurityDTO = new MemberSecurityDTO(
+                memberVO.getMno(),
                 memberVO.getEmail_id(),
                 memberVO.getPassword(),
                 memberVO.getNickName(),

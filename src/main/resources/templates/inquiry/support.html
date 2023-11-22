@@ -17,11 +17,10 @@
         <div class="col col-xl-12">
             <div class="card">
                 <div class="card-header" align="center">
-                    <br>
-                    <h3><b>내 문의</b></h3>
+                    <h3 style="margin-top: 20px;"><b>내 문의함</b></h3>
                 </div>
-                <div class="card-body">
-                    <table class="table">
+                <div class="card-body" >
+                    <table class="table" style="text-align: center">
                         <thead>
                         <tr>
                             <th scope="col">제목</th>
@@ -30,6 +29,21 @@
                             <th scope="col">상태</th>
                         </tr>
                         </thead>
+                        <tbody>
+                        <tr th:each="inquiry : ${inquiryDTO}">
+                            <td>
+                                <a th:href="|@{/inquiry/read(ino =${inquiry.ino})}&${link}|"
+                                   th:text="${inquiry.title}"
+                                   style="text-decoration: underline; color: red"></a>
+                                <!--<a th:href="@{'/inquiry/read' + ${inquiry.ino}}" th:text="${inquiry.title}"-->
+                            </td>
+                            <td th:text="${inquiry.ino}"></td>
+                            <td th:if="${inquiry.in_addDate != null}"
+                                th:text="${#temporals.format(inquiry.in_addDate, 'yyyy-MM-dd')}">
+                            </td>
+                            <td th:text="${inquiry.state} ? '답변완료' : '진행중'" style="color: gray"></td>
+                        </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
