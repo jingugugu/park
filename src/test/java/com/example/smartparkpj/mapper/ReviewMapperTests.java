@@ -43,4 +43,10 @@ public class ReviewMapperTests {
                 .build();
         reviewMapper.insert(reviewVO);
     }
+
+//    @Test
+//    public void selectOne(){
+//        ReviewVO reviewVO = reviewMapper.selectOne(34, "편의시설");
+//        log.info("reviewVO Test selectOne : " + reviewVO);
+//    }
 }
