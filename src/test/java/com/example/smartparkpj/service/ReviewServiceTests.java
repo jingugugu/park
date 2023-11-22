@@ -25,4 +25,6 @@ public class ReviewServiceTests {
         log.info(responseDTO);
         responseDTO.getDtoList().stream().forEach(reviewDTO -> log.info(reviewDTO));
     }
+
+
 }

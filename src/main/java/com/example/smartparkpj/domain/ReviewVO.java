@@ -16,6 +16,6 @@ public class ReviewVO {
     private LocalDateTime addDate; // 리뷰 작성일자 0
     private int like_count; // 좋아요 수 0
     private int score; //별점 0
-    private int fno;// 시설 넘버0
+    private int facility_no;// 시설 넘버0
     private String type;//시설 타입
 }

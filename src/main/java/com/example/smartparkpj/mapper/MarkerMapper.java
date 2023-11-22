@@ -11,5 +11,9 @@ public interface MarkerMapper {
     void addMarker(MarkerVO markerVO); // 마커 등록
     List<MarkerVO> getMarkerList(); // 마커 목록
 
+    //List<MarkerVO> selectAll();//리뷰 목록 테스트 위해 하나 해놓겠습니다(고지훈)
+
     void editMarker(MarkerVO markerVO);
+
+    void removeMarker(int marker_no);
 }

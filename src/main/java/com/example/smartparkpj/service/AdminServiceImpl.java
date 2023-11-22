@@ -138,4 +138,62 @@ public class AdminServiceImpl implements AdminService{
             }
         }
     }
+
+    @Override
+    public void editShop(ShopDTO shopDTO, MarkerDTO markerDTO) {
+        MarkerVO markerVO = modelMapper.map(markerDTO,MarkerVO.class);
+        ShopVO shopVO = modelMapper.map(shopDTO, ShopVO.class);
+
+        log.info("editShopService!!!! ----" +shopDTO.getSno());
+        markerMapper.editMarker(markerVO); // 마커 수정
+        shopMapper.editShop(shopVO); // 어트랙션 수정
+        shopMapper.removeImages(shopDTO.getSno()); // 이미지 비우기
+
+        if(shopDTO.getFileNames() != null) { // 새로 이미지 추가
+            int ordCnt = 1;
+            for (String fileName : shopDTO.getFileNames()) {
+                String[] arr = fileName.split("_");
+                ShopImageVO shopImageVO = ShopImageVO.builder()
+                        .uuid(arr[0])
+                        .fileName(arr[1])
+                        .ord(ordCnt++)
+                        .sno(shopDTO.getSno())
+                        .build();
+                shopMapper.addShopImage(shopImageVO);
+            }
+        }
+
+    }
+
+    @Override
+    public void editConvenience(ConvenienceDTO convenienceDTO, MarkerDTO markerDTO) {
+        MarkerVO markerVO = modelMapper.map(markerDTO,MarkerVO.class);
+        ConvenienceVO convenienceVO = modelMapper.map(convenienceDTO, ConvenienceVO.class);
+
+        log.info("editConService!!!! ----" + convenienceDTO.getCno());
+        markerMapper.editMarker(markerVO); // 마커 수정
+        convenienceMapper.editConvenience(convenienceVO); // 편의시설 수정
+    }
+
+    @Override
+    public void removeAttraction(AttractionDTO attractionDTO, MarkerDTO markerDTO) {
+
+        markerMapper.removeMarker(markerDTO.getMarker_no()); // 마커 삭제
+        attractionMapper.removeTags(attractionDTO.getAno()); // 태그 비우기
+        attractionMapper.removeImages(attractionDTO.getAno()); // 이미지 비우기
+        attractionMapper.removeAttraction(attractionDTO.getAno()); // 어트랙션 삭제
+    }
+
+    @Override
+    public void removeShop(ShopDTO shopDTO, MarkerDTO markerDTO) {
+        markerMapper.removeMarker(markerDTO.getMarker_no()); // 마커 삭제
+        shopMapper.removeImages(shopDTO.getSno());
+        shopMapper.removeShop(shopDTO.getSno());
+    }
+
+    @Override
+    public void removeConvenience(ConvenienceDTO convenienceDTO, MarkerDTO markerDTO) {
+        markerMapper.removeMarker(markerDTO.getMarker_no()); // 마커 삭제
+        convenienceMapper.removeConvenience(convenienceDTO.getCno());
+    }
 }
