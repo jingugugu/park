@@ -17,6 +17,7 @@ public class AttractionDTO {
     private String ainfo; // 어트랙션 개요
     private int passengersCount; // 탑승인원
     private String ainfo_detail; // 어트랙션 이용 정보
+    private float avgScore; // 평점
 
     private List<String> fileNames; // 이미지 파일이름목록
     private List<String> tagNames; // 태그 이름목록

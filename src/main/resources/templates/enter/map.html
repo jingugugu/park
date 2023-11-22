@@ -292,7 +292,15 @@
         currentOverlay = overLay;
         // 커스텀 오버레이를 지도에 표시합니다
         overLay.setMap(map);
-        document.getElementById("facilityImage").src = "/view/" + markerInfo.fileNames[0]; // 이미지 동적 생성
+        if(marker.type === "어트랙션") {
+            document.getElementById("facilityImage").src = "/view/" + markerInfo.fileNames[0] + "/" + marker.type + "/" + markerInfo.aname; // 이미지 동적 생성
+        }
+        else if(marker.type === "매장"){
+            document.getElementById("facilityImage").src = "/view/" + markerInfo.fileNames[0] + "/" + marker.type + "/" + markerInfo.shop_name; // 이미지 동적 생성
+        }
+        else{
+            document.getElementById("facilityImage").src = "/view/" + markerInfo.fileNames[0] + "/" + marker.type + "/" + markerInfo.name; // 이미지 동적 생성
+        }
     }
 
     function getOverLayContentByType(markerInfo,type) {
@@ -507,6 +515,10 @@
 
             let message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
             message += '경도는 ' + latlng.getLng() + ' 입니다';
+
+            if (currentOverlay) { // 열려있는 오버레이를 닫는다.
+                currentOverlay.setMap(null);
+            }
 
             const resultDiv = document.getElementById('result');
             resultDiv.innerHTML = message;

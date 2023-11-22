@@ -3,6 +3,7 @@ package com.example.smartparkpj.service;
 
 import com.example.smartparkpj.domain.*;
 import com.example.smartparkpj.dto.AttractionDTO;
+import com.example.smartparkpj.dto.ConvenienceDTO;
 import com.example.smartparkpj.dto.MarkerDTO;
 import com.example.smartparkpj.dto.ShopDTO;
 import com.example.smartparkpj.mapper.AttractionMapper;
@@ -26,7 +27,7 @@ public class AdminServiceImpl implements AdminService{
 
     private final MarkerMapper markerMapper;
     @Override
-    public void addAttraction(AttractionDTO attractionDTO, MarkerDTO markerDTO) {
+    public int addAttraction(AttractionDTO attractionDTO, MarkerDTO markerDTO) {
         int fno = 0;
         AttractionVO attractionVO = modelMapper.map(attractionDTO,AttractionVO.class);
         attractionMapper.addAttraction(attractionVO); // 어트랙션 추가
@@ -58,10 +59,12 @@ public class AdminServiceImpl implements AdminService{
         markerDTO.setFacility_no(fno); // 등록한 시설 번호
         MarkerVO markerVO = modelMapper.map(markerDTO,MarkerVO.class);
         markerMapper.addMarker(markerVO);
+
+        return fno;
     }
 
     @Override
-    public void addShop(ShopDTO shopDTO, MarkerDTO markerDTO) {
+    public int addShop(ShopDTO shopDTO, MarkerDTO markerDTO) {
         int fno = 0;
         ShopVO shopVO = modelMapper.map(shopDTO, ShopVO.class);
         shopMapper.addShop(shopVO); // 매장 추가
@@ -83,5 +86,56 @@ public class AdminServiceImpl implements AdminService{
         markerDTO.setFacility_no(fno); // 등록한 시설 번호
         MarkerVO markerVO = modelMapper.map(markerDTO,MarkerVO.class);
         markerMapper.addMarker(markerVO);
+
+        return fno;
+    }
+
+    @Override
+    public int addConvenience(ConvenienceDTO convenienceDTO, MarkerDTO markerDTO) {
+        int fno = 0;
+        ConvenienceVO convenienceVO = modelMapper.map(convenienceDTO, ConvenienceVO.class);
+        convenienceMapper.addConvenience(convenienceVO); // 매장 추가
+        int cno = convenienceVO.getCno(); // 등록한 편의시설 번호
+        fno = cno;
+        markerDTO.setFacility_no(fno); // 등록한 시설 번호
+        MarkerVO markerVO = modelMapper.map(markerDTO,MarkerVO.class);
+        markerMapper.addMarker(markerVO);
+
+        return fno;
+    }
+
+    @Override
+    public void editAttraction(AttractionDTO attractionDTO, MarkerDTO markerDTO) {
+        MarkerVO markerVO = modelMapper.map(markerDTO,MarkerVO.class);
+        AttractionVO attractionVO = modelMapper.map(attractionDTO, AttractionVO.class);
+
+        log.info("editAttractionService!!!! ----" +attractionDTO.getAno());
+        markerMapper.editMarker(markerVO); // 마커 수정
+        attractionMapper.editAttraction(attractionVO); // 어트랙션 수정
+        attractionMapper.removeTags(attractionDTO.getAno()); // 태그 비우기
+        attractionMapper.removeImages(attractionDTO.getAno()); // 이미지 비우기
+
+        if(attractionDTO.getFileNames() != null) { // 새로 이미지 추가
+            int ordCnt = 1;
+            for (String fileName : attractionDTO.getFileNames()) {
+                String[] arr = fileName.split("_");
+                AttractionImageVO attractionImageVO = AttractionImageVO.builder()
+                        .uuid(arr[0])
+                        .fileName(arr[1])
+                        .ord(ordCnt++)
+                        .ano(attractionDTO.getAno())
+                        .build();
+                attractionMapper.addAttractionImage(attractionImageVO);
+            }
+        }
+        if(attractionDTO.getTagNames() != null){ // 새로 태그 추가
+            for(String tagName : attractionDTO.getTagNames()){
+                AttractionTagVO attractionTagVO = AttractionTagVO.builder()
+                        .atag_name(tagName)
+                        .ano(attractionDTO.getAno())
+                        .build();
+                attractionMapper.addAttractionTag(attractionTagVO);
+            }
+        }
     }
 }

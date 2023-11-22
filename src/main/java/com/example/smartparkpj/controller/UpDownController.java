@@ -24,8 +24,11 @@ import java.util.*;
 @RestController
 @Log4j2
 public class UpDownController {
+    @Value("${com.example.upload.basePath}")
+    private String uploadBasePath;
     @Value("${com.example.upload.tempPath}")
     private String uploadPath;
+
 
     @ApiOperation(value = "Upload Post", notes = "POST 방식으로 파일 등록")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -44,13 +47,13 @@ public class UpDownController {
                 try{
                     multipartFile.transferTo(savePath);
 
-//                    // 이미지 파일이면 섬네일 생성
-//                    if (Files.probeContentType(savePath).startsWith("image")){
-//                        log.info(Files.probeContentType(savePath));
-//                        isImage = true;
-//                        File thumbFile = new File(uploadPath, "s_" + uuid + "_" + originalName);
-//                        Thumbnailator.createThumbnail(savePath.toFile(), thumbFile, 200, 200);
-//                    }
+                    // 이미지 파일이면 섬네일 생성
+                    if (Files.probeContentType(savePath).startsWith("image")){
+                        log.info(Files.probeContentType(savePath));
+                        isImage = true;
+                        File thumbFile = new File(uploadPath, "s_" + uuid + "_" + originalName);
+                        Thumbnailator.createThumbnail(savePath.toFile(), thumbFile, 200, 200);
+                    }
                 } catch (IOException e){
                     throw new RuntimeException(e);
                 }
@@ -65,6 +68,39 @@ public class UpDownController {
         return null;
     }
 
+    @ApiOperation(value = "View 파일", notes = "GET방식으로 시설 이미지 조회")
+    @GetMapping(value = "/view/{fileName}/{type}/{folderName}")
+    public ResponseEntity<Resource> viewFileSet(@PathVariable String fileName, @PathVariable String type, @PathVariable String folderName){
+
+        String realType = "";
+        if(type.equals("어트랙션")){
+            realType = "attraction";
+            folderName = "A" + folderName;
+        }
+        else if(type.equals("매장")){
+            realType = "shop";
+            folderName = "S" + folderName;
+
+        }
+        else{
+            realType = "convenience";
+            folderName = "C" + folderName;
+
+        }
+        String resultPath = uploadBasePath + File.separator + realType + File.separator + folderName + File.separator + fileName;
+        Resource resource = new FileSystemResource(resultPath);
+
+        String resourceName = resource.getFilename();
+        log.info("view file ================" + resourceName);
+        HttpHeaders headers = new HttpHeaders();
+
+        try {
+            headers.add("Content-Type", Files.probeContentType(resource.getFile().toPath()));
+        } catch (IOException e){
+            return ResponseEntity.internalServerError().build();
+        }
+        return ResponseEntity.ok().headers(headers).body(resource);
+    }
     @ApiOperation(value = "View 파일", notes = "GET방식으로 첨부파일 조회")
     @GetMapping(value = "/view/{fileName}")
     public ResponseEntity<Resource> viewFileSet(@PathVariable String fileName){
@@ -96,10 +132,10 @@ public class UpDownController {
             removed = resource.getFile().delete(); // 이미지 삭제
 
             log.info("removed : " + resource.getFile());
-//            if(contentType.startsWith("image")){
-//                File thumbFile = new File(uploadPath + File.separator + "s_" + fileName);
-//                thumbFile.delete(); // 섬네일 삭제
-//            }
+            if(contentType.startsWith("image")){
+                File thumbFile = new File(uploadPath + File.separator + "s_" + fileName);
+                thumbFile.delete(); // 섬네일 삭제
+            }
         } catch (IOException e){
             log.error(e.getMessage());
         }
