@@ -207,6 +207,8 @@ public class AdminController {
         return "redirect:/admin/ticket/adminTicket";
     }
 
+
+    //파일 이동
     private void moveFile(String imgName,String type, String folderName){
         log.info("moveFile: " + imgName);
         try{
@@ -248,6 +250,7 @@ public class AdminController {
         }
     }
 
+    // 시설 삭제시 해당 폴더 삭제
     private void removeFolder(String type, int no) {
         String deletePath = "";
 

@@ -194,10 +194,7 @@
 
     setMarkers();
     // 마커 리스트
-    console.log(markerList);
-    console.log(attractionPositions);
-    console.log(shopPositions);
-    console.log(conPositions);
+    console.log("marekrList : " + markerList);
 
     function setMarkers(){
         getMarkers().then(markers => {
@@ -233,17 +230,18 @@
             }
         })
     }
-
+    console.log("attractionPositions : " + attractionPositions);
+    console.log("shopPositions : " + shopPositions);
+    console.log("conPositions : " + conPositions);
     // 시설 마커 배열
     const attractionMarkers = [];
     const shopMarkers = [];
     const conMarkers = [];
         // var markerImageSrc = 'https://mblogthumb-phinf.pstatic.net/20141028_186/anijunkie_1414458460706yEeUx_PNG/91f05e76-5603-11e4-9d59-27aa01e1c669.png?type=w2';
-        var markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png';  // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
-
+        const shopMarkerImageSrc = 'https://cdn.icon-icons.com/icons2/2419/PNG/512/restaurant_location_icon_146860.png';  // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
     // 마커이미지의 주소와, 크기, 옵션으로 마커 이미지를 생성하여 리턴하는 함수입니다
-    function createMarkerImage(src, size, options) {
-        let markerImage = new kakao.maps.MarkerImage(src, size, options);
+    function createMarkerImage(src, size) {
+        let markerImage = new kakao.maps.MarkerImage(src, size);
         return markerImage;
     }
 
@@ -294,13 +292,13 @@
         // 커스텀 오버레이를 지도에 표시합니다
         overLay.setMap(map);
         if(marker.type === "어트랙션") {
-            document.getElementById("facilityImage").src = "/view/" + markerInfo.fileNames[0] + "/" + marker.type + "/" + markerInfo.aname; // 이미지 동적 생성
+            document.getElementById("facilityImage").src = "/view/" + markerInfo.fileNames[0] + "/" + marker.type + "/" + markerInfo.ano; // 이미지 동적 생성
         }
         else if(marker.type === "매장"){
-            document.getElementById("facilityImage").src = "/view/" + markerInfo.fileNames[0] + "/" + marker.type + "/" + markerInfo.shop_name; // 이미지 동적 생성
+            document.getElementById("facilityImage").src = "/view/" + markerInfo.fileNames[0] + "/" + marker.type + "/" + markerInfo.sno; // 이미지 동적 생성
         }
         else{
-            document.getElementById("facilityImage").src = "/view/" + markerInfo.fileNames[0] + "/" + marker.type + "/" + markerInfo.name; // 이미지 동적 생성
+            document.getElementById("facilityImage").src = "/view/" + markerInfo.fileNames[0] + "/" + marker.type + "/" + markerInfo.cno; // 이미지 동적 생성
         }
     }
 
@@ -387,12 +385,12 @@
     function createAttractionMarkers(){
         for(let i = 0; i < attractionPositions.length; i++){
 
-            let imageSize = new kakao.maps.Size(22, 26),
-                imageOptions = {
-                    spriteOrigin: new kakao.maps.Point(10, 0),
-                    spriteSize: new kakao.maps.Size(36, 98)
-                };
-            let markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions)
+            let imageSize = new kakao.maps.Size(35, 35);
+                // imageOptions = {
+                //     spriteOrigin: new kakao.maps.Point(10, 0),
+                //     spriteSize: new kakao.maps.Size(36, 98)
+                // };
+            let markerImage = createMarkerImage(shopMarkerImageSrc, imageSize)
             let marker = createMarker(attractionPositions[i], markerImage);
 
             attractionMarkers.push(marker);
@@ -402,12 +400,12 @@
     function createShopMarkers(){
         for(let i = 0; i < shopPositions.length; i++){
 
-            let imageSize = new kakao.maps.Size(22, 26),
-                imageOptions = {
-                    spriteOrigin: new kakao.maps.Point(8, 0),
-                    spriteSize: new kakao.maps.Size(36, 98)
-                };
-            let markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions)
+            let imageSize = new kakao.maps.Size(22, 26);
+                // imageOptions = {
+                //     spriteOrigin: new kakao.maps.Point(8, 0),
+                //     spriteSize: new kakao.maps.Size(36, 98)
+                // };
+            let markerImage = createMarkerImage(shopMarkerImageSrc, imageSize)
             let marker = createMarker(shopPositions[i], markerImage);
 
             shopMarkers.push(marker);
@@ -417,12 +415,12 @@
     function createConMarkers(){
         for(let i = 0; i < conPositions.length; i++){
 
-            let imageSize = new kakao.maps.Size(22, 26),
-                imageOptions = {
-                    spriteOrigin: new kakao.maps.Point(7, 0),
-                    spriteSize: new kakao.maps.Size(36, 98)
-                };
-            let markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions)
+            let imageSize = new kakao.maps.Size(22, 26);
+                // imageOptions = {
+                //     spriteOrigin: new kakao.maps.Point(7, 0),
+                //     spriteSize: new kakao.maps.Size(36, 98)
+                // };
+            let markerImage = createMarkerImage(shopMarkerImageSrc, imageSize)
             let marker = createMarker(conPositions[i], markerImage);
 
             conMarkers.push(marker);
