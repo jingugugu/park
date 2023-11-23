@@ -21,5 +21,9 @@ public interface InquiryService {
 
     void add(InquiryDTO inquiryDTO);
 
-    void addAnswer(InquiryDTO inquiryDTO);
+    void updateAnswer(InquiryDTO inquiryDTO);
+
+    List<InquiryDTO> getAdminListAll();
+
+    void adminRemove(int ino);
 }

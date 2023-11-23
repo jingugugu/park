@@ -22,6 +22,12 @@ public interface InquiryMapper {
 
     void deleteInquiry(int ino);
 
-    void addAnswer(InquiryVO inquiryVO);
+    List<InquiryVO> adminInquiryList();
+
+    void adminInquiryDelete(int ino);
+
+    void adminAnswer(InquiryVO inquiryVO);
+
+
 
 }

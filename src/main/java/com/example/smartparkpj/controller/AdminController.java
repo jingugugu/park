@@ -3,6 +3,7 @@ package com.example.smartparkpj.controller;
 import com.example.smartparkpj.dto.*;
 import com.example.smartparkpj.service.AdminService;
 import com.example.smartparkpj.service.EnterService;
+import com.example.smartparkpj.service.InquiryService;
 import com.example.smartparkpj.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.io.*;
 import java.nio.file.Files;
@@ -42,6 +44,8 @@ public class AdminController {
     final private AdminService adminService;
 
     final private TicketService ticketService;
+
+    final private InquiryService inquiryService;
 
 
     @GetMapping("")
@@ -283,6 +287,56 @@ public class AdminController {
             }
         }
     }
+    
+    /* Inquiry(문의) 관련 작업 */
 
+    @GetMapping("/inquiry/inquiryList")
+    public void getInquiryAdminList(Model model) {
+        log.info("GetAdminList ...");
+        List<InquiryDTO> inquiryDTOS = inquiryService.getAdminListAll();
+        log.info(inquiryDTOS);
+        model.addAttribute("adminInquiryDTO", inquiryService.getAdminListAll());
+    }
 
+    @PostMapping("/inquiry/inquiryList")
+    public String postInquiryAdminList() {
+        log.info("PostAdminList");
+
+        return "redirect:/admin/inquiry/addInquiry";
+    }
+
+    @GetMapping({"/inquiry/adminRead", "/inquiry/adminModify"})
+    public void getReadInquiry(int ino, Model model) {
+        log.info("GetMapping/adminRead ...");
+        log.info(ino);
+
+        model.addAttribute("inquiryDTO", inquiryService.getOne(ino));
+    }
+
+    @PostMapping("/inquiry/adminModify")
+    public String postModifyInquiry(InquiryDTO inquiryDTO, Model model) {
+        log.info("PostMapping/ModifyInquiry ... ");
+
+        inquiryService.updateAnswer(inquiryDTO);
+        return "redirect:/admin/inquiry/adminRead";
+    }
+
+    @PostMapping("/inquiry/adminRead")
+    public String adminAddAnswer(InquiryDTO inquiryDTO, Model model) {
+        log.info("PostMapping/inquiry/adminRead");
+        log.info(inquiryDTO);
+
+        inquiryService.updateAnswer(inquiryDTO);
+        return "redirect:/admin/inquiry/adminModify";
+    }
+
+    @PostMapping("/inquiry/adminRemove")
+    public String adminInquiryRemove(InquiryDTO inquiryDTO, Model model) {
+        log.info("PostMapping/admin/inquiry/adminRemove");
+        log.info(inquiryDTO);
+        int ino = inquiryDTO.getIno();
+
+        inquiryService.adminRemove(ino);
+        return "redirect:/admin/inquiry/inquiryList";
+    }
 }

@@ -51,13 +51,25 @@ public class InquiryMapperTests {
     @Test
     public void testUpdateAnswer() {
         InquiryVO inquiryVO = InquiryVO.builder()
-                .ino(14)
-                .answer("답변을 등록했음 Tlqkf!")
+                .ino(35)
+                .answer("35번 테스트코드")
                 .answer_addDate(LocalDateTime.now())
                 .build();
-        inquiryMapper.addAnswer(inquiryVO);
+        inquiryMapper.adminAnswer(inquiryVO);
 
         log.info(inquiryVO);
+    }
+
+    @Test
+    public void adminInquiryListTests() {
+        List<InquiryVO> inquiryVOS = inquiryMapper.adminInquiryList();
+        log.info(inquiryVOS);
+    }
+
+    @Test
+    public void adminInquriryDeleteTest() {
+        int ino = 28;
+        inquiryMapper.adminInquiryDelete(ino);
     }
 
 }

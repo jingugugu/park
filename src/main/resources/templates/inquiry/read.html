@@ -17,6 +17,7 @@
   <div class="form-group row align-center justify-content-center">
     <div class="card col-xl-12" style="margin-top: 50px;">
       <div th:each="inquiry : ${inquiryDTO}">
+        <input type="hidden" name="nickName" th:value="${inquiry.nickName}">
         <div class="card-title">
           <div class="align-right" style="padding: 20px" th:text="${#temporals.format(inquiry.in_addDate, 'yyyy-MM-dd HH:mm')}"></div>
           <div style="font-size: 20px; padding-top: 15px" th:text="${inquiry.title}"></div>

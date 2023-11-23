@@ -32,6 +32,10 @@ public class CustomSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         log.info("------------------- Configure ------------------");
 
+        
+        // 에디터 관련 설정코드 /* 오승훈 */ 
+        httpSecurity.headers().frameOptions().sameOrigin();
+
         // 사용자 로그인 추가
         httpSecurity.formLogin().loginPage("/member/login").successHandler(getLoginSuccessHandler());
 

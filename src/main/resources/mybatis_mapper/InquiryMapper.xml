@@ -5,8 +5,10 @@
 <mapper namespace="com.example.smartparkpj.mapper.InquiryMapper">
 
     <insert id="addInquiry" parameterType="com.example.smartparkpj.domain.InquiryVO">
-        INSERT INTO inquiry (title, content, mno, `state`, in_addDate)
-        VALUES (#{title}, #{content}, #{mno}, #{state}, now())
+        INSERT INTO inquiry (title, content, mno, `state`, nickName, in_addDate)
+        VALUES (#{title}, #{content}, #{mno}, #{state},
+                (SELECT nickName FROM member WHERE mno = #{mno}),
+                now())
     </insert>
 
     <select id="selectAll" parameterType="com.example.smartparkpj.domain.InquiryVO">
@@ -17,10 +19,6 @@
         SELECT * FROM inquiry WHERE ino = #{ino}
     </select>
 
-    <update id="addAnswer">
-        UPDATE inquiry SET answer = #{answer}, answer_addDate = now(), `state`= 1 WHERE ino = #{ino}
-    </update>
-
     <select id="selectFormattedDate" resultType="java.util.Date">
         SELECT DATE_FORMAT(in_addDate, '%Y-%m-%d') AS formatted_date FROM inquiry
     </select>
@@ -30,6 +28,18 @@
     </update>
 
     <delete id="deleteInquiry" parameterType="com.example.smartparkpj.domain.InquiryVO">
+        DELETE FROM inquiry WHERE ino = #{ino}
+    </delete>
+
+    <select id="adminInquiryList" parameterType="com.example.smartparkpj.domain.InquiryVO">
+        SELECT * FROM inquiry ORDER BY `state` ASC, in_addDate ASC
+    </select>
+
+    <update id="adminAnswer" parameterType="com.example.smartparkpj.domain.InquiryVO">
+        UPDATE inquiry SET answer = #{answer}, answer_addDate = now(), `state`= 1 WHERE ino = #{ino}
+    </update>
+
+    <delete id="adminInquiryDelete" parameterType="com.example.smartparkpj.domain.InquiryVO">
         DELETE FROM inquiry WHERE ino = #{ino}
     </delete>
 

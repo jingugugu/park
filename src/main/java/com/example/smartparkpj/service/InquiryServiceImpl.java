@@ -80,13 +80,32 @@ public class InquiryServiceImpl implements InquiryService{
     }
 
     @Override
-    public void addAnswer(InquiryDTO inquiryDTO) {
-        log.info("addAnswer = " + inquiryDTO.getAnswer());
+    public void updateAnswer(InquiryDTO inquiryDTO) {
+        log.info("updateAnswer = " + inquiryDTO.getAnswer());
+        log.info("-----------------------------------------");
+
         InquiryVO inquiryVO = modelMapper.map(inquiryDTO, InquiryVO.class);
         log.info(inquiryVO);
 
-        inquiryMapper.addAnswer(inquiryVO);
+        inquiryMapper.adminAnswer(inquiryVO);
     }
 
+    @Override
+    public List<InquiryDTO> getAdminListAll() {
+        log.info("getAdminListAll...");
+        List<InquiryVO> inquiryVOList = inquiryMapper.adminInquiryList();
+        List<InquiryDTO> inquiryDTOList = new ArrayList<>();
+
+        for (InquiryVO inquiryVO : inquiryVOList) {
+            InquiryDTO inquiryDTO = modelMapper.map(inquiryVO, InquiryDTO.class);
+            inquiryDTOList.add(inquiryDTO);
+        }
+        return inquiryDTOList;
+    }
+
+    @Override
+    public void adminRemove(int ino) {
+        inquiryMapper.adminInquiryDelete(ino);
+    }
 
 }

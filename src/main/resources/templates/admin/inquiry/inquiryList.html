@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/park.html}">
+>
+<head>
+    <meta charset="UTF-8">
+    <title>문의목록_관리자</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1 style="margin-top: 50px; font-size: 30px"><strong>고객문의_관리자</strong></h1>
+    <div class="row my-xl-5">
+        <div class="col col-xl-12">
+            <div class="card">
+                <div class="card-header" align="center">
+                    <h3 style="margin-top: 20px;"><b>회원 문의함</b></h3>
+                </div>
+                <div class="card-body" >
+                    <table class="table" style="text-align: center">
+                        <thead>
+                        <tr>
+                            <th scope="col">제목</th>
+                            <th scope="col">문의접수번호</th>
+                            <th scope="col">작성자</th>
+                            <th scope="col">문의날짜</th>
+                            <th scope="col">상태</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="inquiry : ${adminInquiryDTO}">
+                            <td>
+                                <a th:href="|@{/admin/inquiry/adminRead(ino =${inquiry.ino})}&${link}|"
+                                   th:text="${inquiry.title}"
+                                   style="text-decoration: underline; color: red"></a>
+                                <!--<a th:href="@{'/inquiry/read' + ${inquiry.ino}}" th:text="${inquiry.title}"-->
+                            </td>
+                            <td th:text="${inquiry.ino}"></td>
+                            <td th:text="${inquiry.nickName}"></td>
+                            <td th:if="${inquiry.in_addDate != null}"
+                                th:text="${#temporals.format(inquiry.in_addDate, 'yyyy-MM-dd')}">
+                            </td>
+                            <td th:text="${inquiry.state} ? '답변완료' : '미답변'" style="color: gray"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+
+</script>
+</body>
+</html>

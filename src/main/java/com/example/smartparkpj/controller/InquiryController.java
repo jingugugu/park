@@ -94,7 +94,7 @@ public class InquiryController {
 
     @PreAuthorize("principal.mno == #inquiryDTO.mno")  // 작성자 정보가 일치 해야만 작업이 가능함.
     @PostMapping("/remove")
-    public String removeInquiry(InquiryDTO inquiryDTO, RedirectAttributes redirectAttributes) {
+    public String removeInquiry(InquiryDTO inquiryDTO) {
         log.info("PostMapping/remove...");
 
         int ino = inquiryDTO.getIno();

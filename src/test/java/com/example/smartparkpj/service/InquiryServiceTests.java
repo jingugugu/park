@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @SpringBootTest
 @Log4j2
@@ -61,12 +62,24 @@ public class InquiryServiceTests {
     }
 
     @Test
-    public void testAddAnswer() {
+    public void testUpdateAnswer() {
         InquiryDTO inquiryDTO = InquiryDTO.builder()
-                .ino(12)
-                .answer("답변한겁니다")
+                .ino(34)
+                .answer("답변달기")
                 .answer_addDate(LocalDateTime.now())
                 .build();
-        inquiryService.addAnswer(inquiryDTO);
+        inquiryService.updateAnswer(inquiryDTO);
+    }
+
+    @Test
+    public void getAdminListAllTests() {
+        List<InquiryDTO> inquiryDTOS = inquiryService.getAdminListAll();
+        log.info(inquiryDTOS);
+    }
+
+    @Test
+    public void adminInquriryRemoveTests() {
+        int ino = 11;
+        inquiryService.adminRemove(ino);
     }
 }

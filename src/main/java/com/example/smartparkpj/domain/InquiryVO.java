@@ -18,4 +18,5 @@ public class InquiryVO {
     private int state; // 문의 답변 상태
     private String answer; // 답변 내용
     private LocalDateTime answer_addDate; // 답변 작성일
+    private String nickName;    // 회원 닉네임
 }

@@ -74,22 +74,16 @@
         const answerValue = document.querySelector("[name='answer']").value;
         e.preventDefault();
         e.stopPropagation();
-/*        if (confirm('글을 삭제하시겠습니까?')) {
-            document.getElementById('f1').submit(); // 확인을 눌렀을 때 폼 제출
-        } else {
-            return false; // 취소를 눌렀을 때 아무 동작 없이 그대로 놔두기
-        }*/
         if (answerValue === null || answerValue.trim() === '') {  // answer 값이 null 이거나 공백일 경우만 삭제 가능
             if (confirm('글을 삭제하시겠습니까?')) {
                 document.getElementById('f1').submit(); // 확인을 눌렀을 때 폼 제출
-                return true;
             } else {
-                alert('글 수정에 실패하였습니다.');
-                return false;
+                alert('글 삭제에 실패하였습니다.');
+                return;
             }
         } else {    // 링크를 타고 들어와 주작을 하는 경우 방지
             alert('잘못된 접근입니다.');
-            return false;
+            return;
         }
 
         formObj.action = `/inquiry/remove`;
