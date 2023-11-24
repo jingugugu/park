@@ -3,4 +3,16 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.smartparkpj.mapper.LikeMapper">
+
+    <select id="insert" resultType="com.example.smartparkpj.domain.LikeVO">
+        INSERT INTO `like` (rno, mno) VALUES (#{rno}, #{mno})
+    </select>
+
+    <select id="delet" resultType="com.example.smartparkpj.domain.LikeVO">
+        DELETE from `like` WHERE rno = #{rno} AND mno = #{mno}
+    </select>
+
+    <select id="setOne" resultType="com.example.smartparkpj.domain.LikeVO">
+        SELECT * FROM `like` where rno = #{rno} AND mno = #{mno}
+    </select>
 </mapper>

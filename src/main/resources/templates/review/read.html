@@ -12,27 +12,60 @@
 </head>
 <body>
 <div layout:fragment="content">
-
+    <div>
+        <p>리뷰 평균 별점: <span th:text="${reviewScore}"></span></p>
+        <!-- 별표 표시 -->
+        <span th:each="i : ${#numbers.sequence(1, 5)}">
+        <span th:if="${i le reviewScore}">
+            ★
+        </span>
+        <span th:unless="${i le reviewScore}">
+            ☆
+        </span>
+    </span>
+    </div>
     <!--comments start-->
     <div class="comment-area">
         <div class="row">
             <div class=" col-lg-12 col-md-12">
                 <div class="comment-title">
                     <li th:each="review : ${responseDTO.dtoList}" style="list-style-type: none;">
-                    <h2 th:text="${review.nickName}"></h2>
-                    <ul class="comment-list">
-                        <div class="comment-author"></div>
+                        <h2 th:text="${review.email_id}" style="display: none"></h2>
+                        <h2 th:text="${#authentication.getName()}" style="display: none"></h2>
+                        <!--위에 값음 삭제 버튼 조건 용-->
+                        <h2 th:text="${review.nickName}"></h2>
+                        <ul class="comment-list">
+                            <div class="comment-author"></div>
                             <div class="comment-info" style="margin-bottom: 50px">
-                                <h4 class="user-title">Cassandra Craft</h4>
+                                <h4 th:text="${review.score}" style="height: 0; overflow: hidden;"></h4>
+                                <!-- 별표 표시 -->
+                                <span th:each="i : ${#numbers.sequence(1, 5)}">
+                                    <span th:if="${i le review.score}">
+                                        ★
+                                    </span>
+                                    <span th:unless="${i le review.score}">
+                                        ☆ <!-- 별표가 아닌 경우는 빈 별로 처리하거나 원하는 다른 아이콘을 넣을 수 있습니다 -->
+                                    </span>
+                                </span>
                                 <div class="meta">
                                     <div class="comment-meta-date">31 March, 2017</div>
                                 </div>
                                 <div class="comment-content">
                                     <p th:text="${review.content}"></p>
                                 </div>
-                                <a href="#" class="reply-link">좋아요</a> </div><!--좋아요 작업 해줘야함-->
-                        </li>
-                    </ul>
+                                <a th:href="@{/like/add(rno=${review.rno}, mno=${review.mno})}" class="reply-link" style="font-size: 15px">좋아요</a>
+                                <span th:text="${review.like_count}"></span>
+                                </div><!--좋아요 작업 해줘야함-->
+
+                                <!--삭제 버튼 처리 -->
+                                <a class="reply-link" th:href="@{/review/delet(rno=${review.rno})}"
+                                   th:if="${review.email_id} == ${#authentication.getName()}"
+                                   style="float: right; margin-top: -70px; margin-right: 200px; font-size: 15px">
+                                    삭제
+                                </a>
+
+                            </li>
+                        </ul>
                 </div>
             </div>
         </div>
@@ -52,9 +85,18 @@
             </li>
         </ul>
     </div>
+
     <!--comments close-->
-    <div class="leave-comments">
-        <h2 class="comment-title">리뷰 작성하기</h2>
+
+    <!-- 리뷰 작성 부분은 따로 만들어야 오류가 덜남 따로 만들겠습니다-->
+    <a th:href="@{/review/add(facility_no=${markerDTO.facility_no}, type=${markerDTO.type})}"
+       class="btn btn-primary" style="font-size: 20px; float: right; margin-top: -100px;">
+        리뷰 작성하기 - (<span th:text="${markerDTO.facility_no}"></span>) <span th:text="${markerDTO.type}"></span>
+    </a>
+
+    <!-- 이 아래로는 사용 하지 않습니다 페징이 오류 를 막기 위해 남겨 놓는겁니다 화면에 보이지 않고 어떤 값을 처리 할수도 없습니다 (고지훈) -->
+    <div class="leave-comments" style="display: none">
+        <h2 class="comment-title" style="font-size: 100px">리뷰 작성하기</h2>
         <form>
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">
@@ -72,7 +114,7 @@
 
                 <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">
                     <div class="form-group">
-                        <button id="singlebutton" name="singlebutton" class="btn btn-primary btn-sm">Submit</button>
+                        <button id="singlebutton" name="singlebutton" class="btn btn-primary btn-sm">리뷰 작성하기</button>
                     </div>
                 </div>
             </div>
@@ -97,18 +139,7 @@
 
         formObj.submit();
     },false)
-    document.querySelector(".clearBtn").addEventListener("click",function (e) {
-        e.preventDefault();
-        e.stopPropagation();
 
-        self.location='/board/list';
-    })
-    //show modal
-    const  result = [[${result}]];
-    const modal = new bootstrap.Modal(document.querySelector(".modal"));
-    modal.show();
-    if(result) {
-    }
 </script>
 </body>
 </html>

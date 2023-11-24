@@ -34,26 +34,28 @@ public class PageRequestDTO {
 
     private Long bno;
 
+    private int facility_no;
+
     public int getSkip(){
         return (page - 1) * size;
     }
 
     public String getLink(){
-            StringBuilder builder = new StringBuilder();
-            builder.append("page=" + this.page);
-            builder.append("&size=" + this.size);
+        StringBuilder builder = new StringBuilder();
+        builder.append("page=" + this.page);
+        builder.append("&size=" + this.size);
 
-            if(this.type != null)
-                builder.append("type=" + type);
+        if(this.type != null)
+            builder.append("type=" + type);
 
 
-            if(this.keyword != null){
-                try{
-                    builder.append("&keyword=" + URLEncoder.encode(keyword, "UTF-8"));
-                } catch(UnsupportedEncodingException e){
-                    e.printStackTrace();
-                }
+        if(this.keyword != null){
+            try{
+                builder.append("&keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+            } catch(UnsupportedEncodingException e){
+                e.printStackTrace();
             }
-            return builder.toString();
+        }
+        return builder.toString();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.smartparkpj.mapper;
 
+import com.example.smartparkpj.domain.MemberVO;
 import com.example.smartparkpj.domain.ReviewVO;
 import com.example.smartparkpj.dto.PageRequestDTO;
 import lombok.extern.log4j.Log4j2;
@@ -20,8 +21,10 @@ public class ReviewMapperTests {
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
                 .page(1)
                 .size(11)
+                .type("어트렉션")
+                .facility_no(47)
                 .build();
-        List<ReviewVO> list = reviewMapper.selectLsit(pageRequestDTO);
+        List<ReviewVO> list = reviewMapper.selectList(pageRequestDTO);
         for(ReviewVO reviewVO : list){
             log.info("reviewVOList : " + reviewVO);
         }
@@ -38,15 +41,40 @@ public class ReviewMapperTests {
                 .content("test")
                 .mno(4)
                 .score(5)
-                .facility_no(45)
-                .type("test")
+                .facility_no(34)
+                .type("편의시설")
                 .build();
         reviewMapper.insert(reviewVO);
     }
 
-//    @Test
-//    public void selectOne(){
-//        ReviewVO reviewVO = reviewMapper.selectOne(34, "편의시설");
-//        log.info("reviewVO Test selectOne : " + reviewVO);
-//    }
+    @Test
+    public void setOneTest(){
+        String id = "gojihoon12313@naver.com";
+        MemberVO memberVO = reviewMapper.setOne(id);
+
+        log.info("mno값을 위하여 : " + memberVO);
+    }
+
+    @Test
+    public void reviewTest(){
+        List<ReviewVO> list = reviewMapper.reviewScore(34, "편의시설");
+        for(ReviewVO reviewVO : list){
+            log.info("reviewList + 별점" + reviewVO.getScore());
+        }
+    }
+
+    @Test
+    public void deletTest(){
+        reviewMapper.delet(18);
+    }
+
+    @Test
+    public void LikeTest(){
+        reviewMapper.likeUp(3);
+    }
+
+    @Test
+    public void LikeDown(){
+        reviewMapper.likeDown(2);
+    }
 }

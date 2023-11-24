@@ -4,8 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.smartparkpj.mapper.ReviewMapper">
 
-    <select id="selectLsit" resultType="com.example.smartparkpj.domain.ReviewVO">
-        SELECT r.*, m.nickName from `review` r INNER JOIN `member` m ON r.mno = m.mno order by rno desc LIMIT #{skip}, #{size}
+    <select id="selectList" resultType="com.example.smartparkpj.domain.ReviewVO">
+        SELECT r.*, m.nickName from `review` r INNER JOIN `member` m ON r.mno = m.mno WHERE facility_no = #{facility_no} AND type = #{type} order by rno desc LIMIT #{skip}, #{size}
     </select>
 
     <select id="getCount" resultType="int">
@@ -17,7 +17,27 @@
         VALUES(#{content}, #{mno}, now(), #{score}, #{facility_no}, #{type})
     </select>
 
-    <select id="selectOne" resultType="com.example.smartparkpj.domain.ReviewVO">
-        SELECT * FROM review WHERE facility_no = #{facility_no} AND type = #{type}
+    <select id="selectOneType" resultType="com.example.smartparkpj.domain.ReviewVO">
+        SELECT * FROM review order by rno desc LIMIT #{skip}, #{size}
+    </select>
+
+    <select id="setOne" resultType="com.example.smartparkpj.domain.MemberVO">
+        SELECT * FROM member where email_id = #{email_id}
+    </select>
+
+    <select id="reviewScore" resultType="com.example.smartparkpj.domain.ReviewVO">
+        SELECT score FROM review WHERE facility_no = #{facility_no} AND type = #{type}
+    </select>
+
+    <select id="delet" resultType="com.example.smartparkpj.domain.ReviewVO">
+        DELETE from review WHERE rno = #{rno}
+    </select>
+
+    <select id="likeUp" resultType="com.example.smartparkpj.domain.ReviewVO">
+        UPDATE review SET like_count = like_count + 1 WHERE rno = #{rno}
+    </select>
+
+    <select id="likeDown" resultType="com.example.smartparkpj.domain.ReviewVO">
+        UPDATE review SET like_count = like_count - 1 WHERE rno = #{rno}
     </select>
 </mapper>
