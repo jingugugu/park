@@ -19,14 +19,15 @@ public class InquiryMapperTests {
 
     @Test
     public void testInsert() {
-        InquiryVO inquiryVO = InquiryVO.builder()
-                .title("나는 3번 타이틀")
-                .content("3번내용이지")
-                .mno(1)
-                .build();
-        inquiryMapper.addInquiry(inquiryVO);
-
-        log.info(inquiryMapper);
+        for (int i = 0; i < 10; i++) {
+            InquiryVO inquiryVO = InquiryVO.builder()
+                    .title(i + "번 타이틀")
+                    .content(i + "번 내용이지")
+                    .mno(1)
+                    .build();
+            inquiryMapper.addInquiry(inquiryVO);
+            log.info("Inserted inquiry with title: " + inquiryVO.getTitle());
+        }
     }
 
     @Test
@@ -51,8 +52,8 @@ public class InquiryMapperTests {
     @Test
     public void testUpdateAnswer() {
         InquiryVO inquiryVO = InquiryVO.builder()
-                .ino(35)
-                .answer("35번 테스트코드")
+                .ino(54)
+                .answer("54번 테스트코드")
                 .answer_addDate(LocalDateTime.now())
                 .build();
         inquiryMapper.adminAnswer(inquiryVO);
@@ -70,6 +71,18 @@ public class InquiryMapperTests {
     public void adminInquriryDeleteTest() {
         int ino = 28;
         inquiryMapper.adminInquiryDelete(ino);
+    }
+
+
+    @Test
+    public void adminInquiryGETOneTests() {
+
+        int ino = 64;
+        int mno = 1;
+
+        InquiryVO inquiryVO = inquiryMapper.selectGetRead(ino, mno);
+        log.info("----------------------------------------");
+        log.info(inquiryVO);
     }
 
 }

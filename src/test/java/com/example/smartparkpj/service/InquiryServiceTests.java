@@ -44,6 +44,14 @@ public class InquiryServiceTests {
     }
 
     @Test
+    public void getOneReadTests() {
+        int ino = 61;
+        int mno = 1;
+        inquiryService.getOneRead(ino, mno);
+        log.info("getOneReadTests");
+    }
+
+    @Test
     public void testsUpdateInquiry() {
         InquiryDTO inquiryDTO = InquiryDTO.builder()
                 .ino(12)
@@ -64,7 +72,7 @@ public class InquiryServiceTests {
     @Test
     public void testUpdateAnswer() {
         InquiryDTO inquiryDTO = InquiryDTO.builder()
-                .ino(34)
+                .ino(64)
                 .answer("답변달기")
                 .answer_addDate(LocalDateTime.now())
                 .build();

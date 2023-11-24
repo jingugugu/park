@@ -14,11 +14,15 @@ public interface InquiryMapper {
 
     InquiryVO selectOne(int ino);
 
+    InquiryVO selectGetRead(int ino, int mno);
+
     List<Date> selectFormattedDate();
 
     void addInquiry(InquiryVO inquiryVO);
 
     void updateInquiry(InquiryVO inquiryVO);
+
+    void adminAnswer(InquiryVO inquiryVO);
 
     void deleteInquiry(int ino);
 
@@ -26,7 +30,6 @@ public interface InquiryMapper {
 
     void adminInquiryDelete(int ino);
 
-    void adminAnswer(InquiryVO inquiryVO);
 
 
 

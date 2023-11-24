@@ -57,13 +57,16 @@ public class InquiryServiceImpl implements InquiryService{
     }
 
     @Override
-    public void modify(InquiryDTO inquiryDTO) {
-        log.info("inquiryDTO = " + inquiryDTO);
-        InquiryVO inquiryVO = modelMapper.map(inquiryDTO, InquiryVO.class);
-        inquiryMapper.updateInquiry(inquiryVO);
-
+    public InquiryDTO getOneRead(int ino, int mno) {
+        InquiryVO inquiryVO = inquiryMapper.selectGetRead(ino, mno);
         log.info(inquiryVO);
+        InquiryDTO inquiryDTO = modelMapper.map(inquiryVO, InquiryDTO.class);
+        log.info("----------------------------------");
+        log.info(inquiryDTO);
+
+        return inquiryDTO;
     }
+
 
     @Override
     public void remove(int ino) {
@@ -80,14 +83,20 @@ public class InquiryServiceImpl implements InquiryService{
     }
 
     @Override
+    public void modify(InquiryDTO inquiryDTO) {
+        log.info("inquiryDTO = " + inquiryDTO);
+        InquiryVO inquiryVO = modelMapper.map(inquiryDTO, InquiryVO.class);
+        inquiryMapper.updateInquiry(inquiryVO);
+
+        log.info(inquiryVO);
+    }
+    @Override
     public void updateAnswer(InquiryDTO inquiryDTO) {
         log.info("updateAnswer = " + inquiryDTO.getAnswer());
-        log.info("-----------------------------------------");
-
         InquiryVO inquiryVO = modelMapper.map(inquiryDTO, InquiryVO.class);
+        inquiryMapper.adminAnswer(inquiryVO);   // 값이 안뜸
+        log.info("-----------------------------업데이트 앤서");
         log.info(inquiryVO);
-
-        inquiryMapper.adminAnswer(inquiryVO);
     }
 
     @Override

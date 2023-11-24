@@ -33,7 +33,7 @@
                         <tbody>
                         <tr th:each="inquiry : ${adminInquiryDTO}">
                             <td>
-                                <a th:href="|@{/admin/inquiry/adminRead(ino =${inquiry.ino})}&${link}|"
+                                <a th:href="@{/admin/inquiry/adminRead(ino=${inquiry.ino}, mno=${inquiry.mno})}"
                                    th:text="${inquiry.title}"
                                    style="text-decoration: underline; color: red"></a>
                                 <!--<a th:href="@{'/inquiry/read' + ${inquiry.ino}}" th:text="${inquiry.title}"-->

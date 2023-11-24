@@ -12,7 +12,7 @@
     </insert>
 
     <select id="selectAll" parameterType="com.example.smartparkpj.domain.InquiryVO">
-        SELECT * FROM inquiry WHERE mno = #{mno} ORDER BY ino DESC
+        SELECT * FROM inquiry WHERE mno = #{mno} ORDER BY in_addDate DESC
     </select>
 
     <select id="selectOne" parameterType="com.example.smartparkpj.domain.InquiryVO">
@@ -21,6 +21,10 @@
 
     <select id="selectFormattedDate" resultType="java.util.Date">
         SELECT DATE_FORMAT(in_addDate, '%Y-%m-%d') AS formatted_date FROM inquiry
+    </select>
+
+    <select id="selectGetRead" parameterType="com.example.smartparkpj.domain.InquiryVO">
+        SELECT * FROM inquiry WHERE mno = #{mno} AND ino = #{ino}
     </select>
 
     <update id="updateInquiry">
@@ -35,8 +39,8 @@
         SELECT * FROM inquiry ORDER BY `state` ASC, in_addDate ASC
     </select>
 
-    <update id="adminAnswer" parameterType="com.example.smartparkpj.domain.InquiryVO">
-        UPDATE inquiry SET answer = #{answer}, answer_addDate = now(), `state`= 1 WHERE ino = #{ino}
+    <update id="adminAnswer">
+        UPDATE inquiry SET answer_addDate = now(), `state`= 1, answer = #{answer} WHERE ino = #{ino}
     </update>
 
     <delete id="adminInquiryDelete" parameterType="com.example.smartparkpj.domain.InquiryVO">

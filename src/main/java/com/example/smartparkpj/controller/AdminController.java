@@ -302,42 +302,51 @@ public class AdminController {
     }
 
     @PostMapping("/inquiry/inquiryList")
-    public String postInquiryAdminList() {
+    public void postInquiryAdminList() {
         log.info("PostAdminList");
-
-        return "redirect:/admin/inquiry/addInquiry";
     }
 
-    @GetMapping({"/inquiry/adminRead", "/inquiry/adminModify"})
-    public void getReadInquiry(int ino, Model model) {
-        log.info("GetMapping/adminRead ...");
-        log.info(ino);
+
+    @GetMapping("/inquiry/adminRead")
+    public void getReadInquiry(InquiryDTO inquiryDTO, Model model) {
+        log.info("GetMapping/adminRead...");
+
+        int ino = inquiryDTO.getIno();
+
+        model.addAttribute("inquiryDTO", inquiryService.getOne(ino));
+    }
+
+    @GetMapping("/inquiry/adminModify")
+    public void getModifyInquiry(InquiryDTO inquiryDTO, Model model) {
+        log.info("GetMapping/adminModify ...");
+
+        int ino = inquiryDTO.getIno();
 
         model.addAttribute("inquiryDTO", inquiryService.getOne(ino));
     }
 
     @PostMapping("/inquiry/adminModify")
-    public String postModifyInquiry(InquiryDTO inquiryDTO, Model model) {
-        log.info("PostMapping/ModifyInquiry ... ");
+    public String postModifyInquiry(InquiryDTO inquiryDTO, BindingResult bindingResult, Model model) {
+        log.info("PostMapping/admin/inquiry/adminModify...");
 
-        inquiryService.updateAnswer(inquiryDTO);
-        return "redirect:/admin/inquiry/adminRead";
-    }
+        inquiryDTO.getIno();
 
-    @PostMapping("/inquiry/adminRead")
-    public String adminAddAnswer(InquiryDTO inquiryDTO, Model model) {
-        log.info("PostMapping/inquiry/adminRead");
+        if (bindingResult.hasErrors()) {
+            log.info("has error...");
+
+            return "redirect:/admin/inquiry/adminModify?";
+        }
+
+        log.info("PostMapping--inquiry---adminModify-----------------------------");
         log.info(inquiryDTO);
-
         inquiryService.updateAnswer(inquiryDTO);
-        return "redirect:/admin/inquiry/adminModify";
+        
+        return "redirect:/admin/inquiry/adminRead?ino="+inquiryDTO.getIno()+"&mno="+inquiryDTO.getMno();
     }
 
     @PostMapping("/inquiry/adminRemove")
-    public String adminInquiryRemove(InquiryDTO inquiryDTO, Model model) {
+    public String adminInquiryRemove(int ino, Model model) {
         log.info("PostMapping/admin/inquiry/adminRemove");
-        log.info(inquiryDTO);
-        int ino = inquiryDTO.getIno();
 
         inquiryService.adminRemove(ino);
         return "redirect:/admin/inquiry/inquiryList";

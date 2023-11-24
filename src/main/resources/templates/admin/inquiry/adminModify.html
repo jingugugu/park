@@ -11,73 +11,57 @@
 </head>
 <body>
 <div layout:fragment="content">
-  <form th:action="@{/admin/inquiry/adminModify}" method="post" class="frmAdd" id="adminAnswer" name="answer">
+  <form th:action="@{/admin/inquiry/adminModify}" method="post" id="Remove">
   <!--<h3 style="margin-top: 50px; margin-bottom: 30px"><strong>내가 작성한 문의</strong></h3>-->
   <!--<form name="frmAdd" action="/inquiry/modify" method="post" class="form-horizontal">-->
     <!-- 제목 -->
   <div class="form-group row align-center justify-content-center">
     <div class="card col-xl-12" style="margin-top: 50px;">
-      <div th:each="inquiry : ${inquiryDTO}">
-        <input type="hidden" name="ino" th:value="${inquiry.ino}">
-        <input type="hidden" name="mno" th:value="${inquiry.mno}">
-        <input type="hidden" name="title" th:value="${inquiry.title}">
-        <input type="hidden" name="content" th:value="${inquiry.content}">
-        <input type="hidden" name="nickName" th:value="${inquiry.nickName}">
-        <input type="hidden" name="answer" th:value="${inquiry.answer}">
+        <input type="hidden" name="ino" th:value="${inquiryDTO.ino}">
+        <input type="hidden" name="mno" th:value="${inquiryDTO.mno}">
+        <input type="hidden" name="title" th:value="${inquiryDTO.title}">
+        <input type="hidden" name="content" th:value="${inquiryDTO.content}">
+        <input type="hidden" name="nickName" th:value="${inquiryDTO.nickName}">
         <div class="card-title">
-          <div class="align-right" style="padding: 20px" th:text="${#temporals.format(inquiry.in_addDate, 'yyyy-MM-dd HH:mm')}"></div>
-          <div style="font-size: 20px; padding-top: 15px" th:text="${inquiry.title}"></div>
+          <div class="align-right" style="padding: 20px" th:text="${#temporals.format(inquiryDTO.in_addDate, 'yyyy-MM-dd HH:mm')}"></div>
+          <div style="font-size: 20px; padding-top: 15px" th:text="${inquiryDTO.title}"></div>
             <hr>
         </div>
         <div class="card-body">
-          <div th:text="${inquiry.content}"></div>
-          <div th:if="${inquiry.answer != null and not #strings.isEmpty(inquiry.answer)}">
+          <div th:text="${inquiryDTO.content}"></div>
+          <div th:if="${inquiryDTO.answer != null and not #strings.isEmpty(inquiryDTO.answer)}">
             <hr style="margin-top: 20px">
             <br>
             <div style="margin-top: 50px; display: flex; flex-direction: column; width: 1140px;">
               <!--<div class="align-middle"></div>-->
               <span>
                 <b>
-                  <p style="font-size: 20px;">해당 문의 답변</p></b>
+                  <p style="font-size: 20px;">해당문의 답변하기</p></b>
                   <p style="margin-left: 935px;"
-                          th:text="${#temporals.format(inquiry.answer_addDate, 'yyyy-MM-dd HH:mm')}"></p>
-                  <p th:value="${inquiry.answer}"></p>
+                          th:text="${#temporals.format(inquiryDTO.answer_addDate, 'yyyy-MM-dd HH:mm')}"></p>
+                  <p th:text="${inquiryDTO.answer}"></p>
               </span>
             </div>
           </div>
         </div>
-        <div th:each="inquiry : ${inquiryDTO}">
           <div class="form-group row" style="margin-top: 20px; display: flex; justify-content: flex-end;">
-            <div th:if="${inquiry.answer == null or #strings.isEmpty(inquiry.answer)}">
+            <div th:if="${inquiryDTO.answer == null or #strings.isEmpty(inquiryDTO.answer)}">
               <br>
               <hr>
               <br>
               <div class="form-group row align-center" style="margin-left: 2px">
                 <h3 style="margin-top: 50px; margin-bottom: 20px; padding-left: 35px"> 해당 문의 답변</h3>
-                <textarea name="content" id="content" cols="50" rows="5" class="form-control" placeholder="내용을 입력하세요"
+                <textarea name="answer" cols="50" rows="5" class="form-control" placeholder="내용을 입력하세요"
                           style="width: 1140px; height: 200px; margin-right: 15px"></textarea>
             </div>
            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <!-- 해당 답변 여부에 따른 버튼 view -->
-  <div th:each="inquiry : ${inquiryDTO}">
-    <div th:if="${inquiry.answer == null or #strings.isEmpty(inquiry.answer)}">
-      <div class="parent-div" style="display: flex; justify-content: flex-end;">
-        <input type="submit" class="btn btn-danger btn-primary submitBtn" value=" 등록 " onclick="return confirmSubmit()">
-        <input type="button" class="btn btn-danger btn-danger ml-2 removeBtn" value=" 삭제 ">
-        <input type="reset" class="btn btn-danger btn-secondary ml-2 cancelBtn" value=" 뒤로 " onclick="goBack()">
-      </div>
-    </div>
-    <div th:if="${inquiry.answer != null and not #strings.isEmpty(inquiry.answer)}">
-      <div class="parent-div" style="display: flex; justify-content: flex-end;">
-      <input type="button" class="btn btn-danger btn-danger ml-2 removeBtn" value=" 삭제 ">
-      <input type="reset" class="btn btn-danger btn-secondary ml-2 cancelBtn" value=" 뒤로 " onclick="return confirmCancel()">
-      </div>
-    </div>
+  <div class="parent-div" style="display: flex; justify-content: flex-end;">
+  <input type="submit" class="btn btn-danger btn-default submitBtn" value=" 등록 " onclick="return confirmSubmit()">
+  <input type="button" class="btn btn-danger btn-danger ml-2 removeBtn" value=" 삭제 " onclick="confirmRemove()">
+  <input type="reset" class="btn btn-danger btn-secondary ml-2 cancelBtn" value=" 취소 " onclick="goBack()">
   </div>
   </form>
   <br>
@@ -85,51 +69,39 @@
 
 <script layout:fragment="script" th:inline="javascript">
 
+    function confirmSubmit() {
+        let answerValue = document.getElementsByName('answer')[0].value;
 
-  // 문의글 수정 관련
-  const formObj = document.querySelector("#adminAnswer");
+        if (!answerValue || answerValue.trim() === '') {
+            alert('답변을 입력해주세요');
+            return false; // 폼 제출 취소
+        }
 
-  function confirmSubmit() {
-
-    if (confirm('답변 작성을 완료 하시겠습니까?')) {
-      if (confirm('답변을 작성하였습니다')){
-        return true;
-      }
-    } else {
-      alert('답변 작성을 취소실하였습니다.');
-      return false;
+        if (confirm('답변 작성을 완료 하시겠습니까?')) {
+            return true;
+        } else {
+            alert('답변 작성을 취소 하였습니다.');
+            return false;
+        }
     }
-  }
-
-  function confirmCancel() {
-    if (confirm('답변 작성을 취소하시겠습니까?')) {
-      goBack(); // 확인을 눌렀을 때 뒤로 가는 동작
-    } else {
-      return false; // 취소를 눌렀을 때 아무 동작 없이 그대로 놔두기
+    // 삭제 관련
+    function confirmRemove() {
+        if (confirm('문의를 삭제하시겠습니까?')) {
+            changeForm('/admin/inquiry/adminRemove'); // 폼 action 변경
+            document.getElementById('Remove').submit(); // 폼 제출
+        } else {
+            alert('삭제를 취소하였습니다.');
+        }
     }
-  }
-
-  document.querySelector('.removeBtn').addEventListener('click', function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (confirm('글을 삭제하시겠습니까?')) {
-      document.getElementById('adminAnswer').submit(); // 확인을 눌렀을 때 폼 제출
-      alert('글 삭제를 완료하였습니다')
-    } else {
-      alert('글 삭제를 취소하였습니다.');
-      return;
-    }
-
-    formObj.action = `/admin/inquiry/adminRemove`;
-    formObj.method = 'post';
-    formObj.submit();
-  })
 
   // 취소버튼
   function goBack() {
     window.history.back();
   }
+
+function changeForm(action) {
+    document.getElementById('Remove').action = action;
+}
 
 </script>
 </body>

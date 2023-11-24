@@ -13,6 +13,8 @@ public interface InquiryService {
 
     InquiryDTO getOne(int ino);
 
+    InquiryDTO getOneRead(int ino, int mno);
+
     void modify(InquiryDTO inquiryDTO);
 
     List<Date> getFormattedDate();
