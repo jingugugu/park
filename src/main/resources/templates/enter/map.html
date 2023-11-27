@@ -6,6 +6,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/park.html}">
 >
+
 <head>
     <meta charset="UTF-8">
     <title>이용시설 위치</title>
@@ -14,13 +15,26 @@
         .category, .category *{margin:0;padding:0;color:#000;}
         .category {
             overflow:hidden;
-            position:absolute;top:10px;left:10px;width:205px;height:65px;z-index:10;border:1px solid black;font-family:'Malgun Gothic','맑은 고딕',sans-serif;font-size:12px;text-align:center;background-color:#fff;}
+            position:absolute;top:10px;left:10px;width:205px;height:65px;z-index:3;border:1px solid black;font-family:'Malgun Gothic','맑은 고딕',sans-serif;font-size:12px;text-align:center;background-color:#fff;}
         .category .menu_selected {background:#FF5F4A;color:#fff;border-left:1px solid #915B2F;border-right:1px solid #915B2F;margin:0 -1px;}
         .category li{list-style:none;float:left;width:50px;height:50px;padding-top:5px;cursor:pointer;}
-        .category .ico_comm {display:block;margin:0 auto 2px;width:22px;height:26px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png') no-repeat;}
-        .category .ico_coffee {background-position:-10px 0;}
-        .category .ico_store {background-position:-10px -36px;}
-        .category .ico_carpark {background-position:-10px -72px;}
+        .category .ico_comm {display:block;margin:0 auto 2px;width:22px;height:26px;}
+        .category .ico_all{
+            background: url('https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-theme-park-summer-travel-flaticons-lineal-color-flat-icons.png') no-repeat;
+            background-size: 100% 100%;
+        }
+        .category .ico_attraction {
+            background: url('https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-theme-park-summer-travel-flaticons-lineal-color-flat-icons.png') no-repeat;
+            background-size: 100% 100%;
+        }
+        .category .ico_shop {
+            background: url('https://img.icons8.com/external-photo3ideastudio-lineal-color-photo3ideastudio/64/external-restaurant-restaurant-photo3ideastudio-lineal-color-photo3ideastudio.png') no-repeat;
+            background-size: 100% 100%;
+        }
+        .category .ico_con {
+            background: url('https://img.icons8.com/emoji/48/convenience-store.png') no-repeat;
+            background-size: 100% 100%;
+        }
 
         .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
         .wrap * {padding: 0;margin: 0;}
@@ -61,24 +75,56 @@
         }
 
         #facilityOverlay img {
-            max-width: 100%;
-            height: auto;
+            width: 100%;
+            height: 200px;
             margin-bottom: 10px;
         }
 
-        #facilityOverlay button {
+        #facilityOverlay a {
+            text-decoration: none;
             width: 100%;
             margin-top: 10px;
             padding: 5px 10px;
             font-size: 14px;
             cursor: pointer;
+            border: 1px solid black;
+            text-align: center;
+            background-color: orange;
+            font-family: 'Noto Sans', sans-serif;
+            color: #333;
+        }
+
+        #facilityOverlay a:hover {
+            background-color: yellow;
+            color: black;
+            border-color: red;
         }
 
         #closeButton {
             width: 100%;
+            margin-top: 10px;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
             background-color: #ff4d4d;
             color: white;
             border: none;
+            font-family: 'Noto Sans', sans-serif;
+        }
+
+        #closeButton:hover {
+            background-color: #ff3333;
+            color: #fff;
+        }
+    </style>
+    <style>
+        .custom-content {
+            font-size: 16px;
+            color: #333333;
+            text-align: center; /* 가운데 정렬 */
+            padding: 10px; /* 내부 여백 */
+            border: 2px solid #000000; /* 테두리 설정 */
+            width: 200px; /* 가로폭 지정 (원하는 값으로 조정) */
         }
     </style>
 </head>
@@ -90,19 +136,19 @@
         <div class="category">
             <ul>
                 <li id="allMenu" onclick="changeMarker('all')">
-                    <span class="ico_comm ico_coffee"></span>
+                    <span class="ico_comm ico_all"></span>
                     전체
                 </li>
                 <li id="attractionMenu" onclick="changeMarker('attraction')">
-                    <span class="ico_comm ico_coffee"></span>
+                    <span class="ico_comm ico_attraction"></span>
                     어트랙션
                 </li>
                 <li id="shopMenu" onclick="changeMarker('shop')">
-                    <span class="ico_comm ico_store"></span>
+                    <span class="ico_comm ico_shop"></span>
                     매장
                 </li>
                 <li id="conMenu" onclick="changeMarker('con')">
-                    <span class="ico_comm ico_carpark"></span>
+                    <span class="ico_comm ico_con"></span>
                     편의시설
                 </li>
             </ul>
@@ -238,7 +284,9 @@
     const shopMarkers = [];
     const conMarkers = [];
         // var markerImageSrc = 'https://mblogthumb-phinf.pstatic.net/20141028_186/anijunkie_1414458460706yEeUx_PNG/91f05e76-5603-11e4-9d59-27aa01e1c669.png?type=w2';
-        const shopMarkerImageSrc = 'https://cdn.icon-icons.com/icons2/2419/PNG/512/restaurant_location_icon_146860.png';  // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
+    const attractionMarkerImageSrc = 'https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-theme-park-summer-travel-flaticons-lineal-color-flat-icons.png'
+    const shopMarkerImageSrc = 'https://img.icons8.com/external-photo3ideastudio-lineal-color-photo3ideastudio/64/external-restaurant-restaurant-photo3ideastudio-lineal-color-photo3ideastudio.png';
+    const conMarkerImageSrc = 'https://img.icons8.com/emoji/48/convenience-store.png';
     // 마커이미지의 주소와, 크기, 옵션으로 마커 이미지를 생성하여 리턴하는 함수입니다
     function createMarkerImage(src, size) {
         let markerImage = new kakao.maps.MarkerImage(src, size);
@@ -289,6 +337,7 @@
         });
 
         currentOverlay = overLay;
+
         // 커스텀 오버레이를 지도에 표시합니다
         overLay.setMap(map);
         if(marker.type === "어트랙션") {
@@ -298,8 +347,9 @@
             document.getElementById("facilityImage").src = "/view/" + markerInfo.fileNames[0] + "/" + marker.type + "/" + markerInfo.sno; // 이미지 동적 생성
         }
         else{
-            document.getElementById("facilityImage").src = "/view/" + markerInfo.fileNames[0] + "/" + marker.type + "/" + markerInfo.cno; // 이미지 동적 생성
+            document.getElementById("facilityImage").src = "/view/" + markerInfo.con_img + "/" + marker.type + "/" + markerInfo.cno; // 이미지 동적 생성
         }
+
     }
 
     function getOverLayContentByType(markerInfo,type) {
@@ -309,25 +359,22 @@
                     return `<div id="facilityOverlay">
                             <h3 id="facilityName">${markerInfo.aname}</h3>
                             <img id="facilityImage" alt="어트랙션 이미지">
-                            <button id="reviewButton" onclick="showReviews()">리뷰 목록</button>
-                            <button id="detailButton" onclick="showDetail()">상세 보기</button>
+                            <a href="/review/read?facility_no=${markerInfo.ano}&type=${type}" id="detailButton">상세 보기</a>
                             <button id="closeButton" onclick="closeOverlay()">닫기</button>
                             </div>`;
                 case "매장":
                     return `<div id="facilityOverlay">
                             <h3 id="facilityName">${markerInfo.shop_name}</h3>
-                            <img id="facilityImage" src="https://example.com/attraction-image.jpg" alt="매장 이미지">
-                            <button id="reviewButton" onclick="showReviews()">리뷰 목록</button>
-                            <button id="detailButton" onclick="showDetail()">상세 보기</button>
+                            <img id="facilityImage" alt="매장 이미지">
+                            <a href="/review/read?facility_no=${markerInfo.sno}&type=${type}" id="detailButton">상세 보기</a>
                             <button id="closeButton" onclick="closeOverlay()">닫기</button>
                             </div>`;
                 case "편의시설":
                 default:
                     return `<div id="facilityOverlay">
                             <h3 id="facilityName">${markerInfo.name}</h3>
-                            <img id="facilityImage" src="https://example.com/attraction-image.jpg" alt="편의시설 이미지">
-                            <button id="reviewButton" onclick="showReviews()">리뷰 목록</button>
-                            <button id="detailButton" onclick="showDetail()">상세 보기</button>
+                            <img id="facilityImage" alt="편의시설 이미지">
+                            <a href="/review/read?facility_no=${markerInfo.cno}&type=${type}" id="detailButton">상세 보기</a>
                             <button id="closeButton" onclick="closeOverlay()">닫기</button>
                             </div>`;
             }
@@ -358,7 +405,11 @@
         let infoWindow = new kakao.maps.InfoWindow({
             content: content,
             position: marker.getPosition(),
-            removable: true
+            removable: false, // 닫기 버튼 표시 여부
+            backgroundColor: '#ffffff', // 배경색 변경
+            borderColor: '#000000', // 테두리색 변경
+            borderWidth: 2, // 테두리 두께 변경
+            zIndex: 1 // 다른 마커 위에 표시
         });
 
         // 지도에 InfoWindow 표시
@@ -366,31 +417,27 @@
         currentInfoWindow = infoWindow;
     }
     // 타입에 따라 다른 content를 반환하는 함수
-    function getWindowContentByType(markerInfo,type) {
+    function getWindowContentByType(markerInfo, type) {
         if (markerInfo) {
-            switch (type){
+            switch (type) {
                 case "어트랙션":
-                    return markerInfo.aname;
+                    return '<div class="custom-content">' + markerInfo.aname + '</div>';
                 case "매장":
-                    return markerInfo.shop_name;
+                    return '<div class="custom-content">' + markerInfo.shop_name + '</div>';
                 case "편의시설":
                 default:
-                    return markerInfo.name;
+                    return '<div class="custom-content">' + markerInfo.name + '</div>';
             }
         } else {
-            return '<div>해당 정보를 가져올 수 없습니다.</div>';
+            return '<div class="custom-content">해당 정보를 가져올 수 없습니다.</div>';
         }
     }
 
     function createAttractionMarkers(){
         for(let i = 0; i < attractionPositions.length; i++){
 
-            let imageSize = new kakao.maps.Size(35, 35);
-                // imageOptions = {
-                //     spriteOrigin: new kakao.maps.Point(10, 0),
-                //     spriteSize: new kakao.maps.Size(36, 98)
-                // };
-            let markerImage = createMarkerImage(shopMarkerImageSrc, imageSize)
+            let imageSize = new kakao.maps.Size(50, 50);
+            let markerImage = createMarkerImage(attractionMarkerImageSrc, imageSize)
             let marker = createMarker(attractionPositions[i], markerImage);
 
             attractionMarkers.push(marker);
@@ -400,11 +447,7 @@
     function createShopMarkers(){
         for(let i = 0; i < shopPositions.length; i++){
 
-            let imageSize = new kakao.maps.Size(22, 26);
-                // imageOptions = {
-                //     spriteOrigin: new kakao.maps.Point(8, 0),
-                //     spriteSize: new kakao.maps.Size(36, 98)
-                // };
+            let imageSize = new kakao.maps.Size(50, 50);
             let markerImage = createMarkerImage(shopMarkerImageSrc, imageSize)
             let marker = createMarker(shopPositions[i], markerImage);
 
@@ -415,12 +458,8 @@
     function createConMarkers(){
         for(let i = 0; i < conPositions.length; i++){
 
-            let imageSize = new kakao.maps.Size(22, 26);
-                // imageOptions = {
-                //     spriteOrigin: new kakao.maps.Point(7, 0),
-                //     spriteSize: new kakao.maps.Size(36, 98)
-                // };
-            let markerImage = createMarkerImage(shopMarkerImageSrc, imageSize)
+            let imageSize = new kakao.maps.Size(50, 50);
+            let markerImage = createMarkerImage(conMarkerImageSrc, imageSize)
             let marker = createMarker(conPositions[i], markerImage);
 
             conMarkers.push(marker);
@@ -515,9 +554,9 @@
             let message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
             message += '경도는 ' + latlng.getLng() + ' 입니다';
 
-            if (currentOverlay) { // 열려있는 오버레이를 닫는다.
-                currentOverlay.setMap(null);
-            }
+            // if (currentOverlay) { // 열려있는 오버레이를 닫는다.
+            //     currentOverlay.setMap(null);
+            // }
 
             const resultDiv = document.getElementById('result');
             resultDiv.innerHTML = message;
