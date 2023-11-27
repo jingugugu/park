@@ -23,4 +23,6 @@ public interface ReviewService {
     void like_count(int rno);
 
     void like_countDown(int rno);
+
+    List<ReviewDTO> getAll();
 }

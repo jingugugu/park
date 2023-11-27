@@ -21,7 +21,7 @@ public class TicketServiceImpl implements TicketService{
     private final TicketMapper ticketMapper;
     @Override
     public List<TicketDTO> getAll() {
-                List<TicketVO> voLsit = ticketMapper.selectAll();
+        List<TicketVO> voLsit = ticketMapper.selectAll();
         List<TicketDTO> dtoList = new ArrayList<>();
         for(TicketVO ticketVO : voLsit){
             TicketDTO ticketDTO = modelMapperConfig.map(ticketVO, TicketDTO.class);

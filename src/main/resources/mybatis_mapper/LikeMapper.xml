@@ -15,4 +15,8 @@
     <select id="setOne" resultType="com.example.smartparkpj.domain.LikeVO">
         SELECT * FROM `like` where rno = #{rno} AND mno = #{mno}
     </select>
+
+    <select id="selectAll" resultType="com.example.smartparkpj.domain.LikeVO">
+        SELECT * FROM `like` where  mno = #{mno}
+    </select>
 </mapper>

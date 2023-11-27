@@ -63,6 +63,7 @@ public class ReviewMapperTests {
         }
     }
 
+    //--------------좋아요 기능 테스트 목록 시작-------------------------
     @Test
     public void deletTest(){
         reviewMapper.delet(18);
@@ -76,5 +77,12 @@ public class ReviewMapperTests {
     @Test
     public void LikeDown(){
         reviewMapper.likeDown(2);
+    }
+    //--------------좋아요 기능 테스트 목록 끝-------------------------
+
+    @Test
+    public void listTest(){
+        List<ReviewVO> reviewVOS = reviewMapper.selectAll();
+        log.info("리뷰 전체 목록 : " + reviewVOS);
     }
 }

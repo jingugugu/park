@@ -3,14 +3,19 @@ package com.example.smartparkpj.service;
 import com.example.smartparkpj.domain.LikeVO;
 import com.example.smartparkpj.domain.MemberVO;
 import com.example.smartparkpj.domain.ReviewVO;
+import com.example.smartparkpj.domain.TicketVO;
 import com.example.smartparkpj.dto.LikeDTO;
 import com.example.smartparkpj.dto.MemberDTO;
+import com.example.smartparkpj.dto.TicketDTO;
 import com.example.smartparkpj.mapper.LikeMapper;
 import com.example.smartparkpj.mapper.ReviewMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Log4j2
@@ -38,5 +43,16 @@ public class LikeServiceImpl implements LikeService{
        LikeDTO likeDTO = modelMapperConfig.map(likeVO, LikeDTO.class);
 
        return likeDTO;
+    }
+
+    @Override
+    public List<LikeDTO> selectAll(int mno) {
+        List<LikeVO> voLsit = likeMapper.selectAll(mno);
+        List<LikeDTO> dtoList = new ArrayList<>();
+        for(LikeVO likeVO : voLsit){
+            LikeDTO likeDTO = modelMapperConfig.map(likeVO, LikeDTO.class);
+            dtoList.add(likeDTO);
+        }
+        return dtoList;
     }
 }

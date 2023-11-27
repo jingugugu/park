@@ -101,4 +101,15 @@ public class ReviewServiceImpl implements ReviewService {
     public void like_countDown(int rno) {
         reviewMapper.likeDown(rno);
     }
+
+    @Override
+    public List<ReviewDTO> getAll() {
+        List<ReviewVO> voLsit = reviewMapper.selectAll();
+        List<ReviewDTO> dtoList = new ArrayList<>();
+        for(ReviewVO reviewVO : voLsit){
+            ReviewDTO reviewDTO = modelMapperConfig.map(reviewVO, ReviewDTO.class);
+            dtoList.add(reviewDTO);
+        }
+        return dtoList;
+    }
 }

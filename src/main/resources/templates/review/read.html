@@ -9,20 +9,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        /* 추가된 스타일 */
+        .average-rating {
+            font-size: 24px; /* 평균 별점 폰트 크기 */
+            margin-bottom: 20px; /* 하단 여백 추가 */
+        }
+
+        .star-rating {
+            font-size: 20px; /* 별표 폰트 크기 */
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
-    <div>
+    <!-- 수정된 리뷰 평균 별점 표시 부분 -->
+    <div class="average-rating">
         <p>리뷰 평균 별점: <span th:text="${reviewScore}"></span></p>
         <!-- 별표 표시 -->
-        <span th:each="i : ${#numbers.sequence(1, 5)}">
-        <span th:if="${i le reviewScore}">
-            ★
+        <span class="star-rating" th:each="i : ${#numbers.sequence(1, 5)}">
+            <span th:if="${i le reviewScore}">★</span>
+            <span th:unless="${i le reviewScore}">☆</span>
         </span>
-        <span th:unless="${i le reviewScore}">
-            ☆
-        </span>
-    </span>
     </div>
     <!--comments start-->
     <div class="comment-area">

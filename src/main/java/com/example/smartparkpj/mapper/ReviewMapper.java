@@ -30,4 +30,6 @@ public interface ReviewMapper {
     void likeUp(int rno);
 
     void likeDown(int rno);
+
+    List<ReviewVO> selectAll();// 어트렉션/시설 리뷰 동일 작성자 있는지 유효성 검사 용
 }

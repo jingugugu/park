@@ -51,6 +51,7 @@ public class ReviewServiceTests {
         log.info("reviewService 평균점수 : " + score);
     }
 
+    //--------------리뷰 좋아요 검사 시작------------------------
     @Test
     public void DeletTest(){
         reviewService.delet(1);
@@ -63,5 +64,12 @@ public class ReviewServiceTests {
     @Test
     public void Like_countDownTest(){
         reviewService.like_countDown(2);
+    }
+    //--------------리뷰 좋아요 검사 끝------------------------
+
+    @Test
+    public void TestSelect(){
+        List<ReviewDTO> reviewDTOS = reviewService.getAll();
+        log.info("리뷰 모든 목록 서비스 테스트 : " + reviewDTOS);
     }
 }

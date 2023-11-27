@@ -40,4 +40,8 @@
     <select id="likeDown" resultType="com.example.smartparkpj.domain.ReviewVO">
         UPDATE review SET like_count = like_count - 1 WHERE rno = #{rno}
     </select>
+
+    <select id="selectAll" resultType="com.example.smartparkpj.domain.ReviewVO">
+        SELECT * FROM review
+    </select>
 </mapper>

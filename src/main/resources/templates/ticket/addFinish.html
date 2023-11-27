@@ -49,7 +49,6 @@
                         <div class="about-list" th:each="order : ${orderDTO}">
                         <h4 class="mb20">구매하신 티켓 정보/목록</h4>
                             <ul class="arrow arrow-chevron-circle-right offer-list">
-                                <li th:text="'이용중 인 이메일 : ' + ${order.email_id}"></li>
                                 <li th:text="'예매 일자 : ' + ${order.orderDate}"></li>
                                 <li th:text="'방문 일자 : ' + ${order.startDate}"></li>
                                 <li th:text="'티켓 만료 날짜 : ' + ${order.endDate}"></li>

@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 @SpringBootTest
 @Log4j2
 public class LikeServiceTest {
@@ -26,5 +28,11 @@ public class LikeServiceTest {
     public void likeDeletTest(){
         LikeDTO likeDTO = likeService.setOne(4, 4);
         log.info("서브스 라이크 검사 : " + likeDTO);
+    }
+
+    @Test
+    public void selectAllTest(){
+        List<LikeDTO> likeDTOS = likeService.selectAll(3);
+        log.info("라이크 서브스 : " + likeDTOS);
     }
 }

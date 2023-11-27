@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 @SpringBootTest
 @Log4j2
 public class LikeMapperTests {
@@ -30,5 +32,11 @@ public class LikeMapperTests {
     public void LikeSetTest(){
         LikeVO likeVO = likeMapper.setOne(4, 4);
         log.info("잘 보라고 좀 : " + likeVO);
+    }
+
+    @Test
+    public void LikeAllTest(){
+        List<LikeVO> likeVOS = likeMapper.selectAll(3);
+        log.info("라이크 올 : " + likeVOS);
     }
 }
