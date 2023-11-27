@@ -66,12 +66,12 @@
                                 </div><!--좋아요 작업 해줘야함-->
 
                                 <!--삭제 버튼 처리 -->
-                                <a class="reply-link" th:href="@{/review/delet(rno=${review.rno})}"
+                                <a class="reply-link"
                                    th:if="${review.email_id} == ${#authentication.getName()}"
-                                   style="float: right; margin-top: -70px; margin-right: 200px; font-size: 15px">
+                                   style="float: right; margin-top: -70px; margin-right: 200px; font-size: 15px; cursor: pointer;"
+                                   th:onclick="'javascript:confirmDelete(\'' + ${review.rno} + '\');'">
                                     삭제
                                 </a>
-
                             </li>
                         </ul>
                 </div>
@@ -148,6 +148,18 @@
         formObj.submit();
     },false)
 
+    //--------------- 삭제 버튼 처리 ---------------
+    function confirmDelete(reviewId) {
+        var result = confirm("삭제하시겠습니까?");
+
+        if (result) {
+            // "확인"을 눌렀을 때의 처리
+            window.location.href = '/review/delet?rno=' + reviewId;
+        } else {
+            // "취소"를 눌렀을 때의 처리
+            // 필요하다면 추가적인 로직을 넣을 수 있습니다.
+        }
+    }
 </script>
 </body>
 </html>

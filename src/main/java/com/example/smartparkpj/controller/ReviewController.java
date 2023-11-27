@@ -118,6 +118,8 @@ public class ReviewController {
         return "redirect:/review/list";
     }
 
+    //-------------------------------------------------------------------
+
     @GetMapping("/delet")
     public String delet(ReviewDTO reviewDTO){
         int rno = reviewDTO.getRno();
