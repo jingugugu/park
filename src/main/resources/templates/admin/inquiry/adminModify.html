@@ -21,6 +21,7 @@
         <input type="hidden" name="mno" th:value="${inquiryDTO.mno}">
         <input type="hidden" name="title" th:value="${inquiryDTO.title}">
         <input type="hidden" name="content" th:value="${inquiryDTO.content}">
+        <input type="hidden" name="email_id" th:value="${inquiryDTO.email_id}">
         <input type="hidden" name="nickName" th:value="${inquiryDTO.nickName}">
         <div class="card-title">
           <div class="align-right" style="padding: 20px" th:text="${#temporals.format(inquiryDTO.in_addDate, 'yyyy-MM-dd HH:mm')}"></div>

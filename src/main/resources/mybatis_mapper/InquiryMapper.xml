@@ -5,8 +5,12 @@
 <mapper namespace="com.example.smartparkpj.mapper.InquiryMapper">
 
     <insert id="addInquiry" parameterType="com.example.smartparkpj.domain.InquiryVO">
-        INSERT INTO inquiry (title, content, mno, `state`, nickName, in_addDate)
-        VALUES (#{title}, #{content}, #{mno}, #{state},
+        INSERT INTO inquiry (title, content, mno, `state`, email_id, nickName, in_addDate)
+        VALUES (#{title},
+                #{content},
+                #{mno},
+                #{state},
+                (SELECT email_id FROM member WHERE mno = #{mno}),
                 (SELECT nickName FROM member WHERE mno = #{mno}),
                 now())
     </insert>

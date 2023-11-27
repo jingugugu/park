@@ -1,10 +1,12 @@
 package com.example.smartparkpj.service;
 
+import com.example.smartparkpj.dto.InquiryDTO;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -96,5 +98,52 @@ public class MailSenderServiceImpl implements MailSenderService{
             }
         }
         return key.toString();
+    }
+
+
+    // 문의글 메일전송 관련된코드 - 오승훈
+    @Override
+    public boolean sendReplyEmail(String to, String subject, String text) {    // 문의글 답변시 전송
+
+        log.info(to);
+        log.info(subject);
+        log.info(text);
+
+        try {
+            MimeMessage message = replyMessageByInquiry(to, subject, text);
+            mailSender.send(message);
+            System.out.println("이메일이 성공적으로 전송되었습니다.");
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("이메일 전송 중 오류가 발생했습니다: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    
+    private MimeMessage replyMessageByInquiry(String mailTo, String subject, String text) throws Exception {
+        // 회원 가입시 인증 메일 관련 내용 작성
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+
+        helper.setTo(mailTo);
+        helper.setSubject(subject);
+        helper.setText(text, true); // true: HTML 형식으로 전송
+
+        message.addRecipients(Message.RecipientType.TO, mailTo);    // 보내는 대상
+        message.setSubject("Smart_Park 문의답변 완료");   // 제목
+
+        String messageText ="";
+        messageText += "<div style='margin:20px;'>";
+        messageText += "<br>";
+        messageText += "<p>문의 하신 글에 답변이 달렸습니다 </p>";
+        messageText += "<br>";
+        message.setText(messageText,"utf-8","html");    // 내용
+        message.setFrom(new InternetAddress(mailFrom, mailFromName));   // 보내는사람
+
+        return message;
     }
 }

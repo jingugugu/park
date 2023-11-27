@@ -1,23 +1,19 @@
 package com.example.smartparkpj.controller;
 
 import com.example.smartparkpj.dto.*;
-import com.example.smartparkpj.service.AdminService;
-import com.example.smartparkpj.service.EnterService;
-import com.example.smartparkpj.service.InquiryService;
-import com.example.smartparkpj.service.TicketService;
+import com.example.smartparkpj.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +42,8 @@ public class AdminController {
     final private TicketService ticketService;
 
     final private InquiryService inquiryService;
+
+    private final MailSenderService mailSenderService;
 
 
     @GetMapping("")
@@ -293,6 +291,7 @@ public class AdminController {
     
     /* Inquiry(문의) 관련 작업 */
 
+
     @GetMapping("/inquiry/inquiryList")
     public void getInquiryAdminList(Model model) {
         log.info("GetAdminList ...");
@@ -325,16 +324,39 @@ public class AdminController {
         model.addAttribute("inquiryDTO", inquiryService.getOne(ino));
     }
 
+    @GetMapping("/sendConfirmMail")
+    @ResponseBody
+    public String sendConfirmMail(String mailTo, HttpSession session) throws Exception {
+        String confirmKey = "";
+
+        try {
+            if (mailSenderService.sendReplyEmail(mailTo,"Smart_Park Confirm Email", "Your confirmation key: " + confirmKey)) {
+                session.setAttribute("reply", confirmKey);
+                return "reply true";
+            }
+            else {
+                return "reply false";
+            }
+        } catch (Exception e) {
+            return "reply false";
+        }
+    }
+
     @PostMapping("/inquiry/adminModify")
     public String postModifyInquiry(InquiryDTO inquiryDTO, BindingResult bindingResult, Model model) {
         log.info("PostMapping/admin/inquiry/adminModify...");
+        log.info(inquiryDTO);
 
-        inquiryDTO.getIno();
-
-        if (bindingResult.hasErrors()) {
-            log.info("has error...");
-
-            return "redirect:/admin/inquiry/adminModify?";
+        if (inquiryDTO.getState() == 0) {
+            try {
+                log.info("/inquiry/adminModify try----------------------------------------------------");
+                log.info("메일 샌더 서비스 = " + mailSenderService);
+                mailSenderService.sendReplyEmail(inquiryDTO.getEmail_id(), "Smart_Park 문의답변 완료", "문의 하신 글에 답변이 달렸습니다");
+                // 이메일 전송 성공 시 처리할 내용
+            } catch (Exception e) {
+                log.info("/inquiry/adminModify catch----------------------------------------------------");
+                // 이메일 전송 실패 시 처리할 내용
+            }
         }
 
         log.info("PostMapping--inquiry---adminModify-----------------------------");
