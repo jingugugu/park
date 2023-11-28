@@ -2,10 +2,8 @@ package com.example.smartparkpj.service;
 
 import com.example.smartparkpj.domain.MemberVO;
 import com.example.smartparkpj.domain.ReviewVO;
-import com.example.smartparkpj.domain.TicketVO;
 import com.example.smartparkpj.dto.*;
-import com.example.smartparkpj.mapper.MemberMapper;
-import com.example.smartparkpj.mapper.ReviewMapper;
+import com.example.smartparkpj.mapper.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -24,6 +22,13 @@ public class ReviewServiceImpl implements ReviewService {
     private final ModelMapper modelMapperConfig;
 
     private final MemberMapper memberMapper;
+
+    private final AttractionMapper attractionMapper;
+
+    private final ShopMapper shopMapper;
+
+    private final ConvenienceMapper convenienceMapper;
+
 
     @Override
     public PageResponseDTO<ReviewDTO>getList(PageRequestDTO pageRequestDTO) {
@@ -61,6 +66,17 @@ public class ReviewServiceImpl implements ReviewService {
         ReviewVO reviewVO = modelMapperConfig.map(reviewDTO, ReviewVO.class);
         log.info("service......" + reviewVO);
         reviewMapper.insert(reviewVO);
+        float avgScore = reviewMapper.getAvgScore(reviewDTO.getFacility_no(),reviewDTO.getType());
+        log.info("평균 점수 : " + avgScore);
+        if(reviewDTO.getType().equals("어트랙션")){
+            attractionMapper.updateScore(reviewDTO.getFacility_no(),avgScore);
+        }
+        else if(reviewDTO.getType().equals("매장")){
+            shopMapper.updateScore(reviewDTO.getFacility_no(),avgScore);
+        }
+        else if(reviewDTO.getType().equals("편의시설")){
+            convenienceMapper.updateScore(reviewDTO.getFacility_no(),avgScore);
+        }
     }
 
     @Override
@@ -88,8 +104,8 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void delet(int rno) {
-        reviewMapper.delet(rno);
+    public void delete(int rno) {
+        reviewMapper.delete(rno);
     }
 
     @Override

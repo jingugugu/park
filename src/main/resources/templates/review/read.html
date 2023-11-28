@@ -20,61 +20,420 @@
             font-size: 20px; /* 별표 폰트 크기 */
         }
     </style>
+    <style>
+        h2{
+            font-family: 'NotoSans-Bold', '맑은 고딕', 'Malgun Gothic', sans-serif;
+            font-size: 50px;
+            color: #000;
+            text-align: center;
+            padding-top: 40px;
+        }
+        .h2Txt {
+            font-size: 18px;
+            color: #555;
+            line-height: 30px;
+            text-align: center;
+            margin-top: 28px;
+        }
+        .tagArea {
+            text-align: center;
+            margin-top: 35px;
+        }
+        .tagArea > div {
+            display: inline-block;
+            padding-left: 34px;
+        }
+
+        .tagArea > div a {
+            display: inline-block;
+            padding: 0 20px;
+            height: 38px;
+            border: 1px solid #e1e1e1;
+            font-size: 16px;
+            color: #555;
+            line-height: 38px;
+            background: #fff;
+            border-radius: 20px;
+            margin-left: 5px;
+        }
+        /* Swiper 컨테이너의 스타일 */
+        .swiper-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        /* 네비게이션 버튼 스타일 조절 */
+        .swiper-button-next, .swiper-button-prev {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        /* 다음 버튼의 위치 조절 */
+        .swiper-button-next {
+            right: 10px; /* 우측 여백 조절 */
+        }
+
+        /* 이전 버튼의 위치 조절 */
+        .swiper-button-prev {
+            left: 10px; /* 좌측 여백 조절 */
+        }
+
+        /* 페이지네이션의 위치 조절 */
+        .swiper-pagination {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        .swiper-slide img {
+            width: 100%; /* 부모 컨테이너에 맞춰지도록 100%로 설정 */
+            height: 450px;
+        }
+
+        .rideInfo {
+            padding: 80px 0;
+            background-color: #ececec;
+        }
+        .rideInfo .cardArea {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            text-align: center;
+            margin-top: 80px;
+        }
+        .rideInfo .cardArea .card{
+            padding: 30px;
+            width: 30%;
+            height: 345px;
+            margin: 0 0 20px 3%;
+        }
+        .rideInfo .cardArea .card .txt {
+            font-size: 22px;
+            color: #000;
+            margin-top: 19px;
+        }
+        .rideInfo .cardArea .card .boldDiv {
+            display: table;
+            width: 100%;
+            height: 180px;
+        }
+        .rideInfo .cardArea .card .boldTxt {
+            font-size: 26px;
+        }
+        .rideInfo .cardArea .card .lightDiv {
+            display: table;
+            width: 100%;
+            height: 180px;
+        }
+        .rideInfo .cardArea .card .lightTxt {
+            display: table-cell;
+            vertical-align: middle;
+            font-size: 16px;
+            color: #000;
+            line-height: 26px;
+            margin-top: 65px;
+        }
+        .subTit {
+            font-family: 'NotoSans-Bold', '맑은 고딕', 'Malgun Gothic', sans-serif;
+            font-size: 28px;
+            color: #000;
+            text-align: center;
+            margin-top: 100px;
+        }
+        .rideInfo .restArea {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .rideInfo .restArea p {
+            display: inline-block;
+            padding: 120px 5px 0;
+            min-width: 100px;
+            font-size: 16px;
+            color: #000;
+        }
+        .rideInfo .restArea p.icon1 {
+            background: url('https://adventure.lotteworld.com/common/images/icon/rideInfo_rest_icon1.png') no-repeat 50% 0;
+            margin: 0 15px;
+        }
+        .rideInfo .restArea p.icon2 {
+            background: url('https://adventure.lotteworld.com/common/images/icon/rideInfo_rest_icon2.png') no-repeat 50% 0;
+        }
+        .rideInfo .restArea p.icon3 {
+            background: url('https://adventure.lotteworld.com/common/images/icon/rideInfo_rest_icon3.png') no-repeat 50% 0;
+        }
+        .rideInfo .restArea p.icon4 {
+            background: url('https://adventure.lotteworld.com/common/images/icon/rideInfo_rest_icon4.png') no-repeat 50% 0;
+        }
+    </style>
+    <style>
+        .comment-meta-date{
+            margin-top: 5px;
+        }
+    </style>
+    <style>
+        .viewType3{
+            display: flex;
+            flex-direction: row;
+        }
+        .infoTxtArea{
+            padding: 15px;
+        }
+        .infoTxtArea li{
+            padding-left: 90px;
+            margin: 15px 0;
+        }
+        .viewType3 .infoTxtArea li .tableCell {
+            display: table-cell;
+            vertical-align: middle;
+            min-height: 80px;
+        }
+        .viewType3 .infoTxtArea li .tableCell .txt1 {
+            margin-bottom: 10px;
+        }
+        .viewType3 .infoTxtArea li .txt1 {
+            font-size: 22px;
+        }
+        .viewType3 .infoTxtArea li .txt2 {
+            font-size: 16px;
+            line-height: 26px;
+            margin-top: 12px;
+        }
+        .viewType3 .infoTxtArea li.op1 {
+            background: url('https://adventure.lotteworld.com/common/images/icon/dininginfo_icon1.png') no-repeat 0 center;
+        }
+        .viewType3 .infoTxtArea li.op2 {
+            background: url('https://adventure.lotteworld.com/common/images/icon/dininginfo_icon2.png') no-repeat 0 center;
+        }
+        .viewType3 .infoTxtArea li.op3 {
+            background: url('https://adventure.lotteworld.com/common/images/icon/dininginfo_icon3.png') no-repeat 0 center;
+        }
+        .viewType3 .infoTxtArea li.op4 {
+            background: url('https://adventure.lotteworld.com/common/images/icon/dininginfo_icon4.png') no-repeat 0 center;
+        }
+        .viewType3 .infoTxtArea li.op5 {
+            background: url('https://adventure.lotteworld.com/common/images/icon/dininginfo_icon5.png') no-repeat 0 center;
+        }
+    </style>
+
+    <style>
+        .guestTop{
+            background-color: #e3e2e2;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+        .guestTop p{
+            text-align: center;
+            margin: 0;
+        }
+        .guestTop p img{
+            width: 200px;
+            height: 200px;
+        }
+        .guestInfo .tit{
+            color: black;
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .guestInfo .telT{
+            background: url('https://adventure.lotteworld.com/common/images/icon/tel_icon.gif') no-repeat left center;
+            padding-left: 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 </head>
 <body>
 <div layout:fragment="content">
     <!-- 수정된 리뷰 평균 별점 표시 부분 -->
-    <div class="average-rating">
-        <p>리뷰 평균 별점: <span th:text="${reviewScore}"></span></p>
-        <!-- 별표 표시 -->
-        <span class="star-rating" th:each="i : ${#numbers.sequence(1, 5)}">
-            <span th:if="${i le reviewScore}">★</span>
-            <span th:unless="${i le reviewScore}">☆</span>
-        </span>
+<!--    <div class="average-rating">-->
+<!--        <p>리뷰 평균 별점: <span th:text="${reviewScore}"></span></p>-->
+<!--        &lt;!&ndash; 별표 표시 &ndash;&gt;-->
+<!--        <span class="star-rating" th:each="i : ${#numbers.sequence(1, 5)}">-->
+<!--            <span th:if="${i le reviewScore}">★</span>-->
+<!--            <span th:unless="${i le reviewScore}">☆</span>-->
+<!--        </span>-->
+<!--    </div>-->
+
+    <div th:if="${markerDTO.type eq '어트랙션'}">
+        <h2>카트라이더레이싱월드</h2>
+        <div class="container">
+            <p class="h2Txt" style="white-space: pre-wrap;">[[${facilityDTO.ainfo}]]</p>
+
+            <div class="tagArea">
+                <div>
+                    <a href="#" th:each="tagName : ${facilityDTO.tagNames}" th:text="${tagName}"></a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="swiper-container imgRollArea crop">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"th:each="fileName : ${facilityDTO.fileNames}">
+                    <img th:src="@{'/view/' + ${fileName} + '/' + ${markerDTO.type} + '/' + ${facilityDTO.ano}}" alt="Facility Image">
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+        <div class="rideInfo">
+            <div class="container">
+                <div class="cardArea">
+                    <div class="card">
+                        <p class="icon"><img src="https://adventure.lotteworld.com/common/images/icon/rideInfo_card_icon3.png" alt="" /></p>
+                        <p class="txt">탑승인원</p>
+                        <div class="boldDiv">
+                            <p class="boldTxt">[[${facilityDTO.passengersCount}]]명</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <p class="icon"><img src="https://adventure.lotteworld.com/common/images/icon/rideInfo_card_icon4.png" alt="" /></p>
+                        <p class="txt">이용정보</p>
+                        <div class="lightDiv">
+                            <p class="lightTxt" style="white-space: pre-wrap;" th:utext="${facilityDTO.ainfo_detail}"></p>
+                        </div>
+                    </div>
+                </div>
+                <p class="subTit">탑승제한</p>
+                <div class="restArea">
+                    <p class="icon1">음주</p>
+                    <p class="icon2">임산부</p>
+                    <p class="icon3">심/혈관계 질환자</p>
+                    <p class="icon4">디스크 환자</p>
+                </div>
+                <!-- <p class="subTit">편의제도</p>
+                <div class="systemArea">
+                    <p>매직패스 사용 불가</p>
+                </div> -->
+            </div>
+        </div>
+        <!-- 어트랙션에 대한 페이지 형식 -->
+        <!-- 추가적인 어트랙션 페이지 요소들을 여기에 추가 -->
+    </div>
+    <div th:if="${markerDTO.type eq '매장'}">
+        <!-- 매장에 대한 페이지 형식 -->
+        <h2 th:text="${facilityDTO.shop_name}"></h2>
+        <div class="viewType3">
+            <div class="swiper-container imgRollArea rational" style="width: 50%">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"th:each="fileName : ${facilityDTO.fileNames}">
+                        <img th:src="@{'/view/' + ${fileName} + '/' + ${markerDTO.type} + '/' + ${facilityDTO.sno}}" alt="Facility Image">
+                    </div>
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination" style="bottom: 15px"></div>
+                <!-- Add Arrows -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div><!-- // imgRollArea -->
+            <ul class="infoTxtArea">
+                <li class="op1">
+                    <div class="tableCell">
+                        <p class="txt1">대표메뉴</p>
+                        <p class="txt2" th:text="${facilityDTO.shop_menu}"></p>
+                    </div>
+                </li>
+                <li class="op2">
+                    <div class="tableCell">
+                        <p class="txt1">영업시간</p>
+                        <p class="txt2" th:text="${facilityDTO.shop_time}"><strong></strong></p>
+                    </div>
+                </li>
+                <li class="op3">
+                    <div class="tableCell">
+                        <p class="txt1">연락처</p>
+                        <p class="txt2" style="white-space:pre-wrap" th:text="${facilityDTO.shop_tel}"></p>
+                    </div>
+                </li>
+                <li class="op4">
+                    <div class="tableCell">
+                        <p class="txt1">금액대</p>
+                        <p class="txt2" style="white-space:pre-wrap" th:text="${facilityDTO.shop_price}"></p>
+                    </div>
+                </li>
+                <li class="op5">
+                    <div class="tableCell">
+                        <p class="txt1">이용안내</p>
+                        <p class="txt2" style="white-space:pre-wrap" th:text="${facilityDTO.shop_guide}"></p>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+        <!-- 추가적인 매장 페이지 요소들을 여기에 추가 -->
+    </div>
+
+    <div th:if="${markerDTO.type eq '편의시설'}">
+        <!-- 편의시설에 대한 페이지 형식 -->
+        <div class="guestTop">
+            <p class="icon"><img alt="" th:src="@{'/view/' + ${facilityDTO.con_img} + '/' + ${markerDTO.type} + '/' + ${facilityDTO.cno}}" /></p>
+
+            <h2 class="tit" th:text="${facilityDTO.name}"></h2>
+        </div>
+
+        <div class="guestInfo">
+            <p class="tit">이용안내</p>
+
+            <p class="txt" th:text="${facilityDTO.con_info}"></p>
+
+            <p class="tit">유의사항</p>
+
+            <p class="txt" th:text="${facilityDTO.con_guide}"></p>
+
+            <p class="tit">이용문의</p>
+
+            <p class="telT" th:text="${facilityDTO.con_tel}"></p>
+
+        </div>
+        <!-- 추가적인 편의시설 페이지 요소들을 여기에 추가 -->
     </div>
     <!--comments start-->
     <div class="comment-area">
         <div class="row">
             <div class=" col-lg-12 col-md-12">
                 <div class="comment-title">
-                    <li th:each="review : ${responseDTO.dtoList}" style="list-style-type: none;">
-                        <h2 th:text="${review.email_id}" style="display: none"></h2>
-                        <h2 th:text="${#authentication.getName()}" style="display: none"></h2>
-                        <!--위에 값음 삭제 버튼 조건 용-->
-                        <h2 th:text="${review.nickName}"></h2>
-                        <ul class="comment-list">
-                            <div class="comment-author">
-                            <div class="comment-info" style="margin-bottom: 50px">
-                                <h4 th:text="${review.score}" style="height: 0; overflow: hidden;"></h4>
-                                <!-- 별표 표시 -->
-                                <span th:each="i : ${#numbers.sequence(1, 5)}">
-                                    <span th:if="${i le review.score}">
-                                        ★
+                    <ul class="comment-list">
+                        <li th:each="review : ${responseDTO.dtoList}" style="list-style-type: none;">
+<!--                            <h2 th:text="${review.email_id}" style="display: none"></h2>-->
+<!--                            <h2 th:text="${#authentication.getName()}" style="display: none"></h2>-->
+                            <!--위에 값음 삭제 버튼 조건 용-->
+                                <div class="comment-author" th:text="${review.nickName}"></div>
+                                <div class="comment-info" style="margin-bottom: 50px">
+                                    <h4 th:text="${review.score}" style="height: 0; overflow: hidden;"></h4>
+                                    <!-- 별표 표시 -->
+                                    <span th:each="i : ${#numbers.sequence(1, 5)}">
+                                        <span th:if="${i le review.score}">
+                                            ★
+                                        </span>
+                                        <span th:unless="${i le review.score}">
+                                            ☆ <!-- 별표가 아닌 경우는 빈 별로 처리하거나 원하는 다른 아이콘을 넣을 수 있습니다 -->
+                                        </span>
                                     </span>
-                                    <span th:unless="${i le review.score}">
-                                        ☆ <!-- 별표가 아닌 경우는 빈 별로 처리하거나 원하는 다른 아이콘을 넣을 수 있습니다 -->
-                                    </span>
-                                </span>
-                                <div class="meta">
-                                    <div class="comment-meta-date"></div>
-                                </div>
-                                <div class="comment-content">
-                                    <p th:text="${review.content}"></p>
-                                </div>
-                                <a th:href="@{/like/add(rno=${review.rno}, mno=${review.mno})}" class="reply-link" style="font-size: 15px">좋아요</a>
-                                <span th:text="${review.like_count}"></span>
-                                </div><!--좋아요 작업 해줘야함-->
+                                    <div class="meta">
+                                        <div class="comment-meta-date" th:text="${#temporals.format(review.addDate, 'yyyy-MM-dd HH:mm')}"></div>
+                                    </div>
+                                    <div class="comment-content">
+                                        <p th:text="${review.content}"></p>
+                                    </div>
+                                    <a th:href="@{/like/add(rno=${review.rno}, mno=${review.mno})}" class="reply-link" style="font-size: 15px">좋아요</a>
+                                    <span th:text="${review.like_count}"></span>
+                                    </div><!--좋아요 작업 해줘야함-->
 
-                                <!--삭제 버튼 처리 -->
-                                <a class="reply-link"
-                                   th:if="${review.email_id} == ${#authentication.getName()}"
-                                   style="float: right; margin-top: -70px; margin-right: 200px; font-size: 15px; cursor: pointer;"
-                                   th:onclick="'javascript:confirmDelete(\'' + ${review.rno} + '\');'">
-                                    삭제
-                                </a>
-                            </div>
+                                    <!--삭제 버튼 처리 -->
+                                    <a class="reply-link"
+                                       th:if="${review.email_id} == ${#authentication.getName()}"
+                                       style="float: right; margin-top: -70px; margin-right: 200px; font-size: 15px; cursor: pointer;"
+                                       th:onclick="'javascript:confirmDelete(\'' + ${review.rno} + '\');'">
+                                        삭제
+                                    </a>
+                            </li>
                         </ul>
-                    </li>
                 </div>
             </div>
         </div>
@@ -129,8 +488,25 @@
             </div>
         </form>
     </div>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 </div>
 <script layout:fragment="script" th:inline="javascript">
+    const swiper = new Swiper('.imgRollArea', {
+        slidesPerView: 1,  // 보여질 슬라이드 수
+        spaceBetween: 10,  // 슬라이드 간 간격
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev'
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true
+        },
+        autoplay: {
+            delay: 3500,  // 슬라이드 전환 간격 (밀리초)
+            disableOnInteraction: true,  // 사용자 상호작용 후에도 계속 자동 전환할지 여부
+        }
+    });
     document.querySelector(".pagination").addEventListener("click",function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -155,7 +531,7 @@
 
         if (result) {
             // "확인"을 눌렀을 때의 처리
-            window.location.href = '/review/delet?rno=' + reviewId;
+            window.location.href = '/review/delete?rno=' + reviewId;
         } else {
             // "취소"를 눌렀을 때의 처리
             // 필요하다면 추가적인 로직을 넣을 수 있습니다.

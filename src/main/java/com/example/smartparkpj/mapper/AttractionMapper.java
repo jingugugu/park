@@ -27,4 +27,6 @@ public interface AttractionMapper {
 
     void removeImages(int ano);
     void removeAttraction(int ano);
+
+    void updateScore(int ano, float avgScore);
 }

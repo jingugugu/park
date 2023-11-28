@@ -29,7 +29,7 @@
         SELECT score FROM review WHERE facility_no = #{facility_no} AND type = #{type}
     </select>
 
-    <select id="delet" resultType="com.example.smartparkpj.domain.ReviewVO">
+    <select id="delete" resultType="com.example.smartparkpj.domain.ReviewVO">
         DELETE from review WHERE rno = #{rno}
     </select>
 
@@ -45,7 +45,7 @@
         SELECT * FROM review
     </select>
 
-    <insert id="addReviewImage">
-        INSERT INTO review_image (uuid, fileName, ord, rno) VALUES (#{uuid}, #{fileName}, #{ord}, #{rno})
-    </insert>
+    <select id="getAvgScore" resultType="float">
+        SELECT AVG(score) FROM review WHERE facility_no = #{facility_no} AND type = #{type}
+    </select>
 </mapper>

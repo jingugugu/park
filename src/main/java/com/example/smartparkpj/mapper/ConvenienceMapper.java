@@ -13,4 +13,6 @@ public interface ConvenienceMapper {
     void editConvenience(ConvenienceVO convenienceVO);
 
     void removeConvenience(int cno);
+
+    void updateScore(int cno, float avgScore);
 }

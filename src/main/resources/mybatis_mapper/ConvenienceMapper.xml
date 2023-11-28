@@ -22,4 +22,8 @@
         DELETE FROM convenience WHERE cno = #{cno}
     </delete>
 
+    <update id="updateScore">
+        UPDATE convenience SET avgScore = #{avgScore} WHERE cno = #{cno}
+    </update>
+
 </mapper>

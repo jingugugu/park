@@ -18,7 +18,7 @@ public interface ReviewService {
 
     int reviewScore(int facility_no, String type);//리뷰 들고 오기
 
-    void delet(int rno);
+    void delete(int rno);
 
     void like_count(int rno);
 

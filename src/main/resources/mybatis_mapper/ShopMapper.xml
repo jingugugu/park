@@ -33,4 +33,8 @@
     <delete id="removeShop">
         DELETE FROM shop WHERE sno = #{sno}
     </delete>
+
+    <update id="updateScore">
+        UPDATE shop SET avgScore = #{avgScore} WHERE sno = #{sno}
+    </update>
 </mapper>

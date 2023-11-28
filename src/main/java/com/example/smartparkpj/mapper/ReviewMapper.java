@@ -1,6 +1,9 @@
 package com.example.smartparkpj.mapper;
 
-import com.example.smartparkpj.domain.*;
+import com.example.smartparkpj.domain.MemberVO;
+import com.example.smartparkpj.domain.OrderVO;
+import com.example.smartparkpj.domain.ReviewVO;
+import com.example.smartparkpj.domain.TicketVO;
 import com.example.smartparkpj.dto.PageRequestDTO;
 import com.example.smartparkpj.dto.PageResponseDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -22,7 +25,7 @@ public interface ReviewMapper {
 
     List<ReviewVO> reviewScore(int facility_no, String type);//리뷰 들고 오기
 
-    void delet(int rno);//리뷰 댓글 삭제 시팔 정신좀 차리고 햇깔리지마라(고지훈)
+    void delete(int rno);//리뷰 댓글 삭제 시팔 정신좀 차리고 햇깔리지마라(고지훈)
 
     void likeUp(int rno);
 
@@ -30,5 +33,5 @@ public interface ReviewMapper {
 
     List<ReviewVO> selectAll();// 어트렉션/시설 리뷰 동일 작성자 있는지 유효성 검사 용
 
-    void addReviewImage(ReviewImageVO reviewImageVO); // 이미지 추가
+    float getAvgScore(int facility_no, String type);
 }

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @Controller
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/admin")
 @Log4j2
 @RequiredArgsConstructor
@@ -49,7 +51,10 @@ public class AdminController {
 
 
     @GetMapping("")
-    public String adminMain(){return "redirect:/admin/enter/admin_add_map";}
+    public String adminMain(){return "redirect:/admin/main";}
+
+    @GetMapping("/main")
+    public void adminMainGet(){}
 
     @GetMapping("/enter/admin_add_map")
     public void getAdmin_add_map() {

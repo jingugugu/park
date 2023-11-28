@@ -53,8 +53,8 @@ public class ReviewServiceTests {
 
     //--------------리뷰 좋아요 검사 시작------------------------
     @Test
-    public void DeletTest(){
-        reviewService.delet(1);
+    public void DeleteTest(){
+        reviewService.delete(1);
     }
     @Test
     public void Like_countTest(){

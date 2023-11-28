@@ -65,8 +65,8 @@ public class ReviewMapperTests {
 
     //--------------좋아요 기능 테스트 목록 시작-------------------------
     @Test
-    public void deletTest(){
-        reviewMapper.delet(18);
+    public void deleteTest(){
+        reviewMapper.delete(18);
     }
 
     @Test

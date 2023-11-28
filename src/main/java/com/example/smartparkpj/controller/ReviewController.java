@@ -2,6 +2,7 @@ package com.example.smartparkpj.controller;
 
 import com.example.smartparkpj.dto.*;
 import com.example.smartparkpj.security.dto.MemberSecurityDTO;
+import com.example.smartparkpj.service.EnterService;
 import com.example.smartparkpj.service.MarkerService;
 import com.example.smartparkpj.service.OrderService;
 import com.example.smartparkpj.service.ReviewService;
@@ -32,6 +33,8 @@ public class ReviewController {
 
     private final OrderService orderService;//티켓 의 리뷰 작성여부 요효성 검사용
 
+    private final EnterService enterService;
+
     @GetMapping("/read")
     public void readGet(PageRequestDTO pageRequestDTO, MarkerDTO markerDTO, BindingResult bindingResult, Model model){
         log.info("review Get !!!!");
@@ -55,6 +58,7 @@ public class ReviewController {
         model.addAttribute("markerDTO", markerDTO);
         model.addAttribute("responseDTO", reviewService.getList(pageRequestDTO));
         model.addAttribute("reviewScore", reviewService.reviewScore(facility_no, type));//평균점수
+        model.addAttribute("facilityDTO",enterService.getMarkerOne(type,facility_no));
     }
 
 
@@ -120,10 +124,10 @@ public class ReviewController {
 
     //-------------------------------------------------------------------
 
-    @GetMapping("/delet")
-    public String delet(ReviewDTO reviewDTO){
+    @GetMapping("/delete")
+    public String delete(ReviewDTO reviewDTO){
         int rno = reviewDTO.getRno();
-        reviewService.delet(rno);
+        reviewService.delete(rno);
 
         return "redirect:/review/list";
     }

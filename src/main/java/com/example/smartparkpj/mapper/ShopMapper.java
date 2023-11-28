@@ -22,4 +22,6 @@ public interface ShopMapper {
     void removeImages(int sno);
 
     void removeShop(int sno);
+
+    void updateScore(int sno, float avgScore);
 }
