@@ -3,6 +3,7 @@ package com.example.smartparkpj.mapper;
 import com.example.smartparkpj.domain.MemberRole;
 import com.example.smartparkpj.domain.MemberVO;
 import com.example.smartparkpj.dto.MemberDTO;
+import com.example.smartparkpj.mapper.MemberMapper;
 import lombok.Builder;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;

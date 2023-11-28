@@ -1,6 +1,7 @@
 package com.example.smartparkpj.mapper;
 
 import com.example.smartparkpj.domain.TicketVO;
+import com.example.smartparkpj.mapper.TicketMapper;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

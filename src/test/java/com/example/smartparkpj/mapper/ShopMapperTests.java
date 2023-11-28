@@ -4,6 +4,7 @@ import com.example.smartparkpj.domain.AttractionImageVO;
 import com.example.smartparkpj.domain.AttractionVO;
 import com.example.smartparkpj.domain.ShopImageVO;
 import com.example.smartparkpj.domain.ShopVO;
+import com.example.smartparkpj.mapper.ShopMapper;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

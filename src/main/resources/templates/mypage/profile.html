@@ -1,54 +1,81 @@
 <!DOCTYPE html>
-<html lang="ko"
-      xmlns="http://www.w3.org/1999/xhtml"
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/park.html}">
 <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta charset="UTF-8">
     <title>마이페이지</title>
-<div layout:fragment="content">
-    <h1 style="margin-top: 50px; font-size: 30px"><strong>마이페이지</strong></h1>
-
-    <div class="sign-form">
-        <p th:for="member_name">이름</p>
-        <!--<input type="text" th:value="${member.member_name}" class="form-control" style="width: 250px" disabled>-->
-    </div>
-    <div class="sign-form">
-        <p th:for="birthday">생년월일</p>
-        <!--<input type="text" th:value="${member.birthday}" class="form-control" style="width: 250px" disabled>-->
-    </div>
-    <div class="sign-form">
-        <p th:for="nickName">닉네임</p>
-        <!--<input type="text" th:value="${member.nickName}" class="form-control" style="width: 250px" disabled>-->
-    </div>
-    <div class="sign-form">
-        <p th:for="email">이메일</p>
-        <!--<input type="text" th:value="${member.email_id}" class="form-control" style="width: 250px" disabled>-->
-    </div>
-    <div class="sign-form">
-        <p th:for="phone">연락처</p>
-        <!--<input type="text" th:value="${member.phone}" class="form-control" style="width: 250px" disabled>-->
-    </div>
-
-    <div class="sign-form">
-        <p th:for="addDate">가입날짜</p>
-        <!--<input type="text" th:value="${member.addDate}" class="form-control" style="width: 250px" disabled>-->
-    </div>
-
-    <div class="sign-form">
-        <a href="/member/edit" class="btn btn-danger" >정보수정</a>
-        <!--<input type="text" th:value="${member.member_name}" class="form-control" style="width: 250px" disabled>-->
-    </div>
-
-</div>
+    <style>
+        /* 추가된 CSS */
+        .nav-link:hover {
+            background-color: #1c4827; /* 호버시 배경색 변경 */
+        }
+    </style>
 </head>
 <body>
-
-
-<script layout:fragment="script" th:inline="javascript">
-
-</script>
+<div layout:fragment="content">
+<h1 style="margin-top: 50px; font-size: 30px"><strong>마이페이지</strong></h1><br><br>
+    <div class="row">
+    <!-- 왼쪽 탭 -->
+        <div class="col-md-3">
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                <a class="nav-link" href="/mypage/profile" data-toggle="pill">내 정보</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="/mypage/review" data-toggle="pill">내가 쓴 리뷰</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="/mypage/inquiry" data-toggle="pill">내가 쓴 문의</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mypage/order" data-toggle="pill">티켓 구매 내역</a>
+                </li>
+            </ul>
+        </div>
+        <!-- 오른쪽 컨텐츠 영역 -->
+        <div class="row my-xl-5">
+            <!-- 내 정보 -->
+            <div id="myInfo" class="tab-pane fade show active">
+            <!-- 내 정보 섹션 -->
+            <!-- ... -->
+                <div class="sign-form">
+                    <p th:for="member_name">이름</p>
+                    <input type="text" th:value="${MemberDTO.member_name}" class="form-control" style="width: 250px" disabled>
+                    <p th:for="birthday">생년월일</p>
+                    <input type="text" th:value="${MemberDTO.birthday}" class="form-control" style="width: 250px" disabled>
+                    <p th:for="nickName">닉네임</p>
+                    <input type="text" th:value="${MemberDTO.nickName}" class="form-control" style="width: 250px" disabled>
+                    <p th:for="email">이메일</p>
+                    <input type="text" th:value="${MemberDTO.email_id}" class="form-control" style="width: 250px" disabled>
+                    <p th:for="phone">연락처</p>
+                    <input type="text" th:value="${MemberDTO.phone}" class="form-control" style="width: 250px" disabled>
+                    <p th:for="addDate">가입날짜</p>
+                    <input type="text" th:value="${MemberDTO.addDate}" class="form-control" style="width: 250px" disabled>
+                </div>
+                <div class="sign-form justify-end">
+                <a href="/member/edit" class="btn btn-default" >정보수정</a>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- 필요한 스크립트 -->
+<!-- ... -->
+</div>
 </body>
+<script layout:fragment="script" th:inline="javascript">
+    // 페이지 로드 시 실행되는 jQuery 코드
+    $(document).ready(function() {
+        // 네비게이션 메뉴의 각 탭을 클릭할 때 active 클래스를 변경하는 이벤트 핸들러
+        $('.nav-link').on('click', function() {
+            // 클릭된 요소의 href 값을 가져와 변수에 저장
+            var href = $(this).attr('href');
+            // 해당 탭에 active 클래스를 추가하고 다른 탭의 active 클래스를 제거
+            $(this).addClass('active').parent().siblings().find('.nav-link').removeClass('active');
+        });
+    });
+</script>
 </html>
