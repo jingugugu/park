@@ -30,7 +30,6 @@ public class OrderServiceImpl implements OrderService{
     public int add(OrderDTO orderDTO) {
 
         //전달 받은 날짜 를 벡엔드 에서 데이터 추가 처리
-        Date date = new Date();
         String str = orderDTO.getStartDate();
         log.info("방문 시간 :" + str);
         String strTime = null;
@@ -77,7 +76,6 @@ public class OrderServiceImpl implements OrderService{
                 .orderCode(ticketCode)
                 .tno(orderDTO.getTno())
                 .email_id(orderDTO.getEmail_id())
-                .orderDate(date)
                 .startDate(startDateTime)
                 .endDate(endDate)
                 .price(orderDTO.getPrice()*orderDTO.getPeople_count())
