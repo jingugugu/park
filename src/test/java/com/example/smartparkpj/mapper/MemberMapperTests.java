@@ -1,5 +1,6 @@
 package com.example.smartparkpj.mapper;
 
+import com.example.smartparkpj.domain.MemberRole;
 import com.example.smartparkpj.domain.MemberVO;
 import com.example.smartparkpj.dto.MemberDTO;
 import lombok.Builder;
@@ -20,13 +21,13 @@ import java.util.List;
 public class MemberMapperTests {
     @Autowired(required = false)
     private MemberMapper memberMapper;
-
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Test
     public void testRegister() {
         MemberVO memberVO = MemberVO.builder()
-                .email_id("test@test.com")
+                .email_id("test1@test.com")
                 .password("1234")
                 .nickName("라이언")
                 .member_name("춘식이")
@@ -60,12 +61,6 @@ public class MemberMapperTests {
 //        String member_mid = "member2";
 //        memberMapper.addMemberRole(member_mid, role_set);
 //    }
-    @Test
-    public void nameCheck() {
-        String name = "testName";
-        int check = memberMapper.nameCheck(name);
-        log.info(check);
-    }
 
     @Test
     public void nickCheck() {
@@ -81,8 +76,26 @@ public class MemberMapperTests {
     }
 
     @Test
-    public void selectOneTest(){
-        MemberVO memberVO = memberMapper.selectOne(3);
-        log.info(memberVO);
+    public void selectRolesTest() {
+        List<Integer> check = memberMapper.selectRoles("test@test.com");
+        log.info(check);
     }
+
+    @Test
+    public void deleteReasonTest() {
+        MemberVO memberVO = MemberVO.builder()
+                .email_id("wlsrn8151@gmail.com")
+                .deleteReason("그냥 탈퇴 시켜줘")
+                .build();
+        memberMapper.deleteReason(memberVO);
+    }
+
+    @Test
+    public void removeMemberTest() {
+        MemberVO memberVO = MemberVO.builder()
+                .email_id("test1@test.c")
+                .build();
+        memberMapper.removeMember(memberVO);
+    }
+
 }

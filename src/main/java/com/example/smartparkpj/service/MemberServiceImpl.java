@@ -10,8 +10,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -51,8 +54,8 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public boolean nameCheck(String member) {
-        if(memberMapper.nameCheck(member) >= 1){
+    public boolean emailCheck(String email_id) {
+        if(memberMapper.emailCheck(email_id) >= 1) {
             return true;
         } else{
             return false;
@@ -66,6 +69,71 @@ public class MemberServiceImpl implements MemberService{
         } else {
             return false;
         }
+    }
+
+    @Override
+    public MemberDTO getMember(String email_id) {
+        log.info("==========getMember=========");
+        log.info(email_id);
+
+        MemberDTO memberDTO = modelMapper.map(memberMapper.selectMember(email_id), MemberDTO.class);
+        log.info(memberDTO);
+        return memberDTO;
+    }
+
+    @Override
+    public void edit(MemberDTO memberDTO) {
+        log.info("==========edit=========");
+        MemberVO memberVO = modelMapper.map(memberDTO, MemberVO.class);
+        memberMapper.update(memberVO);
+    }
+
+    @Override
+    public void deleteReason(MemberDTO memberDTO) {
+        log.info("====================deleteReason===================");
+        MemberVO memberVO = modelMapper.map(memberDTO, MemberVO.class);
+        memberMapper.deleteReason(memberVO);
+    }
+
+    @Override
+    public void editPassword(MemberDTO memberDTO) {
+        log.info("====================editPassword===================");
+        MemberVO memberVO = modelMapper.map(memberDTO, MemberVO.class);
+        memberVO.changePassword(passwordEncoder.encode(memberDTO.getPassword()));
+        memberMapper.passwordEdit(memberVO);
+    }
+
+    @Override
+    public List<MemberDTO> selectAll() {
+        List<MemberVO> memberVOList = memberMapper.selectAll();
+        log.info("memberVOList = " + memberVOList);
+//        List<MemberDTO> memberDTOList = memberVOList.stream().map(vo -> modelMapper.map(vo, MemberDTO.class)).collect(Collectors.toList());
+        List<MemberDTO> memberDTOList = new ArrayList<>();
+        for (MemberVO memberVO : memberVOList) {
+            log.info("memberVO = " + memberVO);
+            MemberDTO memberDTO = modelMapper.map(memberVO, MemberDTO.class);
+            memberDTOList.add(memberDTO);
+        }
+        log.info("====================selectAll===================");
+        log.info(memberDTOList.size());
+        return memberDTOList;
+    }
+
+    @Override
+    public MemberDTO selectOne(int mno) {
+        log.info("====================selectOne===================" + mno);
+        MemberVO memberVO = memberMapper.selectOne(mno);
+        log.info("====================selectOne===================" + memberVO);
+        MemberDTO memberDTO = modelMapper.map(memberVO, MemberDTO.class);
+        log.info("====================selectOne===================" + memberDTO);
+        return memberDTO;
+    }
+
+    @Override
+    public void removeMember(MemberDTO memberDTO) {
+        MemberVO memberVO = modelMapper.map(memberDTO, MemberVO.class);
+        log.info("====================removeMember===================");
+        memberMapper.removeMember(memberVO);
     }
 
 }

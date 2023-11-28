@@ -21,7 +21,7 @@
             <div class="row gx-5 justify-content-center">
                 <div class="col-lg-6">
                     <form id="registerForm" action="/member/login" method="post">
-
+                        <h4 class="btn-danger" style="display: none">아이디 또는 비밀번호가 맞지 않습니다.</h4>
                         <div class="form-floating mb-3">
                             <input class="form-control" id="email_id" name="username" type="id" placeholder="name@example.com"/>
                             <label for="email_id">이메일 ID</label>
@@ -39,23 +39,27 @@
                                 자동 로그인
                             </label>
                         </div>
+                        <div>
+                            <a href="/oauth2/authorization/kakao">KAKAO</a>
+                        </div>
                     </form>
 
                     <div class="form-floating mb-3">
                         <div class="btn-wrap">
                             <a href="/member/register" style="margin-right: 30px">회원가입</a>
-                            <a href="#">비밀번호 찾기</a>
+                            <a href="/member/findPassword">비밀번호 찾기</a>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </section>
-
 </div>
 <script layout:fragment="script" th:inline="javascript">
-
+ const errorMsg = document.querySelector(".btn-danger");
+ if([[${param.error}]]) {
+     errorMsg.style.display = "block";
+ }
 </script>
 </body>
 </html>

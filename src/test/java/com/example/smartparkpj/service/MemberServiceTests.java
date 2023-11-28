@@ -61,18 +61,29 @@ public class MemberServiceTests {
         memberService.addMemberRole(member_mid, role_set);
     }
 
-    @Test
-    public void nameCheckTest() {
-        String name = "testName";
-        boolean check = memberService.nameCheck(name);
-        log.info(check);
-        log.info(memberService.nameCheck(name));
-    }
 
     @Test
     public void nickCheckTest() {
         String nick = "testNick";
         boolean check = memberService.nickCheck(nick);
         log.info(check);
+    }
+
+    @Test
+    public void getMemberTest() {
+        String id = "wlsrn8151@gmail.com";
+        MemberDTO memberDTO = memberService.getMember(id);
+        log.info(memberDTO);
+    }
+
+    @Test
+    public void updateTest() {
+        String id = "wlsrn8151@gmail.com";
+        MemberDTO memberDTO = MemberDTO.builder()
+                .email_id(id)
+                .nickName("춘식이다이")
+                .phone("010-1222-4444")
+                .build();
+        memberService.edit(memberDTO);
     }
 }

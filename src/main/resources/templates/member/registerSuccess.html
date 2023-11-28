@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/park.html}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+<div layout:fragment="content">
+  <!-- Contact section-->
+  <section class="bg-light py-5">
+    <div class="container px-5 my-5 px-5">
+      <div class="text-center mb-5">
+        <h1 class="fw-bolder">회원가입을 축하드립니다!</h1>
+        <p class="lead mb-0"></p>
+      </div>
+    </div>
+    <div class="col-sm-12 d-flex justify-content-center" >
+      <a href="/main/park_main" type="reset" class="btn btn-danger btn-danger ml-2">HOME</a>
+    </div>
+  </section>
+</div>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script layout:fragment="script" th:inline="javascript">
+
+</script>
+</body>
+</html>

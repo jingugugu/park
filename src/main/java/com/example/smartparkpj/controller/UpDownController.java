@@ -26,7 +26,7 @@ import java.util.*;
 public class UpDownController {
     @Value("${com.example.upload.basePath}")
     private String uploadBasePath;
-    @Value("${com.example.upload.tempPath}")
+    @Value("${com.example.smartparkpj.upload.path}")
     private String uploadPath;
     @Value("${com.example.upload.AttractionPath}")
     private String uploadAttractionPath;
@@ -37,20 +37,19 @@ public class UpDownController {
 
     @ApiOperation(value = "Upload Post", notes = "POST 방식으로 파일 등록")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public List<UploadResultDTO> upload(UploadFileDTO uploadFileDTO){
+    public List<UploadResultDTO> upload(UploadFileDTO uploadFileDTO){ // dto 로 이미지 파일을 받음
         log.info("-------------upload post");
         log.info(uploadFileDTO);
-        if(uploadFileDTO.getFiles() != null){
-            List<UploadResultDTO> list = new ArrayList<>();
-            for(MultipartFile multipartFile : uploadFileDTO.getFiles()){
-                String originalName = multipartFile.getOriginalFilename();
+        if(uploadFileDTO.getFiles() != null) { // dto 에 파일이 있다면
+           final List<UploadResultDTO> list = new ArrayList<>(); // UploadResultDTO 리스트를 만들고
+            for(MultipartFile multipartFile : uploadFileDTO.getFiles()) { // 반복문을 돌려 만약 파일을 여러개 받았으면 하나하나 multipartFile 에 저장
+                String originalName = multipartFile.getOriginalFilename(); // 파일의 이름을 originalName 에 저장
                 log.info(multipartFile.getOriginalFilename());
-                String uuid = UUID.randomUUID().toString();
-
-                Path savePath = Paths.get(uploadPath, uuid +"_" + originalName);
+                String uuid = UUID.randomUUID().toString(); // 파일 이름의 중복 저장을 방지하기 위해 uuid 생성
+                Path savePath = Paths.get(uploadPath, uuid +"_" + originalName); // uuid + 파일 이름으로 폴더에 저장
                 boolean isImage = false;
                 try{
-                    multipartFile.transferTo(savePath);
+                    multipartFile.transferTo(savePath); // 실제 파일 저장
 
                     // 이미지 파일이면 섬네일 생성
                     if (Files.probeContentType(savePath).startsWith("image")){
@@ -108,7 +107,7 @@ public class UpDownController {
     }
     @ApiOperation(value = "View 파일", notes = "GET방식으로 첨부파일 조회")
     @GetMapping(value = "/view/{fileName}")
-    public ResponseEntity<Resource> viewFileSet(@PathVariable String fileName){
+    public ResponseEntity<Resource> viewFileGet(@PathVariable String fileName){
         Resource resource = new FileSystemResource(uploadPath + File.separator + fileName);
 
         String resourceName = resource.getFilename();
@@ -137,7 +136,7 @@ public class UpDownController {
             removed = resource.getFile().delete(); // 이미지 삭제
 
             log.info("removed : " + resource.getFile());
-            if(contentType.startsWith("image")){
+            if(contentType.startsWith("image")){ // 섬네일이 존재한다면
                 File thumbFile = new File(uploadPath + File.separator + "s_" + fileName);
                 thumbFile.delete(); // 섬네일 삭제
             }

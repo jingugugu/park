@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/park.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+<div layout:fragment="content" style="width: 900px">
+    <h1 style="margin-top: 50px; font-size: 30px"><strong>회원 탈퇴 신청</strong></h1>
+    <form action="/member/deleteReason" class="form-horizontal" method="post">
+        <div class="form-group row align-center">
+            <div class="col-sm-4">
+                <input name="email_id" type="email" class="form-control" th:value="${memberDTO.email_id}" readonly>
+            </div>
+        </div>
+        <!-- 내용 -->
+        <div class="form-group row align-center" style="margin-left: 2px">
+        <textarea name="deleteReason" id="deleteReason" cols="50" rows="5" class="form-control" placeholder="탈퇴 사유를 자유롭게 입력해주세요.
+탈퇴 신청 후 3 ~ 5 일 정도의 관라자 확인 기간이 있습니다."
+                  style="width: 900px; height: 300px;"></textarea>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12 d-flex justify-content-end" >
+                <a href="#" class="btn btn-primary btn-submit" >등록</a>
+                <a href="/main/park_main" type="reset" class="btn btn-danger btn-danger ml-2">취소</a>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript" src="/smarteditor2/js/HuskyEZCreator.js" charset="utf-8"></script>
+</div>
+<script layout:fragment="script" th:inline="javascript">
+    const btnsub = document.querySelector(".btn-submit");
+    const frmAdd = document.querySelector(".form-horizontal");
+    const deleteReason = document.querySelector('#deleteReason');
+
+    btnsub.addEventListener('click', function () {
+        if (deleteReason.value == "") {
+            alert("탈퇴 사유를 작성해 주세요.")
+            return;
+        }
+        frmAdd.submit();
+        alert("탈퇴 신청이 완료 되었습니다.")
+    })
+</script>
+</body>
+</html>

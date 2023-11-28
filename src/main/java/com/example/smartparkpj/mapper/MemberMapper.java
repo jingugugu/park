@@ -1,5 +1,7 @@
 package com.example.smartparkpj.mapper;
 
+import com.example.smartparkpj.domain.InquiryVO;
+import com.example.smartparkpj.domain.MemberRole;
 import com.example.smartparkpj.domain.MemberVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,12 +12,15 @@ public interface MemberMapper {
     void register(MemberVO memberVO);
     void addMember(MemberVO memberVO);
     void addMemberRole(String member_mid, Integer role_set);
-    int nameCheck(String member);
+    int emailCheck(String email_id);
     int nickCheck(String nickName);
-    boolean login(String email_id, String password);
     MemberVO selectMember(String email_id);
-
+    void update(MemberVO memberVO);
     MemberVO selectOne(int mno); //리뷰에 닉네임 들고 오기위해 하나 만듭니다 (고지훈)
+    List<Integer> selectRoles(String member);
+    void deleteReason(MemberVO memberVO);
+    void passwordEdit(MemberVO memberVO);
+    List<MemberVO> selectAll();
+    void removeMember(MemberVO memberVO);
 
-    // 로그인 (UserDetails 유저 정보 생성) -> 마이페이지 -> 정보수정 (페이지) -> 컨트롤러에서 실제로 정보수정
 }

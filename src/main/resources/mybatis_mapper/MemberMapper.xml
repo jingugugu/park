@@ -19,8 +19,8 @@
         VALUES (#{member_mid}, #{role_set})
     </insert>
     
-    <select id="nameCheck" resultType="int">
-        SELECT COUNT(*) FROM member WHERE member_name = #{member}
+    <select id="emailCheck" resultType="int">
+        SELECT COUNT(*) FROM member WHERE email_id = #{email_id}
     </select>
 
     <select id="nickCheck" resultType="int">
@@ -31,8 +31,32 @@
         SELECT * FROM member WHERE email_id = #{email_id}
     </select>
 
+    <update id="update">
+        UPDATE member SET nickName = #{nickName}, phone = #{phone}, password = #{password}, profileImg = #{profileImg} WHERE email_id = #{email_id}
+    </update>
+    
+    <select id="selectRoles" resultType="int">
+        select role_set FROM member_role_set WHERE member_mid = #{member}
+    </select>
+    
+    <update id="deleteReason">
+        UPDATE member SET del = 1,  deleteReason = #{deleteReason}, requestDate = now() WHERE email_id = #{email_id}
+    </update>
+
+    <update id="passwordEdit">
+        UPDATE member SET password = #{password} WHERE email_id = #{email_id}
+    </update>
+    
+    <select id="selectAll" resultType="com.example.smartparkpj.domain.MemberVO">
+        SELECT * FROM member ORDER BY del DESC, requestDate ASC
+    </select>
+
     <select id="selectOne" resultType="com.example.smartparkpj.domain.MemberVO">
         SELECT * FROM member WHERE mno = #{mno}
     </select>
+
+    <update id="removeMember">
+        UPDATE member SET password = "", nickName = "탈퇴처리", member_name = "탈퇴처리", phone = "탈퇴처리", birthday = "", profileimg = "", removeDate = now() WHERE email_id = #{email_id}
+    </update>
 
 </mapper>

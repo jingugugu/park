@@ -43,6 +43,8 @@ public class AdminController {
 
     final private InquiryService inquiryService;
 
+    final private MemberService memberService;
+
     private final MailSenderService mailSenderService;
 
 
@@ -291,7 +293,6 @@ public class AdminController {
     
     /* Inquiry(문의) 관련 작업 */
 
-
     @GetMapping("/inquiry/inquiryList")
     public void getInquiryAdminList(Model model) {
         log.info("GetAdminList ...");
@@ -362,7 +363,7 @@ public class AdminController {
         log.info("PostMapping--inquiry---adminModify-----------------------------");
         log.info(inquiryDTO);
         inquiryService.updateAnswer(inquiryDTO);
-        
+
         return "redirect:/admin/inquiry/adminRead?ino="+inquiryDTO.getIno()+"&mno="+inquiryDTO.getMno();
     }
 
@@ -372,5 +373,29 @@ public class AdminController {
 
         inquiryService.adminRemove(ino);
         return "redirect:/admin/inquiry/inquiryList";
+    }
+
+    @GetMapping("/member/management")
+    public void MemberList(Model model) {
+        List<MemberDTO> memberDTOList = memberService.selectAll();
+        log.info("================회원 목록================");
+        log.info(memberDTOList.size());
+        model.addAttribute("memberDTO", memberDTOList);
+    }
+
+    @GetMapping("/member/detailManagement")
+    public void getDetailManagement(int mno, Model model) {
+        log.info("================회원 탈퇴 상세================");
+        log.info(mno);
+        model.addAttribute("memberDTO", memberService.selectOne(mno));
+    }
+
+    @PostMapping("/member/detailManagement")
+    public String postDetailManagement(MemberDTO memberDTO) {
+        log.info("================회원 탈퇴 처리================");
+        log.info(memberDTO);
+        memberService.removeMember(memberDTO);
+
+        return "redirect:/admin/member/management";
     }
 }

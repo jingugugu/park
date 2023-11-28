@@ -1,5 +1,6 @@
 package com.example.smartparkpj.security;
 
+import com.example.smartparkpj.domain.MemberRole;
 import com.example.smartparkpj.domain.MemberVO;
 import com.example.smartparkpj.mapper.MemberMapper;
 import com.example.smartparkpj.security.dto.MemberSecurityDTO;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Log4j2
 @Service
@@ -24,19 +26,22 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-
-
         log.info("loadUserByUsername" + username);
 
-        // 작성한 매퍼를 이요해서 VO 객체를 반환
+        // 작성한 매퍼를 이용해서 VO 객체를 반환
         MemberVO memberVO = memberMapper.selectMember(username);
         if (memberVO == null) {
+            log.info("==================로그인 실패==================");
             throw new UsernameNotFoundException("username not found,,,,");
         }
+
         // 권한 관련 객체 생성
-        Collection<SimpleGrantedAuthority> grantedAuthorityArrayList = new ArrayList<>();
-        grantedAuthorityArrayList.add(new SimpleGrantedAuthority("ROLE_USER")); // 우선 user 권한으로 지정
+        List<Integer> memberRoles = memberMapper.selectRoles(username); // 해당 아이디의 role_set 번호 받아옴
+        Collection<SimpleGrantedAuthority> grantedAuthorityArrayList = new ArrayList<>(); // 권한을 더해줄 배열 생성
+        for (Integer role : memberRoles) {
+            MemberRole memberRole = MemberRole.values()[role]; // MemberRole 안에 있는 values 값을 받아온 번호를 이용해서 권한 불러옴
+            grantedAuthorityArrayList.add(new SimpleGrantedAuthority("ROLE_" + memberRole)); // 권한을 저장
+        }
 
         // UserDetails 타입의 객체를 생성후 반환
         MemberSecurityDTO memberSecurityDTO = new MemberSecurityDTO(

@@ -10,9 +10,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
@@ -41,7 +43,8 @@ public class CustomSecurityConfig {
 
         // 커스텀 로그인 페이지
         httpSecurity.formLogin()
-                .loginPage("/member/login"); // 로그인을 진행할 페이지
+                .loginPage("/member/login") // 로그인을 진행할 페이지
+                .failureUrl("/member/login?error=true");
 
         httpSecurity.csrf().disable(); // CSRF 토큰을 비활성화
 
@@ -51,6 +54,9 @@ public class CustomSecurityConfig {
                 .tokenRepository(persistentTokenRepository())
                 .userDetailsService(customUserDetailService)
                 .tokenValiditySeconds(60 * 60 * 24 * 30);
+
+        // OAuth2 로그인을 사용한다는 설정
+        httpSecurity.oauth2Login().loginPage("/member/login");
 
         return httpSecurity.build();
     }
@@ -80,4 +86,10 @@ public class CustomSecurityConfig {
     public AuthenticationSuccessHandler getLoginSuccessHandler() {
         return new LoginSuccessHandler();
     }
+
+//    // 로그인 실패시
+//    @Bean
+//    public AuthenticationFailureHandler getLoginFailHandler() {
+//        return new LoginFailHandler();
+//    }
 }

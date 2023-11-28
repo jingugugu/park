@@ -19,6 +19,8 @@ public class MemberDTO {
     private String member_name; // 멤버 이름
     private String phone; // 멤버 연락처
     private LocalDateTime addDate; // 멤버 가입일
+    private LocalDateTime requestDate; // 탈퇴 신청일
+    private LocalDateTime removeDate; // 탈퇴 처리 날짜
     private String birthday; // 멤버 생년월일
     private String profileImg; // 멤버 프로필 이미지
     private boolean del; // 탈퇴 여부
