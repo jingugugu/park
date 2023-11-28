@@ -66,8 +66,8 @@ public class TicketController {
         }
 
         // 주문 정보를 서비스에 전달
-        orderService.add(orderDTO);
-
+        int ono = orderService.add(orderDTO);
+        orderDTO.setOno(ono);
         // Flash Attribute를 사용하여 리다이렉트 시에 데이터를 전달
         redirectAttributes.addFlashAttribute("orderDTO", orderDTO);
 
@@ -86,6 +86,6 @@ public class TicketController {
         }
 
         log.info("addFinish Test : " + orderService.getOneAll(email_id));
-        model.addAttribute("orderDTO", orderService.getOneAll(email_id));
+        model.addAttribute("orderDTO", orderService.getOne(orderDTO.getOno()));
     }
 }

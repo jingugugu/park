@@ -2,11 +2,14 @@ package com.example.smartparkpj.controller;
 
 import com.example.smartparkpj.dto.OrderDTO;
 import com.example.smartparkpj.security.dto.MemberSecurityDTO;
+import com.example.smartparkpj.service.MarkerService;
 import com.example.smartparkpj.service.OrderService;
+import com.example.smartparkpj.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -25,8 +28,12 @@ public class MainController {
     public String main(){
         return "redirect:/main/park_main";
     }
+
+    private final TicketService ticketService;//메인화면 예매 티켓 기능
+
+    private final MarkerService markerService;//메인화면 리뷰 리스트 용
     @GetMapping("/main/park_main")
-    public void mainGet(Authentication authentication){
+    public void mainGet(Authentication authentication, Model model){//로그인 시 리뷰 가능여부 시간 계산 메서드 작업 & 메인 홈 화면 작업시작(고지훈)
         if(authentication != null){
             log.info("/main/park_main.html!~~!");
             log.info("autttt---------------" + authentication);
@@ -66,6 +73,9 @@ public class MainController {
 //        log.info("PostMapping4!!!");
 //        return "redirect:/";
         log.info("/main/park_main.html!~~!2");
+
+        model.addAttribute("ticketDTO", ticketService.getAll());
+        model.addAttribute("markerDTO", markerService.getAll());
     }
 
 }

@@ -37,4 +37,10 @@ public class OrderMapperTests {
                 .build();
         orderMapper.insert(orderVO);
     }
+
+    @Test
+    public void getOneTest2(){
+        OrderVO orderVO = orderMapper.selectOneMax(2);
+        log.info(orderVO);
+    }
 }

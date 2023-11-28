@@ -1,7 +1,6 @@
 package com.example.smartparkpj.mapper;
 
-import com.example.smartparkpj.domain.MemberVO;
-import com.example.smartparkpj.domain.ReviewVO;
+import com.example.smartparkpj.domain.*;
 import com.example.smartparkpj.dto.PageRequestDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.UUID;
 
 @SpringBootTest
 @Log4j2
@@ -84,5 +84,17 @@ public class ReviewMapperTests {
     public void listTest(){
         List<ReviewVO> reviewVOS = reviewMapper.selectAll();
         log.info("리뷰 전체 목록 : " + reviewVOS);
+    }
+
+    //------------------이미지 추가 테스트--------------------
+    @Test
+    public void addAttractionImageTest(){     // 이미지 추가 테스트
+        ReviewImageVO reviewImageVO = ReviewImageVO.builder()
+                .uuid(UUID.randomUUID().toString())
+                .fileName("이미지" + 1)
+                .ord(1)
+                .rno(1)
+                .build();
+        reviewMapper.addReviewImage(reviewImageVO);
     }
 }

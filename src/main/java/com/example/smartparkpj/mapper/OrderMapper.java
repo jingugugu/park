@@ -9,7 +9,9 @@ import java.util.List;
 public interface OrderMapper {
     void insert(OrderVO orderVO);
 
-    List<OrderVO> selectOneAll(String email_id);
+    List<OrderVO> selectOneAll(String email_id);//마이페이지 에서 활용 가능
+
+    OrderVO selectOneMax(int ono);
 
     void updateFinished(String orderVO);
 

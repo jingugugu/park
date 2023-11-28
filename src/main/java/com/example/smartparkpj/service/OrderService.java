@@ -7,11 +7,13 @@ import java.util.List;
 
 public interface OrderService {
 
-    void add(OrderDTO orderDTO);
+    int add(OrderDTO orderDTO);
 
     List<OrderDTO> getOneAll(String email_id);
 
     void modifyFinished(String orderVO);
 
     void modifyHasAbility(String orderVO);
+
+    OrderDTO getOne(int mno);
 }

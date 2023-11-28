@@ -44,4 +44,8 @@
     <select id="selectAll" resultType="com.example.smartparkpj.domain.ReviewVO">
         SELECT * FROM review
     </select>
+
+    <insert id="addReviewImage">
+        INSERT INTO review_image (uuid, fileName, ord, rno) VALUES (#{uuid}, #{fileName}, #{ord}, #{rno})
+    </insert>
 </mapper>

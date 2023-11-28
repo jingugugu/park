@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.smartparkpj.mapper.OrderMapper">
 
-    <insert id="insert">
+    <insert id="insert" parameterType="com.example.smartparkpj.domain.OrderVO" useGeneratedKeys="true" keyProperty="ono">
         INSERT INTO `order` (orderCode, tno, email_id, orderDate, startDate, endDate, people_count, price)
         VALUES
             (
@@ -30,5 +30,9 @@
 
     <select id="updateHasAbility" resultType="com.example.smartparkpj.domain.OrderVO">
         UPDATE `order` SET has_ability = 0 WHERE email_id = #{email_id}
+    </select>
+
+    <select id="selectOneMax" resultType="com.example.smartparkpj.domain.OrderVO">
+        select * from `order` where ono = #{ono}
     </select>
 </mapper>

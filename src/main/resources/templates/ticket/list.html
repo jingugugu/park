@@ -23,15 +23,24 @@
                 </div>
             </div>
             <div class="row">
-                <!-- service start -->
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" th:each="ticket : ${ticketDTO}">
-                    <div class="service-block">
-                        <div class="service-content">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" th:each="ticket : ${ticketDTO}">
+                    <div class="tour-block">
+                        <div class="tour-img" th:switch="${ticket.ticket_type}">
+                            <img th:case="'j'" src="/view/j2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
+                            <img th:case="'y'" src="/view/y2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
+                            <img th:case="'d'" src="/view/d2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
+                            <img th:case="'m'" src="/view/m2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
+                        </div>
+                        <div class="tour-content">
                             <h3 th:text="${ticket.tname}" class="title"></h3>
-                            <p th:text="${ticket.tinfo}"></p>
-                            <!-- 예약하기 버튼에 ticket_type 값을 전달하도록 수정 -->
-                            <td><a th:href="|@{/ticket/add(tno =${ticket.tno})}&${link}|">예약하기</a></td>
-                            <div th:text=" ${ticket.tprice} + '원'"></div>
+                            <div class="tour-text mb40">
+                                <p th:text="${ticket.tinfo}"></p>
+                            </div>
+                            <div class="tour-details">
+                                <!-- 예약하기 버튼에 ticket_type 값을 전달하도록 수정 -->
+                                <td><a th:href="|@{/ticket/add(tno =${ticket.tno})}&${link}|">예약하기</a></td>
+                                <div th:text=" ${ticket.tprice} + '원'"></div>
+                            </div>
                         </div>
                     </div>
                 </div>

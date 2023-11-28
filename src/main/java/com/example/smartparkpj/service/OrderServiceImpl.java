@@ -1,7 +1,9 @@
 package com.example.smartparkpj.service;
 
 import com.example.smartparkpj.domain.OrderVO;
+import com.example.smartparkpj.domain.TicketVO;
 import com.example.smartparkpj.dto.OrderDTO;
+import com.example.smartparkpj.dto.TicketDTO;
 import com.example.smartparkpj.mapper.OrderMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -25,7 +27,7 @@ public class OrderServiceImpl implements OrderService{
     private final OrderMapper orderMapper;
 
     @Override
-    public void add(OrderDTO orderDTO) {
+    public int add(OrderDTO orderDTO) {
 
         //전달 받은 날짜 를 벡엔드 에서 데이터 추가 처리
         Date date = new Date();
@@ -82,6 +84,8 @@ public class OrderServiceImpl implements OrderService{
                 .people_count(orderDTO.getPeople_count())
                 .build();
         orderMapper.insert(orderVO);
+
+        return orderVO.getOno();
     }
 
     @Override
@@ -103,5 +107,13 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public void modifyHasAbility(String orderVO) {
         orderMapper.updateHasAbility(orderVO);
+    }
+
+    @Override
+    public OrderDTO getOne(int mno) {
+        OrderVO orderVO = orderMapper.selectOneMax(mno);
+        OrderDTO orderDTO = modelMapperConfig.map(orderVO, OrderDTO.class);
+
+        return orderDTO;
     }
 }

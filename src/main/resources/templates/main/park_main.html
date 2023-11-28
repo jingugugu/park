@@ -7,15 +7,177 @@
       layout:decorate="~{layout/park.html}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>SmartPark</title>
+    <style>
+        #slideShow {
+            position: relative;
+            overflow: hidden; /* 이미지가 넘칠 때 숨기기 */
+        }
+
+        #slideShow button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+            z-index: 1; /* 버튼을 이미지 위로 올림 */
+        }
+
+        #prevBtn {
+            left: 10px;
+        }
+
+        #nextBtn {
+            right: 10px;
+        }
+
+        #slideShow .slides {
+            display: flex; /* 이미지를 가로 방향으로 나열 */
+            white-space: nowrap; /* 이미지가 한 줄에 표시되도록 함 */
+            transition: transform 0.5s ease; /* 슬라이딩 효과를 추가함 */
+        }
+
+        #slideShow .slides li {
+            flex-shrink: 0; /* 이미지가 축소되지 않도록 함 */
+            width: 100%;
+        }
+
+        .center-image {
+            display: block;
+            margin: 0 auto; /* 가로 중앙 정렬 */
+            max-width: 100%; /* 부모 요소에 맞게 이미지 크기 조절 */
+            max-height: 300px; /* 원하는 높이로 조절하세요 */
+        }
+
+        #slideShow .slides li img {
+            width: 100%;
+            height: auto;
+            max-height: 500px; /* 높이를 조절하고자 하는 값으로 설정하세요 */
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha384-oYqzluq6TcKhq5ceKoztK6yYF5Z8CZFQBY5q3oo9fs3z9pQV6V2rC8yD+D8q1l8" crossorigin="anonymous"></script>
 </head>
 <body>
 <div layout:fragment="content">
-    <h1> 내용 </h1>
+    <img src="/view/KakaoTalk_20231128_151047160.png" class="center-image tour-image">
 
+    <div id="slideShow">
+        <button id="prevBtn">&lt;</button>
+        <ul class="slides">
+            <li><img src="https://www.ktsketch.co.kr/news/photo/201904/3487_10519_186.jpg" alt=""></li>
+            <li><img src="https://blog.kakaocdn.net/dn/oTA1I/btqzs7sFqG2/90dmOezG9qkW8f9Ezcd4Qk/img.jpg" alt=""></li>
+            <li><img src="https://post-phinf.pstatic.net/MjAyMjAyMjVfMjky/MDAxNjQ1Nzc4OTY2OTMx.JrOCOwt5JWVaREpLLOyBs04gjPl3eoMO925wpdspoMsg.SSeBOOIKRwpHOU8Bs_trJfoJN2waleZLLnvGUPXSWIog.JPEG/%EB%A7%90%EB%98%A5%EB%8F%84%EB%84%9B_0026.jpg?type=w800_q75" alt=""></li>
+            <li><img src="https://www.travel.taipei/content/images/attractions/65598/1024x768_attractions-image-sgonr3lzze6rwudpd0_t8a.jpg" alt=""></li>
+            <li><img src="https://www.sisajournal.com/news/photo/first/201005/img_129049_1.jpg" alt=""></li>
+            <li><img src="https://www.gousa.or.kr/sites/default/files/styles/hero_l/public/images/hero_media_image/2016-10/selects1_19.__72%20DPI.jpg?h=da0988d8&itok=5APkfkV9" alt=""></li>
+        </ul>
+        <button id="nextBtn">&gt;</button>
+    </div>
+
+    <!-- 메인 홈화면 티켓 리스트-->
+    <h1 style="margin-top: 50px; font-size: 30px; text-align: center;"><strong>티켓 예매 리스트</strong></h1>
+    <!-- 메인화면 티켓 리스트 이미지 테스트용-->
+    <!-- service start -->
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" th:each="ticket : ${ticketDTO}">
+            <div class="tour-block">
+                <div class="tour-img" th:switch="${ticket.ticket_type}">
+                    <img th:case="'j'" src="/view/j2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
+                    <img th:case="'y'" src="/view/y2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
+                    <img th:case="'d'" src="/view/d2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
+                    <img th:case="'m'" src="/view/m2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
+                </div>
+                <div class="tour-content">
+                    <h3 th:text="${ticket.tname}" class="title"></h3>
+                    <div class="tour-text mb40">
+                        <p th:text="${ticket.tinfo}"></p>
+                    </div>
+                    <div class="tour-details">
+                        <!-- 예약하기 버튼에 ticket_type 값을 전달하도록 수정 -->
+                        <td><a th:href="|@{/ticket/add(tno =${ticket.tno})}&${link}|">예약하기</a></td>
+                        <div th:text=" ${ticket.tprice} + '원'"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- service-section close -->
+    <div class="space-medium">
+        <div class="container">
+            <div class="row">
+                <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="section-title text-center">
+                        <h1>리뷰 리스트</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- service start -->
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" th:each="marker : ${markerDTO}">
+                    <div class="service-block">
+                        <div class="service-content">
+                            <h3 th:text="'시설 타입: ' + ${marker.type}" class="title"></h3>
+                            <p th:text="${marker.facility_no}"></p>
+                            <!-- 예약하기 버튼에 ticket_type 값을 전달하도록 수정 -->
+                            <td> <a th:href="@{/review/read(facility_no=${marker.facility_no}, type=${marker.type})}">리뷰 보러 가기</a></td>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- service close -->
+        </div>
+    </div>
+</div>
 </div>
 <script layout:fragment="script" th:inline="javascript">
+    $(document).ready(function () {
+        var currentIndex = 0;
+        var slides = $('.slides');
+        var totalSlides = $('.slides li').length;
+
+        // 초기 설정
+        showSlide(currentIndex);
+
+        // 다음 이미지 표시
+        function showNextSlide() {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            showSlide(currentIndex);
+        }
+
+        // 이전 이미지 표시
+        function showPrevSlide() {
+            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            showSlide(currentIndex);
+        }
+
+        // 다음 이미지 버튼에 클릭 이벤트 리스너 추가
+        $('#nextBtn').click(showNextSlide);
+
+        // 이전 이미지 버튼에 클릭 이벤트 리스너 추가
+        $('#prevBtn').click(showPrevSlide);
+
+        // 자동으로 다음 이미지 표시 (2초마다)
+        var intervalId = setInterval(showNextSlide, 2000);
+
+        // 마우스가 슬라이드 영역에 들어가면 자동 전환 멈춤
+        $('#slideShow').mouseenter(function() {
+            clearInterval(intervalId);
+        });
+
+        // 마우스가 슬라이드 영역에서 나가면 자동 전환 다시 시작
+        $('#slideShow').mouseleave(function() {
+            intervalId = setInterval(showNextSlide, 2000);
+        });
+
+        function showSlide(index) {
+            slides.css('transform', 'translateX(' + (-index * 100) + '%)');
+        }
+    });
+
+    //-----------------------------------------------------------
 </script>
 </body>
 </html>
