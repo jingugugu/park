@@ -69,10 +69,11 @@
                                        th:text="${order.ono}"
                                        style="text-decoration: underline; color: red"></a>
                                 </td>
-                                <td th:text="${order.orderDate}"></td>
-                                <td th:text="${order.endDate}"></td>
-                                <td th:text="${order.price}"></td>
-                                <td th:text="${order.finished} ? '가능' : '만료'" style="color: gray"></td>
+                                <td th:if="${order.orderDate != null}"
+                                    th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm')}">
+                                <td th:text="${#strings.replace(order.endDate, 'T', ' ')}"></td>
+                                <td th:text="${#numbers.formatInteger(order.price, 3, 'COMMA') + '원'}"></td>
+                                <td th:text="${order.finished} ? '사용가능' : '사용만료'" style="color: gray"></td>
                             </tr>
                             </tbody>
                         </table>
