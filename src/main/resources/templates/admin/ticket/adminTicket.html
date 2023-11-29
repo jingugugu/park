@@ -31,7 +31,7 @@
               <p th:text="${ticket.tinfo}"></p>
               <!-- 예약하기 버튼에 ticket_type 값을 전달하도록 수정 -->
               <div th:text=" ${ticket.tprice} + '원'"></div>
-              <td><a th:href="|@{/admin/remove(tno =${ticket.tno})}&${link}|">삭제하기</a></td>
+              <td><a th:href="|@{/admin/ticket/adminRemoveTicket(tno =${ticket.tno})}&${link}|">삭제하기</a></td>
             </div>
           </div>
         </div>

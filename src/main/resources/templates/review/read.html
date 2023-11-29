@@ -504,8 +504,9 @@
         },
         autoplay: {
             delay: 3500,  // 슬라이드 전환 간격 (밀리초)
-            disableOnInteraction: true,  // 사용자 상호작용 후에도 계속 자동 전환할지 여부
-        }
+            disableOnInteraction: true  // 사용자 상호작용 후에도 계속 자동 전환할지 여부
+        },
+        loop: true
     });
     document.querySelector(".pagination").addEventListener("click",function (e) {
         e.preventDefault();

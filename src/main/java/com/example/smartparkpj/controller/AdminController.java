@@ -182,7 +182,7 @@ public class AdminController {
         model.addAttribute("ticketDTO", ticketService.getAll());
     }
 
-    @GetMapping("/remove")
+    @GetMapping("/ticket/adminRemoveTicket")
     public String managerListPost(int tno) {
         log.info("managerList POST");
         ticketService.remove(tno);
@@ -306,10 +306,6 @@ public class AdminController {
         model.addAttribute("adminInquiryDTO", inquiryService.getAdminListAll());
     }
 
-    @PostMapping("/inquiry/inquiryList")
-    public void postInquiryAdminList() {
-        log.info("PostAdminList");
-    }
 
 
     @GetMapping("/inquiry/adminRead")
