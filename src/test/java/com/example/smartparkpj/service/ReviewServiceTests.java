@@ -1,15 +1,18 @@
 package com.example.smartparkpj.service;
 
+import com.example.smartparkpj.domain.ReviewImageVO;
 import com.example.smartparkpj.domain.ReviewVO;
 import com.example.smartparkpj.dto.PageRequestDTO;
 import com.example.smartparkpj.dto.PageResponseDTO;
 import com.example.smartparkpj.dto.ReviewDTO;
+import com.example.smartparkpj.dto.ReviewImageDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.UUID;
 
 @SpringBootTest
 @Log4j2
@@ -71,5 +74,15 @@ public class ReviewServiceTests {
     public void TestSelect(){
         List<ReviewDTO> reviewDTOS = reviewService.getAll();
         log.info("리뷰 모든 목록 서비스 테스트 : " + reviewDTOS);
+    }
+
+    @Test
+    public void TestImgAdd() {
+        ReviewImageDTO reviewImageDTO = ReviewImageDTO.builder()
+                .rno(1)
+                .fileName("m2.png")
+                .ord(1)
+                .build();
+        reviewService.reviewImageIn(reviewImageDTO);
     }
 }

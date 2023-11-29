@@ -89,11 +89,8 @@ public class ReviewController {
 
         List<OrderDTO> orderDTOS = orderService.getOneAll(memberDTO.getEmail_id());
         List<ReviewDTO> reviewDTOS = reviewService.getAll();
-        log.info("리뷰 전체 목록 리스트 : " + reviewDTOS);
-        log.info("이용자의 구매한 티켓 목록 : " + orderDTOS);
-
-        String fileName = reviewImageDTO.getFileName();
-        log.info("파일 이름 : " + fileName);
+//       log.info("리뷰 전체 목록 리스트 : " + reviewDTOS);
+//       log.info("이용자의 구매한 티켓 목록 : " + orderDTOS);
 
         // has_ability가 1인 것이 하나도 없을 경우 리다이렉트
         if (orderDTOS.stream().noneMatch(orderDTO -> orderDTO.getHas_ability() == 1)) {

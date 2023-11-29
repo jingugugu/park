@@ -88,27 +88,17 @@ public class ReviewMapperTests {
     }
 
     //------------------이미지 추가 테스트--------------------
-    @Test
-    public void addAttractionImageTest(){     // 이미지 추가 테스트
-        ReviewImageVO reviewImageVO = ReviewImageVO.builder()
-                .uuid(UUID.randomUUID().toString())
-                .fileName("이미지" + 1)
-                .ord(1)
-                .rno(1)
-                .build();
-        reviewMapper.addReviewImage(reviewImageVO);
-    }
 
     @Test
     public void addReviewImageTest(){
         String uuid = UUID.randomUUID().toString();
         ReviewImageVO reviewImageVO = ReviewImageVO.builder()
-                .rno(5)
+                .rno(1)
                 .uuid(uuid)
                 .fileName("m2.png")
                 .ord(1)
                 .build();
-        reviewMapper.addReviewImage(reviewImageVO);
-
+        reviewMapper.addReviewImg(reviewImageVO);
     }
+
 }

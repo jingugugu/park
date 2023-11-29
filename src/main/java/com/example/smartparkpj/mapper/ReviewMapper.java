@@ -1,11 +1,9 @@
 package com.example.smartparkpj.mapper;
 
-import com.example.smartparkpj.domain.MemberVO;
-import com.example.smartparkpj.domain.OrderVO;
-import com.example.smartparkpj.domain.ReviewVO;
-import com.example.smartparkpj.domain.TicketVO;
+import com.example.smartparkpj.domain.*;
 import com.example.smartparkpj.dto.PageRequestDTO;
 import com.example.smartparkpj.dto.PageResponseDTO;
+import com.example.smartparkpj.dto.ReviewImageDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -34,4 +32,6 @@ public interface ReviewMapper {
     List<ReviewVO> selectAll();// 어트렉션/시설 리뷰 동일 작성자 있는지 유효성 검사 용
 
     float getAvgScore(int facility_no, String type);
+
+    void addReviewImg(ReviewImageVO reviewImageVO);
 }
