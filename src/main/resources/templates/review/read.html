@@ -62,6 +62,7 @@
             overflow: hidden;
             width: 100%;
             margin: 20px 0;
+            z-index: 3;
         }
 
         /* 네비게이션 버튼 스타일 조절 */
@@ -69,7 +70,6 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            z-index: 10;
         }
 
         /* 다음 버튼의 위치 조절 */
@@ -88,7 +88,6 @@
             bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 10;
         }
         .swiper-slide img {
             width: 100%; /* 부모 컨테이너에 맞춰지도록 100%로 설정 */
@@ -260,7 +259,7 @@
 <!--    </div>-->
 
     <div th:if="${markerDTO.type eq '어트랙션'}">
-        <h2>카트라이더레이싱월드</h2>
+        <h2 th:text="${facilityDTO.aname}"></h2>
         <div class="container">
             <p class="h2Txt" style="white-space: pre-wrap;">[[${facilityDTO.ainfo}]]</p>
 
@@ -503,7 +502,7 @@
         spaceBetween: 10,  // 슬라이드 간 간격
         navigation: {
             nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev'
+            prevEl: '.swiper-button-prev',
         },
         pagination: {
             el: '.swiper-pagination',
