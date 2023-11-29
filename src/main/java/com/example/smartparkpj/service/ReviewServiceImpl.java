@@ -1,6 +1,7 @@
 package com.example.smartparkpj.service;
 
 import com.example.smartparkpj.domain.MemberVO;
+import com.example.smartparkpj.domain.ReviewImageVO;
 import com.example.smartparkpj.domain.ReviewVO;
 import com.example.smartparkpj.dto.*;
 import com.example.smartparkpj.mapper.*;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Log4j2
@@ -127,5 +129,15 @@ public class ReviewServiceImpl implements ReviewService {
             dtoList.add(reviewDTO);
         }
         return dtoList;
+    }
+
+    @Override
+    public void reviewImageIn(ReviewImageDTO reviewImageDTO) {
+        log.info("service.....DTO" + reviewImageDTO);
+        String uuid = UUID.randomUUID().toString();
+        reviewImageDTO.setUuid(uuid);
+        ReviewImageVO reviewImageVO = modelMapperConfig.map(reviewImageDTO, ReviewImageVO.class);
+        log.info("service......" + reviewImageVO);
+        reviewMapper.addReviewImage(reviewImageVO);
     }
 }

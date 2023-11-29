@@ -81,7 +81,7 @@ public class ReviewController {
     }
 
     @PostMapping("/add")
-    public String add(ReviewDTO reviewDTO, MemberDTO memberDTO){
+    public String add(ReviewDTO reviewDTO, MemberDTO memberDTO, ReviewImageDTO reviewImageDTO){
         log.info("리뷰 컨트롤러 처리창 POST!!!!!!!!!");
 
         log.info("memberDTO PostMapping mno: " + memberDTO.getEmail_id());
@@ -91,6 +91,9 @@ public class ReviewController {
         List<ReviewDTO> reviewDTOS = reviewService.getAll();
         log.info("리뷰 전체 목록 리스트 : " + reviewDTOS);
         log.info("이용자의 구매한 티켓 목록 : " + orderDTOS);
+
+        String fileName = reviewImageDTO.getFileName();
+        log.info("파일 이름 : " + fileName);
 
         // has_ability가 1인 것이 하나도 없을 경우 리다이렉트
         if (orderDTOS.stream().noneMatch(orderDTO -> orderDTO.getHas_ability() == 1)) {

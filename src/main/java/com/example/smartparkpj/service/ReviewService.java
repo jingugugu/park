@@ -2,10 +2,7 @@ package com.example.smartparkpj.service;
 
 import com.example.smartparkpj.domain.MemberVO;
 import com.example.smartparkpj.domain.ReviewVO;
-import com.example.smartparkpj.dto.MemberDTO;
-import com.example.smartparkpj.dto.PageRequestDTO;
-import com.example.smartparkpj.dto.PageResponseDTO;
-import com.example.smartparkpj.dto.ReviewDTO;
+import com.example.smartparkpj.dto.*;
 
 import java.util.List;
 
@@ -25,4 +22,6 @@ public interface ReviewService {
     void like_countDown(int rno);
 
     List<ReviewDTO> getAll();
+
+    void reviewImageIn(ReviewImageDTO reviewImageDTO);
 }

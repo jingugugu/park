@@ -98,4 +98,17 @@ public class ReviewMapperTests {
                 .build();
         reviewMapper.addReviewImage(reviewImageVO);
     }
+
+    @Test
+    public void addReviewImageTest(){
+        String uuid = UUID.randomUUID().toString();
+        ReviewImageVO reviewImageVO = ReviewImageVO.builder()
+                .rno(5)
+                .uuid(uuid)
+                .fileName("m2.png")
+                .ord(1)
+                .build();
+        reviewMapper.addReviewImage(reviewImageVO);
+
+    }
 }

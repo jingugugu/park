@@ -30,7 +30,6 @@ public class OrderMapperTests {
                 .orderCode(uuid)
                 .tno(3)
                 .email_id("Test@naber.com")
-                .orderDate(date)
                 .startDate(now)
                 .endDate(now)
                 .price(15000)
