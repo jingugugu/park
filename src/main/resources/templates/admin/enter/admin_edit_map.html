@@ -1300,6 +1300,7 @@
                 case "어트랙션":
                     return `<div id="facilityOverlay">
                             <h3 id="facilityName">${markerInfo.aname}</h3>
+                            <h4 id="facilityScore"><span style="color: red">★</span> ${markerInfo.avgScore.toFixed(1)} / 5.0</h4>
                             <img id="facilityImage" alt="어트랙션 이미지">
                             <a href="/review/read?facility_no=${markerInfo.ano}&type=${type}" id="detailButton">상세 보기</a>
                             <button id="closeButton" onclick="closeOverlay()">닫기</button>
@@ -1307,6 +1308,7 @@
                 case "매장":
                     return `<div id="facilityOverlay">
                             <h3 id="facilityName">${markerInfo.shop_name}</h3>
+                            <h4 id="facilityScore"><span style="color: red">★</span> ${markerInfo.avgScore.toFixed(1)} / 5.0</h4>
                             <img id="facilityImage" alt="매장 이미지">
                             <a href="/review/read?facility_no=${markerInfo.sno}&type=${type}" id="detailButton">상세 보기</a>
                             <button id="closeButton" onclick="closeOverlay()">닫기</button>
@@ -1315,6 +1317,7 @@
                 default:
                     return `<div id="facilityOverlay">
                             <h3 id="facilityName">${markerInfo.name}</h3>
+                            <h4 id="facilityScore"><span style="color: red">★</span> ${markerInfo.avgScore.toFixed(1)} / 5.0</h4>
                             <img id="facilityImage" alt="편의시설 이미지">
                             <a href="/review/read?facility_no=${markerInfo.cno}&type=${type}" id="detailButton">상세 보기</a>
                             <button id="closeButton" onclick="closeOverlay()">닫기</button>
