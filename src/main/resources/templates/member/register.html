@@ -30,7 +30,7 @@
                             <label for="email_id">이메일 ID</label>
                             <span class="form-check" id="email_id-span" name="email_id-span" style="display: none"/>
                         </div>
-                        <a href="#" id="eSubmit">인증코드 발송</a>
+                        <a href="#" id="eSubmit" style="text-decoration: none; color: darkred">인증코드 발송</a>
 
                         <!-- 이메일주소 인증확인-->
                         <div class="form-floating mb-3" name="emCheck" style="display: none">
@@ -165,7 +165,7 @@
     btnSubmit.addEventListener('click', function (e) {
 
         console.log("confirm_check" + confirm_check())
-        if(true){
+        if(confirm_check()){
 
             // 1. 섬네일 영역에서 img 태그의 data-src 속성을 들고옴
             const uploadFiles = uploadResult.querySelectorAll('img');

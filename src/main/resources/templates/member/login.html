@@ -30,24 +30,27 @@
                         <div class="form-floating mb-3">
                             <input class="form-control" id="password" name="password" type="password" placeholder="비밀번호를 입력하세요..."/>
                             <label for="password">비밀번호</label>
-                            <input class="btn btn-primary" type="submit" value="로그인">
+
                         </div>
 
-                        <div class="form-floating mb-3">
+                        <div class="d-grid">
                             <input class="form-check-input" type="checkbox" name="remember-me">
                             <label class="form-check-label">
                                 자동 로그인
                             </label>
                         </div>
-                        <div>
-                            <a href="/oauth2/authorization/kakao">KAKAO</a>
+                        <div class="d-grid">
+                            <input class="btn btn-primary" type="submit" value="로그인">
                         </div>
                     </form>
+                    <div class="d-grid justify-content-center" style="background-color: #FEE500; border-radius: 5px">
+                        <a href="/oauth2/authorization/kakao"><img src="/images/kakao_login_medium_wide.png"></a>
+                    </div>
 
-                    <div class="form-floating mb-3">
-                        <div class="btn-wrap">
-                            <a href="/member/register" style="margin-right: 30px">회원가입</a>
-                            <a href="/member/findPassword">비밀번호 찾기</a>
+                    <div class="d-grid" style="margin-top: 20px">
+                        <div class="btn-wrap justify-content-end">
+                            <a href="/member/register" style="margin-right: 30px; text-decoration: none; color: black" >회원가입</a>
+                            <a href="/member/findPassword" style="text-decoration: none; color: black">비밀번호를 잊으셨나요?</a>
                         </div>
                     </div>
                 </div>
