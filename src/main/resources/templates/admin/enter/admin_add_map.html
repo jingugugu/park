@@ -296,7 +296,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary uploadAttractionBtn">Upload</button>
-                                    <button type="button" class="btn btn-outline-dark closeUploadBtn ">Close</button>
+                                    <button type="button" class="btn btn-outline-dark closeUploadAttractionBtn ">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -395,7 +395,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary uploadShopBtn">Upload</button>
-                                    <button type="button" class="btn btn-outline-dark closeUploadBtn ">Close</button>
+                                    <button type="button" class="btn btn-outline-dark closeUploadShopBtn ">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -432,7 +432,7 @@
                         <div class="form-floating mb-3">
                             <span class="con_info">편의시설 개요</span>
                             <input class="form-control" id="con_info" name="con_info" type="text"
-                                   placeholder="어트랙션 개요"/>
+                                   placeholder="편의시설 개요"/>
                             <span class="form-check" id="con_info-span" name="con_info-span" style="display: none"/>
                         </div>
                         <div class="form-floating mb-3">
@@ -479,7 +479,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary uploadConBtn">Upload</button>
-                                    <button type="button" class="btn btn-outline-dark closeUploadBtn ">Close</button>
+                                    <button type="button" class="btn btn-outline-dark closeUploadConBtn ">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -539,16 +539,28 @@
         uploadAttractionModal.show();
     });
 
-    document.querySelector('.uploadShopFileBtn').addEventListener('click',function(e){
+    document.querySelector('.closeUploadAttractionBtn').addEventListener('click',function(e) {
+        uploadAttractionModal.hide();
+    });
+
+        document.querySelector('.uploadShopFileBtn').addEventListener('click',function(e){
         e.stopPropagation();
         e.preventDefault();
         uploadShopModal.show();
+    });
+
+    document.querySelector('.closeUploadShopBtn').addEventListener('click',function(e) {
+        uploadShopModal.hide();
     });
 
     document.querySelector('.uploadConFileBtn').addEventListener('click',function (e){
         e.stopPropagation();
         e.preventDefault();
         uploadConModal.show();
+    });
+
+    document.querySelector('.closeUploadConBtn').addEventListener('click',function(e) {
+        uploadConModal.hide();
     });
 
     document.querySelector('.uploadAttractionBtn').addEventListener('click',function (e){
@@ -635,7 +647,6 @@
     function showUploadAttractionFile({uuid, fileName, link}){
         const str = `<div class="card col-4">
                 <div class="card-header d-flex justify-content-center">
-                    ${fileName}
                     <button type="button" class="btn btn-danger" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
                     </div>
                     <div class="card-body">
@@ -649,7 +660,6 @@
     function showUploadShopFile({uuid, fileName, link}){
         const str = `<div class="card col-4">
                 <div class="card-header d-flex justify-content-center">
-                    ${fileName}
                     <button type="button" class="btn btn-danger" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
                     </div>
                     <div class="card-body">
@@ -664,7 +674,6 @@
         uploadConResult.innerHTML = ""; // 기존 이미지 없애기
         const str = `<div class="card col-4">
                 <div class="card-header d-flex justify-content-center">
-                    ${fileName}
                     <button type="button" class="btn btn-danger" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
                     </div>
                     <div class="card-body">

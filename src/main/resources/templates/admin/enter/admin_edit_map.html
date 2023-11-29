@@ -301,7 +301,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary uploadAttractionBtn">Upload</button>
-                                    <button type="button" class="btn btn-outline-dark closeUploadBtn ">Close</button>
+                                    <button type="button" class="btn btn-outline-dark closeUploadAttractionBtn ">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -403,7 +403,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary uploadShopBtn">Upload</button>
-                                    <button type="button" class="btn btn-outline-dark closeUploadBtn ">Close</button>
+                                    <button type="button" class="btn btn-outline-dark closeUploadShopBtn ">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -490,7 +490,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary uploadConBtn">Upload</button>
-                                    <button type="button" class="btn btn-outline-dark closeUploadBtn ">Close</button>
+                                    <button type="button" class="btn btn-outline-dark closeUploadConBtn ">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -550,16 +550,28 @@
         uploadAttractionModal.show();
     });
 
+    document.querySelector('.closeUploadAttractionBtn').addEventListener('click',function(e) {
+        uploadAttractionModal.hide();
+    });
+
     document.querySelector('.uploadShopFileBtn').addEventListener('click',function(e){
         e.stopPropagation();
         e.preventDefault();
         uploadShopModal.show();
     });
 
+    document.querySelector('.closeUploadShopBtn').addEventListener('click',function(e) {
+        uploadShopModal.hide();
+    });
+
     document.querySelector('.uploadConFileBtn').addEventListener('click',function (e){
         e.stopPropagation();
         e.preventDefault();
         uploadConModal.show();
+    });
+
+    document.querySelector('.closeUploadConBtn').addEventListener('click',function(e) {
+        uploadConModal.hide();
     });
 
     document.querySelector('.uploadAttractionBtn').addEventListener('click',function (e){
