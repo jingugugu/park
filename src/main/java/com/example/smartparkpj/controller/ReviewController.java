@@ -2,10 +2,7 @@ package com.example.smartparkpj.controller;
 
 import com.example.smartparkpj.dto.*;
 import com.example.smartparkpj.security.dto.MemberSecurityDTO;
-import com.example.smartparkpj.service.EnterService;
-import com.example.smartparkpj.service.MarkerService;
-import com.example.smartparkpj.service.OrderService;
-import com.example.smartparkpj.service.ReviewService;
+import com.example.smartparkpj.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.log4j.Log4j2;
@@ -35,8 +32,11 @@ public class ReviewController {
 
     private final EnterService enterService;
 
+    private final LikeService likeService;
+
     @GetMapping("/read")
-    public void readGet(PageRequestDTO pageRequestDTO, MarkerDTO markerDTO, BindingResult bindingResult, Model model){
+    public void readGet(PageRequestDTO pageRequestDTO, MarkerDTO markerDTO, BindingResult bindingResult, Model model
+                            ){
         log.info("review Get !!!!");
 
         String type = markerDTO.getType();
@@ -54,6 +54,7 @@ public class ReviewController {
         if(bindingResult.hasErrors()){
             pageRequestDTO = PageRequestDTO.builder().build();
         }
+
 
         model.addAttribute("markerDTO", markerDTO);
         model.addAttribute("responseDTO", reviewService.getList(pageRequestDTO));
@@ -119,7 +120,7 @@ public class ReviewController {
 
         reviewService.insert(reviewDTO);
 
-        return "redirect:/review/list";
+        return "redirect:/enter/map";
     }
 
     //-------------------------------------------------------------------
@@ -129,7 +130,7 @@ public class ReviewController {
         int rno = reviewDTO.getRno();
         reviewService.delete(rno);
 
-        return "redirect:/review/list";
+        return "redirect:/enter/map";
     }
 
     @GetMapping("/reviewGuide")
