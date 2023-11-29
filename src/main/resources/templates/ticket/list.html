@@ -26,10 +26,10 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" th:each="ticket : ${ticketDTO}">
                     <div class="tour-block">
                         <div class="tour-img" th:switch="${ticket.ticket_type}">
-                            <img th:case="'j'" src="/view/j2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
-                            <img th:case="'y'" src="/view/y2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
-                            <img th:case="'d'" src="/view/d2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
-                            <img th:case="'m'" src="/view/m2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
+                            <img th:case="'j'" src="/images/j2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
+                            <img th:case="'y'" src="/images/y2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
+                            <img th:case="'d'" src="/images/d2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
+                            <img th:case="'m'" src="/images/m2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
                         </div>
                         <div class="tour-content">
                             <h3 th:text="${ticket.tname}" class="title"></h3>
