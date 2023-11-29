@@ -27,6 +27,14 @@
             background-color: #eebfd7;
             cursor: pointer; /* 마우스 커서를 포인터로 변경하여 클릭 가능한 것처럼 보이게 함 */
         }
+
+        .available {
+            color: #2bc73c;
+        }
+
+        .expired {
+            color: #605b5b;
+        }
     </style>
 </head>
 <body>
@@ -79,7 +87,8 @@
                                 <td th:if="${inquiry.in_addDate != null}"
                                     th:text="${#temporals.format(inquiry.in_addDate, 'yyyy-MM-dd')}">
                                 </td>
-                                <td th:text="${inquiry.state} ? '답변완료' : '진행중'" style="color: gray"></td>
+                                <td th:text="${inquiry.state} ? '답변완료' : '진행중'"
+                                    th:class="${inquiry.state} ? 'available' : 'expired'"></td>
                             </tr>
                             </tbody>
                         </table>

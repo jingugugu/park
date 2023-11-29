@@ -57,6 +57,13 @@
             height: auto;
             max-height: 500px; /* 높이를 조절하고자 하는 값으로 설정하세요 */
         }
+
+        .ticketInfo:hover {
+            color: #f3a9a9; /* 원하는 hover 시의 텍스트 색상으로 설정 */
+            font-size: 30px; /* hover 시의 텍스트 크기 */
+            font-weight: bold; /* hover 시의 텍스트 굵기 */
+        }
+
     </style>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha384-oYqzluq6TcKhq5ceKoztK6yYF5Z8CZFQBY5q3oo9fs3z9pQV6V2rC8yD+D8q1l8" crossorigin="anonymous"></script>
 </head>
@@ -95,11 +102,13 @@
                     <div class="tour-text mb40">
                         <p th:text="${ticket.tinfo}"></p>
                     </div>
+                    <a class="ticketInfo" th:href="|@{/ticket/add(tno =${ticket.tno})}&${link}|">
                     <div class="tour-details">
-                        <!-- 예약하기 버튼에 ticket_type 값을 전달하도록 수정 -->
-                        <td><a th:href="|@{/ticket/add(tno =${ticket.tno})}&${link}|">예약하기</a></td>
-                        <div th:text="${#numbers.formatInteger(ticket.tprice, 3, 'COMMA') + '원'}"></div>
+                        <p>예약하기</p>
+                        <div th:text="${#numbers.formatInteger(ticket.tprice, 3, 'COMMA') + '원'}">
+                        </div>
                     </div>
+                    </a>
                 </div>
             </div>
         </div>

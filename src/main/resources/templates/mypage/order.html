@@ -21,6 +21,14 @@
         .card-body {
             padding: 20px; /* 카드 내용의 패딩 설정 */
         }
+
+        .available {
+            color: blue; /* 사용가능일 때의 색상 */
+        }
+
+        .expired {
+            color: red; /* 사용만료일 때의 색상 */
+        }
     </style>
 </head>
 <body>
@@ -73,7 +81,8 @@
                                     th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm')}">
                                 <td th:text="${#strings.replace(order.endDate, 'T', ' ')}"></td>
                                 <td th:text="${#numbers.formatInteger(order.price, 3, 'COMMA') + '원'}"></td>
-                                <td th:text="${order.finished} ? '사용가능' : '사용만료'" style="color: gray"></td>
+                                <td th:text="${order.finished} ? '사용가능' : '사용만료'"
+                                    th:class="${order.finished} ? 'available' : 'expired'"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -97,5 +106,12 @@
             $(this).addClass('active').parent().siblings().find('.nav-link').removeClass('active');
         });
     });
+
+    let statusText = document.getElementById('statusText');
+    if (statusText.textContent === '사용가능') {
+        statusText.style.color = 'blue';
+    } else {
+        statusText.style.color = 'red';
+    }
 </script>
 </html>
