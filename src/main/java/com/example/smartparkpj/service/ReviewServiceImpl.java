@@ -138,6 +138,6 @@ public class ReviewServiceImpl implements ReviewService {
         reviewImageDTO.setUuid(uuid);
         ReviewImageVO reviewImageVO = modelMapperConfig.map(reviewImageDTO, ReviewImageVO.class);
         log.info("service......" + reviewImageVO);
-//        reviewMapper.addReviewImage(reviewImageVO);
+        reviewMapper.addReviewImg(reviewImageVO);
     }
 }
