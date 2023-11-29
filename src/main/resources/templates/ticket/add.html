@@ -14,14 +14,16 @@
 <!-- contact info close -->
 <div class=" col-lg-8 col-md-8 col-sm-8 col-xs-12">
 
-    <h1  th:text="${ticketDTO.tname}"></h1>
+    <div style="margin-left: 120px;">
+        <h1 class="text-center" th:text="${ticketDTO.tname}"></h1>
+    </div>
     <!--
     <p>Ticket Info: <span th:text="${ticketDTO.tinfo}"></span></p>
     <p>Ticket Price: <span th:text="${ticketDTO.tprice}"></span></p>
     <p>Usage Period: <span th:text="${ticketDTO.use_period}"></span></p>
     -->
-    <div class="row">
-        <form method="post" >
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 offset-lg-3 offset-md-3 offset-sm-3 offset-xs-0">
+        <form method="post" class="mx-auto text-center">
             <div class="col-md-6" style="display: none;">
                 <div class="form-group">
                     <label class="control-label" for="tno">티켓 번호</label>
@@ -31,23 +33,23 @@
 
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label" for="email_id">이메일</label>
+                    <label class="control-label" for="email_id" style="width: 410px">이메일</label>
                     <input id="email_id" name="email_id" type="email" class="form-control"
-                           th:value="${#authentication.principal.email_id}" style="width: 200px" readonly required>
+                           th:value="${#authentication.principal.email_id}" style="width: 410px" readonly required>
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label" for="startDate">방문 가능일자</label>
-                    <input id="startDate" name="startDate" type="date" class="form-control" style="width: 200px" required>
+                    <label class="control-label" for="startDate" style="width: 410px">방문 가능일자</label>
+                    <input id="startDate" name="startDate" type="date" class="form-control" style="width: 410px" required>
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label" for="people_count">인원수</label>
-                    <input id="people_count" name="people_count" type="number" class="form-control" oninput="checkMinValue(this)">
+                    <label class="control-label" for="people_count" style="width: 410px">인원수</label>
+                    <input id="people_count" name="people_count" type="number" class="form-control" oninput="checkMinValue(this)" style="width: 410px">
                 </div>
             </div>
 
@@ -68,8 +70,11 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <button id="singlebutton" name="singlebutton" class="modBtn btn btn-primary" onclick="submitForm()">Submit</button>
+                    <!-- 두 번째 버튼 -->
+                    <a th:href="@{/}" class="modBtn btn btn-secondary" style="margin-top: 10px">메인화면으로 돌아가기</a>
                 </div>
             </div>
+
         </form>
     </div>
 </div>

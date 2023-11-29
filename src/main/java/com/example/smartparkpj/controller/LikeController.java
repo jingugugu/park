@@ -33,6 +33,9 @@ public class LikeController {
         log.info("라이크" + likeDTO);
         log.info("리뷰" + reviewDTO);//필요 없지만 테스트용으로 남김(고지훈)
 
+        int facility_no = reviewDTO.getFacility_no();
+        String type = reviewDTO.getType();
+
         MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO)authentication.getPrincipal();
 
         int testMno = memberSecurityDTO.getMno();
@@ -65,7 +68,8 @@ public class LikeController {
             likeService.insert(likeDTO);
             reviewService.like_count(rno);
         }
+        log.info("------------------------리다이렉트 시험 좋아요");
 
-        return "redirect:/review/list";
+        return "redirect:/enter/map";
     }
 }

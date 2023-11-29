@@ -70,6 +70,7 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
+            z-index: 10;
         }
 
         /* 다음 버튼의 위치 조절 */
@@ -88,6 +89,7 @@
             bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
+            z-index: 10;
         }
         .swiper-slide img {
             width: 100%; /* 부모 컨테이너에 맞춰지도록 100%로 설정 */
@@ -259,7 +261,7 @@
 <!--    </div>-->
 
     <div th:if="${markerDTO.type eq '어트랙션'}">
-        <h2 th:text="${facilityDTO.aname}"></h2>
+        <h2>카트라이더레이싱월드</h2>
         <div class="container">
             <p class="h2Txt" style="white-space: pre-wrap;">[[${facilityDTO.ainfo}]]</p>
 
@@ -422,7 +424,7 @@
                                     </div>
                                     <a th:href="@{/like/add(rno=${review.rno}, mno=${review.mno})}" class="reply-link" style="font-size: 15px">좋아요</a>
                                     <span th:text="${review.like_count}"></span>
-                                    </div><!--좋아요 작업 해줘야함-->
+                                    <!--좋아요 작업 해줘야함-->
 
                                     <!--삭제 버튼 처리 -->
                                     <a class="reply-link"
@@ -465,7 +467,7 @@
     <!-- 리뷰 작성 부분은 따로 만들어야 오류가 덜남 따로 만들겠습니다-->
     <a th:href="@{/review/add(facility_no=${markerDTO.facility_no}, type=${markerDTO.type})}"
        class="btn btn-primary" style="font-size: 20px; float: right; margin-top: -100px;">
-        리뷰 작성하기
+        리뷰 작성하기 - (<span th:text="${markerDTO.facility_no}"></span>) <span th:text="${markerDTO.type}"></span>
     </a>
 
     <!-- 이 아래로는 사용 하지 않습니다 페징이 오류 를 막기 위해 남겨 놓는겁니다 화면에 보이지 않고 어떤 값을 처리 할수도 없습니다 (고지훈) -->
@@ -502,7 +504,7 @@
         spaceBetween: 10,  // 슬라이드 간 간격
         navigation: {
             nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
+            prevEl: '.swiper-button-prev'
         },
         pagination: {
             el: '.swiper-pagination',
