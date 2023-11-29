@@ -306,11 +306,6 @@ public class AdminController {
         model.addAttribute("adminInquiryDTO", inquiryService.getAdminListAll());
     }
 
-    @PostMapping("/inquiry/inquiryList")
-    public void postInquiryAdminList() {
-        log.info("PostAdminList");
-    }
-
 
     @GetMapping("/inquiry/adminRead")
     public void getReadInquiry(InquiryDTO inquiryDTO, Model model) {

@@ -264,7 +264,7 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col ">
-                                <div class="container-fluid d-flex uploadAttractionResult" style="flex-wrap: wrap;">
+                                <div class="container-fluid d-flex flex-column uploadAttractionResult">
                                 </div>
                             </div>
                         </div>
@@ -370,7 +370,7 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col ">
-                                <div class="container-fluid d-flex uploadShopResult" style="flex-wrap: wrap;">
+                                    <div class="container-fluid d-flex flex-column uploadShopResult">
                                 </div>
                             </div>
                         </div>
@@ -645,12 +645,12 @@
 
 
     function showUploadAttractionFile({uuid, fileName, link}){
-        const str = `<div class="card col-4">
+        const str = `<div class="card">
                 <div class="card-header d-flex justify-content-center">
                     <button type="button" class="btn btn-danger" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
                     </div>
-                    <div class="card-body">
-                        <img class="attractionImages" src="/view/${link}" data-src="${uuid+"_"+fileName}" >
+                    <div class="card-body d-flex flex-column align-items-center">
+                        <img class="attractionImages" src="/view/${link}" data-src="${uuid+"_"+fileName}">
                     </div>
                 </div>`;
 
@@ -658,11 +658,11 @@
     }
 
     function showUploadShopFile({uuid, fileName, link}){
-        const str = `<div class="card col-4">
+        const str = `<div class="card">
                 <div class="card-header d-flex justify-content-center">
                     <button type="button" class="btn btn-danger" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body d-flex flex-column align-items-center">
                         <img class="shopImages" src="/view/${link}" data-src="${uuid+"_"+fileName}" >
                     </div>
                 </div>`;
@@ -672,11 +672,11 @@
 
     function showUploadConFile({uuid, fileName, link}){
         uploadConResult.innerHTML = ""; // 기존 이미지 없애기
-        const str = `<div class="card col-4">
+        const str = `<div class="card">
                 <div class="card-header d-flex justify-content-center">
                     <button type="button" class="btn btn-danger" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body d-flex flex-column align-items-center">
                         <img class="ConImage" src="/view/${link}" data-src="${uuid+"_"+fileName}" >
                     </div>
                 </div>`;

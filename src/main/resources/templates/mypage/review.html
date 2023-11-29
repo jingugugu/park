@@ -24,7 +24,7 @@
 
         /* 각 셀에 호버 효과 추가 */
         tr.review:hover {
-            background-color: #eebfd7;
+            background-color: #d9d4d5;
             cursor: pointer; /* 마우스 커서를 포인터로 변경하여 클릭 가능한 것처럼 보이게 함 */
         }
     </style>
@@ -70,7 +70,7 @@
                             <tbody>
                             <tr th:each="review : ${reviewDTO}" class="tr review">
                                 <td>
-                                    <a th:href="|@{/ticket/addFinish}|"
+                                    <a th:href="|@{/review/read(facility_no =${review.facility_no})}&type=${review.type}|"
                                        th:text="${review.rno}"
                                        style="text-decoration: underline; color: red"></a>
                                 </td>

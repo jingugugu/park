@@ -35,6 +35,11 @@
         .expired {
             color: #605b5b;
         }
+
+        /* 각 셀에 호버 효과 추가 */
+        tr.inquiry:hover {
+            background-color: #d9d4d5;
+        }
     </style>
 </head>
 <body>
@@ -76,7 +81,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="inquiry : ${inquiryDTO}">
+                            <tr th:each="inquiry : ${inquiryDTO}" class="tr inquiry">
                                 <td>
                                     <a th:href="|@{/inquiry/read(ino =${inquiry.ino})}&${link}|"
                                        th:text="${inquiry.title}"

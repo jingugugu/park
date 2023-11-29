@@ -103,7 +103,7 @@ public class InquiryController {
         return "redirect:/inquiry/support";
     }
 
-    @GetMapping("/addAnswer")
+   /* @GetMapping("/addAnswer")
     public void addAnswerGet() {
         log.info("addAnswerGET...");
     }
@@ -111,7 +111,7 @@ public class InquiryController {
     @PostMapping("/addAnswer")
     public void addAnswerPost() {
         log.info("addAnswerPOST...");
-    }
+    }*/
 
 
 }

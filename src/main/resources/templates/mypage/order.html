@@ -29,6 +29,12 @@
         .expired {
             color: red; /* 사용만료일 때의 색상 */
         }
+
+        /* 각 셀에 호버 효과 추가 */
+        tr.order:hover {
+            background-color: #d9d4d5;
+            cursor: pointer; /* 마우스 커서를 포인터로 변경하여 클릭 가능한 것처럼 보이게 함 */
+        }
     </style>
 </head>
 <body>
@@ -71,9 +77,9 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="order : ${orderDTO}">
+                            <tr th:each="order : ${orderDTO}" class="tr order">
                                 <td>
-                                    <a th:href="|@{/ticket/addFinish}|"
+                                    <a th:href="|@{/ticket/addFinish(ono =${order.ono})}|"
                                        th:text="${order.ono}"
                                        style="text-decoration: underline; color: red"></a>
                                 </td>
