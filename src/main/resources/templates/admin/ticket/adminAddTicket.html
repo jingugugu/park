@@ -12,7 +12,7 @@
 <body>
 <h1>Test</h1>
 <div layout:fragment="content">
-    <div class=" col-lg-8 col-md-8 col-sm-8 col-xs-12">
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 offset-lg-3 offset-md-3 offset-sm-3 offset-xs-0">
 
         <h1>티켓 추가</h1>
         <!--
@@ -20,53 +20,67 @@
         <p>Ticket Price: <span th:text="${ticketDTO.tprice}"></span></p>
         <p>Usage Period: <span th:text="${ticketDTO.use_period}"></span></p>
         -->
-        <div class="row">
-            <form method="post" >
-
-                <div class="form-group">
-                    <label class="control-label" for="tno">티켓 번호</label>
-                    <input id="tno" name="tno" type="number" class="form-control" required>
-                </div>
-
+        <div class="text-center mx-auto">
+            <form method="post">
 
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label" for="tname">티켓 네임</label>
-                        <input id="tname" name="tname" type="text" class="form-control" style="width: 200px" required>
+                        <label class="control-label" for="tname"></label>
+                        <input id="tname" name="tname" type="text" class="form-control" style="width: 325px" required
+                               onfocus="if(this.value=='티켓 네임') this.value='';"
+                               onblur="if(this.value=='') this.value='티켓 네임';"
+                               value="티켓 네임">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-left: 13px;">
+                    <label class="control-label" for="tinfo"></label>
+                    <input id="tinfo" name="tinfo" type="text" class="form-control" style="width: 325px" required
+                           onfocus="if(this.value=='티켓 설명') this.value='';"
+                           onblur="if(this.value=='') this.value='티켓 설명';"
+                           value="티켓 설명">
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="tprice"></label>
+                        <input id="tprice" name="tprice" type="text" class="form-control"
+                               oninput="checkMinValue(this)"
+                               onfocus="if(this.value=='가격') this.value=''; this.type='number';"
+                               onblur="if(this.value=='') { this.type='text'; this.value='가격'; }"
+                               value="가격">
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label" for="tinfo">파크 네 이용 시간</label>
-                        <input id="tinfo" name="tinfo" type="text" class="form-control" style="width: 200px" required>
+                        <label class="control-label" for="ticket_type"></label>
+                        <input id="ticket_type" name="ticket_type" type="text" class="form-control"
+                               oninput="checkMinValue(this)"
+                               onfocus="if(this.value=='티켓타입') this.value='';"
+                               onblur="if(this.value=='') this.value='티켓타입';"
+                               value="티켓타입">
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label" for="tprice">가격</label>
-                        <input id="tprice" name="tprice" type="number" class="form-control" oninput="checkMinValue(this)">
+                        <label class="control-label" for="use_period"></label>
+                        <input id="use_period" name="use_period" type="text" class="form-control"
+                               oninput="checkMinValue(this)"
+                               onfocus="if(this.value=='맴버쉽 이용기간') { this.value=''; this.type='number'; }"
+                               onblur="if(this.value=='') { this.type='text'; this.value='맴버쉽 이용기간'; }"
+                               value="맴버쉽 이용기간">
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label" for="ticket_type">티켓 타입</label>
-                        <input id="ticket_type" name="ticket_type" type="text" class="form-control" oninput="checkMinValue(this)">
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label" for="use_period">맴버쉽 이용기간</label>
-                        <input id="use_period" name="use_period" type="number" class="form-control" oninput="checkMinValue(this)">
-                    </div>
-                </div>
-
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <button type="submit">Submit</button>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group" style="margin-left: -22rem;"> <!-- offset-md-3 클래스 추가 -->
+                            <button type="submit" class="modBtn btn btn-primary">Submit</button>
+                            <!-- 두 번째 버튼 -->
+                            <a th:href="@{/admin/ticket/adminTicket}" class="modBtn btn btn-secondary" style="margin-top: 10px">관리자 티켓 리스트로 돌아가기</a>
+                        </div>
                     </div>
                 </div>
             </form>

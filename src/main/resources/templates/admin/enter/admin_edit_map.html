@@ -24,19 +24,19 @@
         .category li{list-style:none;float:left;width:50px;height:50px;padding-top:5px;cursor:pointer;}
         .category .ico_comm {display:block;margin:0 auto 2px;width:22px;height:26px;}
         .category .ico_all{
-            background: url('https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-theme-park-summer-travel-flaticons-lineal-color-flat-icons.png') no-repeat;
+            background: url('/images/free-animated-icon-boat-111957-unscreen.gif') no-repeat;
             background-size: 100% 100%;
         }
         .category .ico_attraction {
-            background: url('https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-theme-park-summer-travel-flaticons-lineal-color-flat-icons.png') no-repeat;
+            background: url('/images/free-animated-icon-boat-111957-unscreen.gif') no-repeat;
             background-size: 100% 100%;
         }
         .category .ico_shop {
-            background: url('https://img.icons8.com/external-photo3ideastudio-lineal-color-photo3ideastudio/64/external-restaurant-restaurant-photo3ideastudio-lineal-color-photo3ideastudio.png') no-repeat;
+            background: url('/images/free-animated-icon-pizza-11187-unscreen.gif') no-repeat;
             background-size: 100% 100%;
         }
         .category .ico_con {
-            background: url('https://img.icons8.com/emoji/48/convenience-store.png') no-repeat;
+            background: url('/images/free-animated-icon-armchair-12-unscreen.gif') no-repeat;
             background-size: 100% 100%;
         }
 
@@ -1034,9 +1034,9 @@
     const shopMarkers = [];
     const conMarkers = [];
     var markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png';  // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
-    const attractionMarkerImageSrc = 'https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-theme-park-summer-travel-flaticons-lineal-color-flat-icons.png'
-    const shopMarkerImageSrc = 'https://img.icons8.com/external-photo3ideastudio-lineal-color-photo3ideastudio/64/external-restaurant-restaurant-photo3ideastudio-lineal-color-photo3ideastudio.png';
-    const conMarkerImageSrc = 'https://img.icons8.com/emoji/48/convenience-store.png';
+    const attractionMarkerImageSrc = '/images/free-animated-icon-boat-111957-unscreen.gif';
+    const shopMarkerImageSrc = '/images/free-animated-icon-pizza-11187-unscreen.gif'
+    const conMarkerImageSrc = '/images/free-animated-icon-armchair-12-unscreen.gif';
 
     // 마커 이미지 생성 후 리턴
     function createMarkerImage(src, size) {
@@ -1505,8 +1505,8 @@
         let message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
         message += '경도는 ' + latlng.getLng() + ' 입니다';
 
-        const resultDiv = document.getElementById('result');
-        resultDiv.innerHTML = message;
+        // const resultDiv = document.getElementById('result');
+        // resultDiv.innerHTML = message;
 
         // 클릭한 위치의 마커 객체를 가져옵니다
         let target = mouseEvent.target;
@@ -1534,8 +1534,8 @@
         let message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
         message += '경도는 ' + latlng.getLng() + ' 입니다';
 
-        const resultDiv = document.getElementById('result');
-        resultDiv.innerHTML = message;
+        // const resultDiv = document.getElementById('result');
+        // resultDiv.innerHTML = message;
 
         // 클릭한 위치의 마커 객체를 가져옵니다
         let target = mouseEvent.target;

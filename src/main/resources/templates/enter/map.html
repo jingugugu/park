@@ -11,7 +11,11 @@
     <meta charset="UTF-8">
     <title>이용시설 위치</title>
     <style>
-        #mapwrap{position:relative;overflow:hidden;}
+        #mapwrap{
+            position:relative;
+            overflow:hidden;
+            margin-left: 100px;
+        }
         .category, .category *{margin:0;padding:0;color:#000;}
         .category {
             overflow:hidden;
@@ -20,19 +24,19 @@
         .category li{list-style:none;float:left;width:50px;height:50px;padding-top:5px;cursor:pointer;}
         .category .ico_comm {display:block;margin:0 auto 2px;width:22px;height:26px;}
         .category .ico_all{
-            background: url('https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-theme-park-summer-travel-flaticons-lineal-color-flat-icons.png') no-repeat;
+            background: url('/images/free-animated-icon-boat-111957-unscreen.gif') no-repeat;
             background-size: 100% 100%;
         }
         .category .ico_attraction {
-            background: url('https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-theme-park-summer-travel-flaticons-lineal-color-flat-icons.png') no-repeat;
+            background: url('/images/free-animated-icon-boat-111957-unscreen.gif') no-repeat;
             background-size: 100% 100%;
         }
         .category .ico_shop {
-            background: url('https://img.icons8.com/external-photo3ideastudio-lineal-color-photo3ideastudio/64/external-restaurant-restaurant-photo3ideastudio-lineal-color-photo3ideastudio.png') no-repeat;
+            background: url('/images/free-animated-icon-pizza-11187-unscreen.gif') no-repeat;
             background-size: 100% 100%;
         }
         .category .ico_con {
-            background: url('https://img.icons8.com/emoji/48/convenience-store.png') no-repeat;
+            background: url('/images/free-animated-icon-armchair-12-unscreen.gif') no-repeat;
             background-size: 100% 100%;
         }
 
@@ -130,7 +134,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h1 style="margin-top: 50px; font-size: 30px"><strong>지도</strong></h1><br>
+    <h1 style="margin-top: 50px; font-size: 30px"><strong>SMART PARK</strong></h1><br>
     <div id="mapwrap">
         <div id="map" style="width:800px;height:800px;"></div>
         <div class="category">
@@ -283,11 +287,9 @@
     const attractionMarkers = [];
     const shopMarkers = [];
     const conMarkers = [];
-        // var markerImageSrc = 'https://mblogthumb-phinf.pstatic.net/20141028_186/anijunkie_1414458460706yEeUx_PNG/91f05e76-5603-11e4-9d59-27aa01e1c669.png?type=w2';
-    const attractionMarkerImageSrc = 'https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-theme-park-summer-travel-flaticons-lineal-color-flat-icons.png'
-    // const attractionMarkerImageSrc = 'https://media.tenor.com/vxJjiiRh3CUAAAAd/%EC%B6%98%EC%8B%9D-%EC%B6%98%EC%8B%9D%EC%9D%B4.gif';
-    const shopMarkerImageSrc = 'https://img.icons8.com/external-photo3ideastudio-lineal-color-photo3ideastudio/64/external-restaurant-restaurant-photo3ideastudio-lineal-color-photo3ideastudio.png';
-    const conMarkerImageSrc = 'https://img.icons8.com/emoji/48/convenience-store.png';
+    const attractionMarkerImageSrc = '/images/free-animated-icon-boat-111957-unscreen.gif';
+    const shopMarkerImageSrc = '/images/free-animated-icon-pizza-11187-unscreen.gif'
+    const conMarkerImageSrc = '/images/free-animated-icon-armchair-12-unscreen.gif';
     // 마커이미지의 주소와, 크기, 옵션으로 마커 이미지를 생성하여 리턴하는 함수입니다
     function createMarkerImage(src, size) {
         let markerImage = new kakao.maps.MarkerImage(src, size);
@@ -359,6 +361,7 @@
                 case "어트랙션":
                     return `<div id="facilityOverlay">
                             <h3 id="facilityName">${markerInfo.aname}</h3>
+                            <h4 id="facilityScore"><span style="color: red">★</span> ${markerInfo.avgScore.toFixed(1)} / 5.0</h4>
                             <img id="facilityImage" alt="어트랙션 이미지">
                             <a href="/review/read?facility_no=${markerInfo.ano}&type=${type}" id="detailButton">상세 보기</a>
                             <button id="closeButton" onclick="closeOverlay()">닫기</button>
@@ -366,6 +369,7 @@
                 case "매장":
                     return `<div id="facilityOverlay">
                             <h3 id="facilityName">${markerInfo.shop_name}</h3>
+                            <h4 id="facilityScore"><span style="color: red">★</span> ${markerInfo.avgScore.toFixed(1)} / 5.0</h4>
                             <img id="facilityImage" alt="매장 이미지">
                             <a href="/review/read?facility_no=${markerInfo.sno}&type=${type}" id="detailButton">상세 보기</a>
                             <button id="closeButton" onclick="closeOverlay()">닫기</button>
@@ -374,6 +378,7 @@
                 default:
                     return `<div id="facilityOverlay">
                             <h3 id="facilityName">${markerInfo.name}</h3>
+                            <h4 id="facilityScore"><span style="color: red">★</span> ${markerInfo.avgScore.toFixed(1)} / 5.0</h4>
                             <img id="facilityImage" alt="편의시설 이미지">
                             <a href="/review/read?facility_no=${markerInfo.cno}&type=${type}" id="detailButton">상세 보기</a>
                             <button id="closeButton" onclick="closeOverlay()">닫기</button>
@@ -494,44 +499,36 @@
         const conMenu = document.getElementById('conMenu');
         const allMenu = document.getElementById('allMenu');
 
-        // 커피숍 카테고리가 클릭됐을 때
         if (type === 'attraction') {
 
-            // 커피숍 카테고리를 선택된 스타일로 변경하고
             attractionMenu.className = 'menu_selected';
 
-            // 편의점과 주차장 카테고리는 선택되지 않은 스타일로 바꿉니다
             shopMenu.className = '';
             conMenu.className = '';
             allMenu.className = '';
 
-            // 커피숍 마커들만 지도에 표시하도록 설정합니다
             setAttractionMarkers(map);
             setShopMarkers(null);
             setConMarkers(null);
 
-        } else if (type === 'shop') { // 편의점 카테고리가 클릭됐을 때
+        } else if (type === 'shop') {
 
-            // 편의점 카테고리를 선택된 스타일로 변경하고
             attractionMenu.className = '';
             shopMenu.className = 'menu_selected';
             conMenu.className = '';
             allMenu.className = '';
 
-            // 편의점 마커들만 지도에 표시하도록 설정합니다
             setAttractionMarkers(null);
             setShopMarkers(map);
             setConMarkers(null);
 
-        } else if (type === 'con') { // 주차장 카테고리가 클릭됐을 때
+        } else if (type === 'con') {
 
-            // 주차장 카테고리를 선택된 스타일로 변경하고
             attractionMenu.className = '';
             shopMenu.className = '';
             conMenu.className = 'menu_selected';
             allMenu.className = '';
 
-            // 주차장 마커들만 지도에 표시하도록 설정합니다
             setAttractionMarkers(null);
             setShopMarkers(null);
             setConMarkers(map);
@@ -559,8 +556,8 @@
             //     currentOverlay.setMap(null);
             // }
 
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = message;
+            // const resultDiv = document.getElementById('result');
+            // resultDiv.innerHTML = message;
 
             // 클릭한 위치의 마커 객체를 가져옵니다
             let target = mouseEvent.target;
