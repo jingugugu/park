@@ -4,12 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.smartparkpj.mapper.MemberMapper">
 
-    <insert id="register">
+    <insert id="register" parameterType="com.example.smartparkpj.domain.MemberVO" useGeneratedKeys="true" keyProperty="mno">
         INSERT INTO member (email_id, password, nickName, member_name, phone, addDate, birthday, profileImg)
         VALUES (#{email_id}, #{password}, #{nickName}, #{member_name}, #{phone}, now(), #{birthday}, #{profileImg})
     </insert>
 
-    <insert id="addMember">
+    <insert id="addMember" parameterType="com.example.smartparkpj.domain.MemberVO" useGeneratedKeys="true" keyProperty="mno">
         INSERT INTO member (email_id, password, nickName, member_name, phone, addDate, birthday, profileImg)
         VALUES (#{email_id}, #{password}, #{nickName}, #{member_name}, #{phone}, now(), #{birthday}, #{profileImg})
     </insert>
@@ -58,5 +58,9 @@
     <update id="removeMember">
         UPDATE member SET password = "", nickName = "탈퇴처리", member_name = "탈퇴처리", phone = "탈퇴처리", birthday = "", profileimg = "", removeDate = now() WHERE email_id = #{email_id}
     </update>
+
+    <select id="getWithRoles" resultType="com.example.smartparkpj.domain.MemberVO">
+        SELECT * FROM member WHERE email_id = #{email_id} AND social = false
+    </select>
 
 </mapper>

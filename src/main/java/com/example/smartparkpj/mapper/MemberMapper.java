@@ -22,5 +22,5 @@ public interface MemberMapper {
     void passwordEdit(MemberVO memberVO);
     List<MemberVO> selectAll();
     void removeMember(MemberVO memberVO);
-
+    MemberVO getWithRoles(String email_id);
 }

@@ -1,6 +1,7 @@
 package com.example.smartparkpj.config;
 
 import com.example.smartparkpj.security.CustomUserDetailService;
+import com.example.smartparkpj.security.handler.CustomSocialLoginSuccessHandler;
 import com.example.smartparkpj.security.handler.LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -56,8 +57,7 @@ public class CustomSecurityConfig {
                 .tokenValiditySeconds(60 * 60 * 24 * 30);
 
         // OAuth2 로그인을 사용한다는 설정
-        httpSecurity.oauth2Login().loginPage("/member/login");
-
+        httpSecurity.oauth2Login().loginPage("/member/login").successHandler(authenticationSuccessHandler());
         return httpSecurity.build();
     }
 
@@ -85,6 +85,11 @@ public class CustomSecurityConfig {
     @Bean
     public AuthenticationSuccessHandler getLoginSuccessHandler() {
         return new LoginSuccessHandler();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new CustomSocialLoginSuccessHandler(passwordEncoder());
     }
 
 //    // 로그인 실패시

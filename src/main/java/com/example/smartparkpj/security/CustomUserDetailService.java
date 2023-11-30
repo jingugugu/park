@@ -48,11 +48,12 @@ public class CustomUserDetailService implements UserDetailsService {
                 memberVO.getMno(),
                 memberVO.getEmail_id(),
                 memberVO.getPassword(),
-                memberVO.getNickName(),
-                memberVO.getMember_name(),
-                memberVO.getPhone(),
-                memberVO.getBirthday(),
-                memberVO.getProfileImg(),
+//                memberVO.getNickName(),
+//                memberVO.getMember_name(),
+//                memberVO.getPhone(),
+//                memberVO.getBirthday(),
+//                memberVO.getProfileImg(),
+                memberVO.isSocial(),
                 grantedAuthorityArrayList
         );
         log.info(memberSecurityDTO);

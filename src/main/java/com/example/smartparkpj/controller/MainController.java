@@ -33,10 +33,11 @@ public class MainController {
 
     private final MarkerService markerService;//메인화면 리뷰 리스트 용
     @GetMapping("/main/park_main")
-    public void mainGet(Authentication authentication, Model model){//로그인 시 리뷰 가능여부 시간 계산 메서드 작업 & 메인 홈 화면 작업시작(고지훈)
+    public void mainGet(Authentication authentication, Model model){ //로그인 시 리뷰 가능여부 시간 계산 메서드 작업 & 메인 홈 화면 작업시작(고지훈)
         if(authentication != null){
             log.info("/main/park_main.html!~~!");
             log.info("autttt---------------" + authentication);
+            log.info(authentication.getPrincipal());
 
             MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO)authentication.getPrincipal();
             log.info("/main/park_main.html!~~!");
