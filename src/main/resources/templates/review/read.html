@@ -295,7 +295,7 @@
 <!--    </div>-->
 
     <div th:if="${markerDTO.type eq '어트랙션'}">
-        <h2>카트라이더레이싱월드</h2>
+        <h2 th:text="${facilityDTO.aname}"></h2>
         <div class="container">
             <p class="h2Txt" style="white-space: pre-wrap;">[[${facilityDTO.ainfo}]]</p>
 

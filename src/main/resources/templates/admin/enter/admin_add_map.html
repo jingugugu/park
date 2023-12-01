@@ -24,19 +24,19 @@
         .category li{list-style:none;float:left;width:50px;height:50px;padding-top:5px;cursor:pointer;}
         .category .ico_comm {display:block;margin:0 auto 2px;width:22px;height:26px;}
         .category .ico_all{
-            background: url('/images/free-animated-icon-boat-111957-unscreen.gif') no-repeat;
+            background: url('https://i.ibb.co/PxCZ3YR/free-animated-icon-balloons-11-unscreen.gif') no-repeat;
             background-size: 100% 100%;
         }
         .category .ico_attraction {
-            background: url('/images/free-animated-icon-boat-111957-unscreen.gif') no-repeat;
+            background: url('https://i.ibb.co/PxCZ3YR/free-animated-icon-balloons-11-unscreen.gif') no-repeat;
             background-size: 100% 100%;
         }
         .category .ico_shop {
-            background: url('/images/free-animated-icon-pizza-11187-unscreen.gif') no-repeat;
+            background: url('https://i.ibb.co/HC0GHnY/free-animated-icon-pizza-11187-unscreen.gif') no-repeat;
             background-size: 100% 100%;
         }
         .category .ico_con {
-            background: url('/images/free-animated-icon-armchair-12-unscreen.gif') no-repeat;
+            background: url('https://i.ibb.co/GtSMRsR/free-animated-icon-armchair-12-unscreen.gif') no-repeat;
             background-size: 100% 100%;
         }
 
@@ -499,6 +499,16 @@
 </div>
 <script layout:fragment="script" th:inline="javascript">
 
+    function attractionConfirmCheck(){
+        const attractionType = document.querySelector('#attraction-type');
+        const latitude = document.querySelectorAll('input[name=latitude]');
+        const longitude = document.querySelectorAll('input[name=longitude]');
+        const aname = document.querySelector('#aname');
+        const ainfo = document.querySelector('#ainfo');
+        const ainfo_detail = document.querySelector('#ainfo_detail');
+        const passengersCount = document.querySelector('#passengersCount');
+    }
+
     function changeFormType(typeInputId, facilityType) {
         // 선택된 폼의 type input의 값을 변경
         const typeInput = document.getElementById(typeInputId);
@@ -944,9 +954,9 @@
     const shopMarkers = [];
     const conMarkers = [];
     var markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png';  // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
-    const attractionMarkerImageSrc = '/images/free-animated-icon-boat-111957-unscreen.gif';
-    const shopMarkerImageSrc = '/images/free-animated-icon-pizza-11187-unscreen.gif'
-    const conMarkerImageSrc = '/images/free-animated-icon-armchair-12-unscreen.gif';
+    const attractionMarkerImageSrc = 'https://i.ibb.co/PxCZ3YR/free-animated-icon-balloons-11-unscreen.gif';
+    const shopMarkerImageSrc = 'https://i.ibb.co/HC0GHnY/free-animated-icon-pizza-11187-unscreen.gif'
+    const conMarkerImageSrc = 'https://i.ibb.co/GtSMRsR/free-animated-icon-armchair-12-unscreen.gif';
     // 마커 이미지 생성 후 리턴
     function createMarkerImage(src, size) {
         let markerImage = new kakao.maps.MarkerImage(src, size);

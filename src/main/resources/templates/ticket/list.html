@@ -26,10 +26,10 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" th:each="ticket : ${ticketDTO}">
                     <div class="tour-block">
                         <div class="tour-img" th:switch="${ticket.ticket_type}">
-                            <img th:case="'j'" src="/images/j2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
-                            <img th:case="'y'" src="/images/y2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
-                            <img th:case="'d'" src="/images/d2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
-                            <img th:case="'m'" src="/images/m2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
+                            <img th:case="'j'" src="https://i.ibb.co/kg8GmhK/j2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
+                            <img th:case="'y'" src="https://i.ibb.co/r4Z7d90/y2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
+                            <img th:case="'d'" src="https://i.ibb.co/cgs4wmG/d2.png" class="tour-image" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
+                            <img th:case="'m'" src="https://i.ibb.co/D58n01f/m2.png" style="width: 700px; height: 300px; display: block; margin: 0 auto;">
                         </div>
                         <div class="tour-content">
                             <h3 th:text="${ticket.tname}" class="title"></h3>
