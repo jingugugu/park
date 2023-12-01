@@ -40,10 +40,11 @@ public class ReviewMapperTests {
     public void insertTest(){
         ReviewVO reviewVO = ReviewVO.builder() //content, mno, addDate, score, fno, type
                 .content("test")
-                .mno(4)
+                .mno(6)
                 .score(5)
                 .facility_no(34)
                 .type("편의시설")
+                .ono(1)
                 .build();
         reviewMapper.insert(reviewVO);
     }

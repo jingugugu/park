@@ -1,17 +1,11 @@
-document.querySelector(".pagination").addEventListener("click",function (e) {
-    e.preventDefault();
-    e.stopPropagation();
+async function getList({rno, page, size, goLast}){
+    const result = await axios.get(`/replies/list/${rno}?page=${page}`, {params: {page, size}})
 
-    const target = e.target;
+    if(goLast){
+        const total = result.data.total
+        const lastPage = parseInt(Math.ceil(total/size))
 
-    if (target.tagName !== 'A') {
-        return;
+        return getList({rno:rno, page:lastPage, size:size})
     }
-    const num = target.getAttribute("data-num");
-
-    const formObj = document.querySelector("form");
-
-    formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`;
-
-    formObj.submit();
-},false)
+    return result.data
+}

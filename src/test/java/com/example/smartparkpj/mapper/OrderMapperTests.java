@@ -39,8 +39,8 @@ public class OrderMapperTests {
     }
 
     @Test
-    public void getOneTest2(){
-        OrderVO orderVO = orderMapper.selectOneMax(2);
-        log.info(orderVO);
+    public void selectOneNowTest(){
+        OrderVO orderVO = orderMapper.selectOneNow("gojihoon12313@naver.com");
+        log.info("최근 구매 티켓 : " + orderVO);
     }
 }

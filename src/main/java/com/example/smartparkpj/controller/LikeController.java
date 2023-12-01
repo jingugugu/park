@@ -11,7 +11,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -27,7 +29,7 @@ public class LikeController {
 
     @PreAuthorize("isAuthenticated()")//로그인 한 사람만 접근 할수 있도록
     @GetMapping("/add")
-    public String like(LikeDTO likeDTO, ReviewDTO reviewDTO, Authentication authentication){
+    public String like(LikeDTO likeDTO, ReviewDTO reviewDTO, Authentication authentication, RedirectAttributes redirectAttributes){
         log.info("좋아요 GET 테스트");
 
         log.info("라이크" + likeDTO);
@@ -70,6 +72,12 @@ public class LikeController {
         }
         log.info("------------------------리다이렉트 시험 좋아요");
 
-        return "redirect:/enter/map";
+        log.info("확인:" + "redirect:/review/read?facility_no="+facility_no+"&type="+type);
+
+        String url =  "redirect:/review/read";
+        redirectAttributes.addAttribute("facility_no", facility_no);
+        redirectAttributes.addAttribute("type", type);
+
+        return url;
     }
 }

@@ -33,4 +33,10 @@ public class OrderServiceTest {
         String mail = "gojioon12313@naver.com";
         orderService.modifyHasAbility(mail);
     }
+
+    @Test
+    public void selectOneNow(){
+        OrderDTO orderDTO = orderService.getOneNow("gojihoon12313@naver.com");
+        log.info(orderDTO);
+    }
 }

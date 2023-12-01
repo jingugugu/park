@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -186,4 +187,21 @@ public class UpDownController {
         resultMap.put("result", removed);
         return resultMap;
     }
+//    @PostConstruct
+//    public void init(){
+//        File tempFolder01 = new File(uploadTmpPath);
+//        File tempFolder02 = new File(uploadRealPath);
+//
+//        if(!tempFolder01.exists()){
+//            tempFolder01.mkdirs();
+//        }
+//        if(!tempFolder02.exists()){
+//            tempFolder02.mkdirs();
+//        }
+//        uploadTmpPath = tempFolder01.getAbsolutePath();
+//        uploadRealPath = tempFolder01.getAbsolutePath();
+//
+//        log.info("-----------------");
+//        log.info(uploadRealPath);
+//    }
 }

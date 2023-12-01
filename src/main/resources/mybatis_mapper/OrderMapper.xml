@@ -35,4 +35,8 @@
     <select id="selectOneMax" resultType="com.example.smartparkpj.domain.OrderVO">
         select * from `order` where ono = #{ono}
     </select>
+
+    <select id="selectOneNow" resultType="com.example.smartparkpj.domain.OrderVO">
+        SELECT ono FROM `order` WHERE email_id = #{email_id} ORDER BY ono DESC LIMIT 1
+    </select>
 </mapper>

@@ -114,4 +114,12 @@ public class OrderServiceImpl implements OrderService{
 
         return orderDTO;
     }
+
+    @Override
+    public OrderDTO getOneNow(String email_id) {
+        OrderVO orderVO = orderMapper.selectOneNow(email_id);
+        OrderDTO orderDTO = modelMapperConfig.map(orderVO, OrderDTO.class);
+
+        return orderDTO;
+    }
 }

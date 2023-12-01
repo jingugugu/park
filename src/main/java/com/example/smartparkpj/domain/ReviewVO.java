@@ -18,4 +18,5 @@ public class ReviewVO {
     private int score; //별점 0
     private int facility_no;// 시설 넘버0
     private String type;//시설 타입
+    private int ono;//티켓 구매 넘버
 }

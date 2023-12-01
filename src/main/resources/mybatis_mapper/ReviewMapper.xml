@@ -13,8 +13,8 @@
     </select>
 
     <select id="insert" resultType="com.example.smartparkpj.domain.ReviewVO"><!-- 여기까 지함 -->
-        INSERT into `review`(content, mno, addDate, score, facility_no, type)
-        VALUES(#{content}, #{mno}, now(), #{score}, #{facility_no}, #{type})
+        INSERT into `review`(content, mno, addDate, score, facility_no, type, ono)
+        VALUES(#{content}, #{mno}, now(), #{score}, #{facility_no}, #{type}, #{ono})
     </select>
 
     <select id="selectOneType" resultType="com.example.smartparkpj.domain.ReviewVO">

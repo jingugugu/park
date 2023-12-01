@@ -20,6 +20,7 @@ public class ReviewDTO {
     private int score; //별점 0
     private int facility_no;// 시설 넘버0
     private String type;//시설 타입
+    private int ono;//티켓 구매 넘버
     private String nickName;//조인 용 가져온 닉네임(member 값)
     private String email_id;//이메일 아이디 하나 추가 합니다(삭제 조건 값)
 }

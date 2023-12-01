@@ -13,6 +13,8 @@ public interface OrderMapper {
 
     OrderVO selectOneMax(int ono);
 
+    OrderVO selectOneNow(String email_id);
+
     void updateFinished(String orderVO);
 
     void updateHasAbility(String orderVO);
