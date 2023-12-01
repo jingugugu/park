@@ -457,7 +457,7 @@
                                     <div class="comment-content">
                                         <p th:text="${review.content}"></p>
                                     </div>
-                                    <a th:href="@{/like/add(rno=${review.rno}, mno=${review.mno})}" class="reply-link" style="font-size: 15px">좋아요</a>
+                                    <a th:href="@{/like/add(rno=${review.rno}, mno=${review.mno}, facility_no=${review.facility_no}, type=${review.type})}" class="reply-link" style="font-size: 15px">좋아요</a>
                                     <span th:text="${review.like_count}"></span>
                                     <!--좋아요 작업 해줘야함-->
 
@@ -603,6 +603,7 @@
     </th:block>
     <!--리뷰 작성 칸 다시 시작 끝-->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="/js/review.js"></script>
 </div>
 <script layout:fragment="script" th:inline="javascript">
