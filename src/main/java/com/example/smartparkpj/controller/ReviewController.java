@@ -148,9 +148,18 @@ public class ReviewController {
 
         List<OrderDTO> orderDTOS = orderService.getOneAll(memberDTO.getEmail_id());
         List<ReviewDTO> reviewDTOS = reviewService.getAll();
-        OrderDTO orderDTOOno = orderService.getOneNow(memberDTO.getEmail_id());//작성자 티켓 중 가장 최근 번호 구하는 용
+        //OrderDTO orderDTOOno = orderService.getOneNow(memberDTO.getEmail_id());//작성자 티켓 중 가장 최근 번호 구하는 용
 //       log.info("리뷰 전체 목록 리스트 : " + reviewDTOS);
 //       log.info("이용자의 구매한 티켓 목록 : " + orderDTOS);
+
+        // 작성하지 않은 ono 값을 찾기
+        int maxOno = orderDTOS.stream()
+                .mapToInt(OrderDTO::getOno)
+                .max()
+                .orElse(0); // 만약 orderDTOS가 비어있다면 0을 반환합니다.
+        log.info("작성하지 않은 ono" + maxOno);
+
+        reviewDTO.setOno(maxOno);
 
         // has_ability가 1인 것이 하나도 없을 경우 리다이렉트
         if (orderDTOS.stream().noneMatch(orderDTO -> orderDTO.getHas_ability() == 1)) {
@@ -163,14 +172,24 @@ public class ReviewController {
 
         reviewDTO.setMno(mno);
 
-        // 리뷰 전체 목록 중 같은 시설에 같은 작성자가 리뷰를 남길 경우
-        if (reviewDTOS.stream().anyMatch(existingReview ->
-                existingReview.getMno() == reviewDTO.getMno() &&
-                        existingReview.getFacility_no() == reviewDTO.getFacility_no() &&
-                        existingReview.getType().equals(reviewDTO.getType()))) {
-            log.info("같은 시설에 같은 작성자가 이미 리뷰를 남긴 경우");
-            return "redirect:/review/reviewGuide2";
+        for (ReviewDTO reviewDTO1 : reviewDTOS) {
+            int reviewOno = reviewDTO1.getOno();
+
+            if (reviewOno == maxOno) {
+                log.info("reviewDTOS에서 maxOno와 일치하는 ono 값을 찾았습니다.");
+                return "redirect:/review/reviewGuide2";
+            }
         }
+
+// 리뷰 전체 목록 중 같은 시설에 같은 작성자가 이미 리뷰를 남긴 경우
+//        if (reviewDTOS.stream().anyMatch(existingReview ->
+//                existingReview.getMno() == reviewDTO.getMno() &&
+//                        existingReview.getFacility_no() == reviewDTO.getFacility_no() &&
+//                        existingReview.getType().equals(reviewDTO.getType())) &&
+//                maxOno != reviewDTO.getOno()) {
+//            log.info("같은 시설에 같은 작성자가 이미 리뷰를 남긴 경우이지만 maxOno가 다르므로 조건에 해당하지 않습니다.");
+//            return "redirect:/review/reviewGuide";
+//        }
 
         MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO)authentication.getPrincipal();
         String email_id = memberSecurityDTO.getEmail_id();//여기 작업중이였음 11/32
