@@ -5,11 +5,11 @@
 <mapper namespace="com.example.smartparkpj.mapper.MyPageMapper">
     
     <select id="myOrder" resultType="com.example.smartparkpj.domain.OrderVO">
-        SELECT * FROM `order` WHERE email_id = #{email_id}
+        SELECT * FROM `order` WHERE email_id = #{email_id} ORDER BY finished DESC, orderDate ASC
     </select>
 
     <select id="myReview" resultType="com.example.smartparkpj.domain.ReviewVO">
-        SELECT * FROM `review` WHERE mno = #{mno}
+        SELECT * FROM `review` WHERE mno = #{mno} ORDER BY addDate DESC
     </select>
 
     <select id="myPageInformation" resultType="com.example.smartparkpj.domain.MemberVO">
@@ -17,8 +17,7 @@
     </select>
 
     <select id="myPageInquiry" resultType="com.example.smartparkpj.domain.InquiryVO">
-        SELECT * FROM `inquiry` WHERE mno = #{mno}
+        SELECT * FROM `inquiry` WHERE mno = #{mno} ORDER BY in_addDate ASC
     </select>
-
 
 </mapper>
