@@ -187,21 +187,37 @@ public class UpDownController {
         resultMap.put("result", removed);
         return resultMap;
     }
-//    @PostConstruct
-//    public void init(){
-//        File tempFolder01 = new File(uploadTmpPath);
-//        File tempFolder02 = new File(uploadRealPath);
-//
-//        if(!tempFolder01.exists()){
-//            tempFolder01.mkdirs();
-//        }
-//        if(!tempFolder02.exists()){
-//            tempFolder02.mkdirs();
-//        }
-//        uploadTmpPath = tempFolder01.getAbsolutePath();
-//        uploadRealPath = tempFolder01.getAbsolutePath();
-//
-//        log.info("-----------------");
-//        log.info(uploadRealPath);
-//    }
+    @PostConstruct
+    public void init(){
+        File tempFolder01 = new File(uploadBasePath);
+        File tempFolder02 = new File(uploadPath);
+        File tempFolder03 = new File(uploadAttractionPath);
+        File tempFolder04 = new File(uploadShopPath);
+        File tempFolder05 = new File(uploadConveniencePath);
+
+        if(!tempFolder01.exists()){
+            tempFolder01.mkdirs();
+        }
+        if(!tempFolder02.exists()){
+            tempFolder02.mkdirs();
+        }
+        if(!tempFolder03.exists()){
+            tempFolder03.mkdirs();
+        }
+        if(!tempFolder04.exists()){
+            tempFolder04.mkdirs();
+        }
+        if(!tempFolder05.exists()){
+            tempFolder05.mkdirs();
+        }
+
+        uploadBasePath = tempFolder01.getAbsolutePath();
+        uploadPath = tempFolder02.getAbsolutePath();
+        uploadAttractionPath = tempFolder03.getAbsolutePath();
+        uploadShopPath = tempFolder04.getAbsolutePath();
+        uploadConveniencePath = tempFolder05.getAbsolutePath();
+
+        log.info("---------------");
+        log.info(uploadPath);
+    }
 }

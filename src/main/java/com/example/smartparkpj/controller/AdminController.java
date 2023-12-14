@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -38,6 +39,14 @@ public class AdminController {
     @Value("${com.example.upload.ConveniencePath}")
     private String uploadConveniencePath;
 
+    //추가 부분----
+    @Value("${com.example.upload.tempPath}")
+//    @Value("${com.example.smartparkpj.upload.path}")
+    private String uploadPath;
+
+    @Value("${com.example.upload.basePath}")
+    private String uploadBasePath;
+    //추가 부분----
 
     final private AdminService adminService;
 
@@ -48,6 +57,40 @@ public class AdminController {
     final private MemberService memberService;
 
     private final MailSenderService mailSenderService;
+
+    @PostConstruct
+    public void init(){
+        File tempFolder01 = new File(uploadBasePath);
+        File tempFolder02 = new File(uploadPath);
+        File tempFolder03 = new File(uploadAttractionPath);
+        File tempFolder04 = new File(uploadShopPath);
+        File tempFolder05 = new File(uploadConveniencePath);
+
+        if(!tempFolder01.exists()){
+            tempFolder01.mkdirs();
+        }
+        if(!tempFolder02.exists()){
+            tempFolder02.mkdirs();
+        }
+        if(!tempFolder03.exists()){
+            tempFolder03.mkdirs();
+        }
+        if(!tempFolder04.exists()){
+            tempFolder04.mkdirs();
+        }
+        if(!tempFolder05.exists()){
+            tempFolder05.mkdirs();
+        }
+
+        uploadBasePath = tempFolder01.getAbsolutePath();
+        uploadPath = tempFolder02.getAbsolutePath();
+        uploadAttractionPath = tempFolder03.getAbsolutePath();
+        uploadShopPath = tempFolder04.getAbsolutePath();
+        uploadConveniencePath = tempFolder05.getAbsolutePath();
+
+        log.info("---------------");
+        log.info(uploadPath);
+    }
 
 
     @GetMapping("")
