@@ -27,15 +27,17 @@
           <div style="word-break: break-all" th:utext="${inquiry.content}"></div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div th:each="inquiry : ${inquiryDTO}">
-    <div th:if="${inquiry.answer != null and not #strings.isEmpty(inquiry.answer)}">
-      <div class="col-xl-12" style="margin-top: 50px; display: flex; flex-direction: column;">
-        <h3> 해당 문의 답변</h3>
-      <div class="align-right" style="padding: 10px; margin-left: auto;" th:text="${#temporals.format(inquiry.answer_addDate, 'yyyy-MM-dd HH:mm')}"></div>
-      <div th:text="${inquiry.answer}"></div>
+      <div class="card-body">
+        <div th:if="${inquiryDTO.answer != null and not #strings.isEmpty(inquiryDTO.answer)}">
+          <hr style="margin-top: 20px">
+          <br>
+          <b>
+            <p style="font-size: 20px;">문의 답변</p></b>
+          <p style="margin-left: 935px;"
+             th:text="${#temporals.format(inquiryDTO.answer_addDate, 'yyyy-MM-dd HH:mm')}"></p>
+          <hr>
+          <div style="word-break: break-all" th:utext="${inquiryDTO.answer}"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -44,10 +46,10 @@
       <div class="form-group row" style="margin-top: 20px; display: flex; justify-content: flex-end;">
         <div th:if="${inquiry.answer == null or #strings.isEmpty(inquiry.answer)}">
           <a th:href="|@{/inquiry/modify(ino =${inquiry.ino})}|">
-            <input type="submit" class="btn btn-default btn-default" value=" 수정 ">
+            <input type="button" class="btn btn-default btn-default" value=" 수정 ">
           </a>
         </div>
-        <input type="reset" class="btn btn-danger btn-danger ml-2" value=" 뒤로 " onclick="goBack()">
+        <input type="button" class="btn btn-danger btn-danger ml-2" value=" 목록 " onclick="goBack()">
       </div>
     </div>
   <!--</form>-->

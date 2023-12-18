@@ -11,7 +11,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-  <form th:action="@{/admin/inquiry/adminModify}" method="post" id="Remove">
+  <form th:action="@{/admin/inquiry/adminModify}" method="post" id="f1">
   <!--<h3 style="margin-top: 50px; margin-bottom: 30px"><strong>내가 작성한 문의</strong></h3>-->
   <!--<form name="frmAdd" action="/inquiry/modify" method="post" class="form-horizontal">-->
     <!-- 제목 -->
@@ -29,8 +29,8 @@
             <hr>
         </div>
         <div class="card-body">
-          <div th:text="${inquiryDTO.content}"></div>
-          <div th:if="${inquiryDTO.answer != null and not #strings.isEmpty(inquiryDTO.answer)}">
+            <div style="word-break: break-all" th:utext="${inquiryDTO.content}"></div>
+            <div th:if="${inquiryDTO.answer != null and not #strings.isEmpty(inquiryDTO.answer)}">
             <hr style="margin-top: 20px">
             <br>
             <div style="margin-top: 50px; display: flex; flex-direction: column; width: 1140px;">
@@ -45,14 +45,14 @@
             </div>
           </div>
         </div>
-          <div class="form-group row" style="margin-top: 20px; display: flex; justify-content: flex-end;">
-            <div th:if="${inquiryDTO.answer == null or #strings.isEmpty(inquiryDTO.answer)}">
+          <div class="form-group row" style="margin-top: 20px;">
+            <div th:if="${inquiryDTO.answer == null or #strings.isEmpty(inquiryDTO.answer)}" style="width: 100%">
               <br>
               <hr>
               <br>
               <div class="form-group row align-center" style="margin-left: 2px">
-                <h3 style="margin-top: 50px; margin-bottom: 20px; padding-left: 35px"> 해당 문의 답변</h3>
-                <textarea name="answer" cols="50" rows="5" class="form-control" placeholder="내용을 입력하세요"
+                <h3 style="margin-top: 50px; margin-bottom: 20px; padding-left: 35px"> 문의 답변</h3>
+                <textarea id="answer" name="answer" cols="50" rows="5" class="form-control" placeholder="내용을 입력하세요"
                           style="width: 1140px; height: 200px; margin-right: 15px"></textarea>
             </div>
            </div>
@@ -60,49 +60,70 @@
         </div>
       </div>
   <div class="parent-div" style="display: flex; justify-content: flex-end;">
-  <input type="submit" class="btn btn-danger btn-default submitBtn" value=" 등록 " onclick="return confirmSubmit()">
+  <input type="button" class="btn btn-danger btn-default submitBtn" value=" 등록 ">
   <input type="button" class="btn btn-danger btn-danger ml-2 removeBtn" value=" 삭제 " onclick="confirmRemove()">
-  <input type="reset" class="btn btn-danger btn-secondary ml-2 cancelBtn" value=" 취소 " onclick="goBack()">
+  <input type="button" class="btn btn-danger btn-secondary ml-2 cancelBtn" value=" 취소 " onclick="goBack()">
   </div>
   </form>
   <br>
+    <script type="text/javascript" src="/smarteditor2/js/HuskyEZCreator.js" charset="utf-8"></script>
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
 
-    function confirmSubmit() {
-        let answerValue = document.getElementsByName('answer')[0].value;
+    const formObj = document.querySelector("#f1");
 
-        if (!answerValue || answerValue.trim() === '') {
-            alert('답변을 입력해주세요');
-            return false; // 폼 제출 취소
-        }
+    document.addEventListener('DOMContentLoaded', function () {
 
-        if (confirm('답변 작성을 완료 하시겠습니까?')) {
-            return true;
-        } else {
-            alert('답변 작성을 취소 하였습니다.');
-            return false;
-        }
-    }
+        let oEditors = [];
+
+        nhn.husky.EZCreator.createInIFrame({
+            oAppRef: oEditors,
+            elPlaceHolder: "answer", // id가 content인 요소를 지정
+            sSkinURI: "/smarteditor2/SmartEditor2Skin.html",
+            fCreator: "createSEditor2"
+        });
+
+        document.querySelector('.submitBtn').addEventListener('click', function (e){
+            e.preventDefault();
+            e.stopPropagation();
+
+            oEditors.getById['answer'].exec("UPDATE_CONTENTS_FIELD",[]);
+            let answerValue = document.getElementsByName('answer')[0].value;
+
+            if (!answerValue || answerValue.trim() === '') {
+                alert('답변을 입력해주세요');
+                return; // 폼 제출 취소
+            }
+
+            if (confirm('답변 작성을 완료 하시겠습니까?')) {
+                formObj.action = `/admin/inquiry/adminModify`;
+                formObj.method = 'post';
+                formObj.submit();
+            } else {
+                alert('답변 작성을 취소 하였습니다.');
+                return;
+            }
+
+        });
+
+    });
+
     // 삭제 관련
     function confirmRemove() {
         if (confirm('문의를 삭제하시겠습니까?')) {
-            changeForm('/admin/inquiry/adminRemove'); // 폼 action 변경
-            document.getElementById('Remove').submit(); // 폼 제출
+            formObj.action = `/admin/inquiry/adminRemove`;
+            formObj.method = 'post';
+            formObj.submit();
         } else {
             alert('삭제를 취소하였습니다.');
         }
     }
 
-  // 취소버튼
-  function goBack() {
-    window.history.back();
-  }
-
-function changeForm(action) {
-    document.getElementById('Remove').action = action;
-}
+    // 취소버튼
+    function goBack() {
+        window.history.back();
+    }
 
 </script>
 </body>

@@ -27,20 +27,16 @@
           <hr>
       </div>
       <div class="card-body">
-        <div th:text="${inquiryDTO.content}"></div>
+        <div style="word-break: break-all" th:utext="${inquiryDTO.content}"></div>
         <div th:if="${inquiryDTO.answer != null and not #strings.isEmpty(inquiryDTO.answer)}">
           <hr style="margin-top: 20px">
           <br>
-          <div style="margin-top: 50px; display: flex; flex-direction: column; width: 1140px;">
-            <!--<div class="align-middle"></div>-->
-            <span>
               <b>
-                <p style="font-size: 20px;">해당 문의 답변</p></b>
+                <p style="font-size: 20px;">문의 답변</p></b>
                 <p style="margin-left: 935px;"
                         th:text="${#temporals.format(inquiryDTO.answer_addDate, 'yyyy-MM-dd HH:mm')}"></p>
-                <p th:text="${inquiryDTO.answer}"></p>
-            </span>
-          </div>
+              <hr>
+            <div style="word-break: break-all" th:utext="${inquiryDTO.answer}"></div>
         </div>
       </div>
     </div>
@@ -53,9 +49,9 @@
       </a>
       <div>
         <a th:href="@{/admin/inquiry/adminModify(ino=${inquiryDTO.ino}, mno=${inquiryDTO.mno})}">
-          <input type="button" class="btn btn-default btn-default ml-2" value=" 수정 ">
+          <input type="button" class="btn btn-default btn-default ml-2" value=" 답변 ">
         </a>
-        <input type="reset" class="btn btn-danger btn-secondary ml-2 cancelBtn" value=" 뒤로 " onclick="goBack();">
+        <input type="button" class="btn btn-danger btn-secondary ml-2 cancelBtn" value=" 뒤로 " onclick="goBack();">
       </div>
     </div>
   </div>
@@ -65,7 +61,7 @@
         <input type="button" class="btn btn-primary btn-default" value=" 목록 ">
       </a>
       <div>
-        <input type="reset" class="btn btn-danger btn-secondary ml-2 cancelBtn" value=" 뒤로 " onclick="goBack();">
+        <input type="button" class="btn btn-danger btn-secondary ml-2 cancelBtn" value=" 뒤로 " onclick="goBack();">
       </div>
     </div>
   </div>

@@ -368,6 +368,8 @@ public class AdminController {
         int ino = inquiryDTO.getIno();
 
         model.addAttribute("inquiryDTO", inquiryService.getOne(ino));
+
+
     }
 
     @GetMapping("/sendConfirmMail")
