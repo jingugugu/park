@@ -50,7 +50,6 @@ public class MemberController {
 
     @GetMapping("/register")
     public void registerGET(){
-
     }
 
     @GetMapping("/register2")

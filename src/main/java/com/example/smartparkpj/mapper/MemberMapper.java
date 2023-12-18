@@ -16,7 +16,7 @@ public interface MemberMapper {
     int nickCheck(String nickName);
     MemberVO selectMember(String email_id);
     void update(MemberVO memberVO);
-    MemberVO selectOne(int mno); //리뷰에 닉네임 들고 오기위해 하나 만듭니다 (고지훈)
+    MemberVO selectOne(int mno); //리뷰에 닉네임 들고 오기위해 하나 만듭니다 (고지훈), 멤버 정보 들고오는 걸로도 사용중
     List<Integer> selectRoles(String member);
     void deleteReason(MemberVO memberVO);
     void passwordEdit(MemberVO memberVO);

@@ -24,6 +24,6 @@ public class MemberDTO {
     private String deleteReason; // 탈퇴 사유
     private String birthday; // 멤버 생년월일
     private String profileImg; // 멤버 프로필 이미지
-    private boolean del; // 탈퇴 여부
+    private String del; // 탈퇴 여부
     private boolean social; // 소셜 로그인 자동 회원 가입 여부
 }

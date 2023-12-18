@@ -32,7 +32,7 @@ import java.util.UUID;
 @RequestMapping("/editor")
 public class EditorController {
 
-    @Value("${com.example.smartparkpj.upload33.path}")
+    @Value("${com.example.upload.tempPath}")
     private String uploadPath;
 
     @PostMapping(value = "/upload33")

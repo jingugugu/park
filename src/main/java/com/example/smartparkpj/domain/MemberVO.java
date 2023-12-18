@@ -29,7 +29,7 @@ public class MemberVO {
     private String birthday; // 멤버 생년월일
     private String profileImg; // 멤버 프로필 이미지
     private String deleteReason; // 탈퇴 사유
-    private boolean del; // 탈퇴 여부
+    private String del; // 탈퇴 여부
     private boolean social; // 소셜 로그인 자동 회원 가입 여부
 
     @Builder.Default
@@ -60,7 +60,7 @@ public class MemberVO {
         this.birthday = birthday;
     }
 
-    public void changeDel(boolean del) {
+    public void changeDel(String del) {
         this.del = del;
     }
 

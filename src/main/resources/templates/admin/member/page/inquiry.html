@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/park.html}">
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta charset="UTF-8">
+    <title>작성한 문의</title>
+    <style>
+        /* 추가된 CSS */
+        .nav-link:hover {
+            background-color: #1c4827; /* 호버시 배경색 변경 */
+        }
+
+        .card {
+            margin-bottom: 20px; /* 카드 간격을 위한 마진 설정 */
+        }
+
+        .card-body {
+            padding: 20px; /* 카드 내용의 패딩 설정 */
+        }
+
+        /* 각 셀에 호버 효과 추가 */
+        tr.review:hover {
+            background-color: #eebfd7;
+            cursor: pointer; /* 마우스 커서를 포인터로 변경하여 클릭 가능한 것처럼 보이게 함 */
+        }
+
+        .available {
+            color: #2bc73c;
+        }
+
+        .expired {
+            color: #605b5b;
+        }
+
+        /* 각 셀에 호버 효과 추가 */
+        tr.inquiry:hover {
+            background-color: #d9d4d5;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1 style="margin-top: 50px; font-size: 30px"><strong>회원정보</strong></h1><br><br>
+    <div class="row">
+        <!-- 왼쪽 탭 -->
+        <div class="col-md-3">
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="|@{/admin/member/page/profile(mno =${memberDTO.mno})}|" data-toggle="pill">회원 정보</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="|@{/admin/member/page/review(mno =${memberDTO.mno})}|" data-toggle="pill">작성한 리뷰</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="|@{/admin/member/page/inquiry(mno =${memberDTO.mno})}|" data-toggle="pill">작성한 문의</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="|@{/admin/member/page/order(email_id =${memberDTO.email_id})}&mno=${memberDTO.mno}|" data-toggle="pill">티켓 구매 내역</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="|@{/admin/member/page/reason(mno =${memberDTO.mno})}|" data-toggle="pill">탈퇴 신청 사유</a>
+                </li>
+            </ul>
+        </div>
+        <!-- 오른쪽 컨텐츠 영역 -->
+        <div class="row my-xl-12">
+            <div class="col col-xl-12" style="width: 885px">
+                <div class="card">
+                    <div class="card-header" align="center">
+                        <h3 style="margin-top: 20px;"><b>문의 목록</b></h3>
+                    </div>
+                    <div class="card-body" >
+                        <table class="table" style="text-align: center">
+                            <thead>
+                            <tr>
+                                <th scope="col">제목</th>
+                                <th scope="col">문의번호</th>
+                                <th scope="col">문의작성날짜</th>
+                                <th scope="col">상태</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="inquiry : ${inquiryDTO}" class="tr inquiry">
+                                <td>
+                                    <a th:href="|@{/inquiry/read(ino =${inquiry.ino})}&${link}|"
+                                       th:text="${inquiry.title}"
+                                       style="text-decoration: underline; color: red"></a>
+                                    <!--<a th:href="@{'/inquiry/read' + ${inquiry.ino}}" th:text="${inquiry.title}"-->
+                                </td>
+                                <td th:text="${inquiry.ino}"></td>
+                                <td th:if="${inquiry.in_addDate != null}"
+                                    th:text="${#temporals.format(inquiry.in_addDate, 'yyyy-MM-dd')}">
+                                </td>
+                                <td th:text="${inquiry.state} ? '답변완료' : '진행중'"
+                                    th:class="${inquiry.state} ? 'available' : 'expired'"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="sign-form" align="right">
+                    <a href="/admin/member/management" type="reset" class="btn btn-primary ml-2">회원 목록</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 필요한 스크립트 -->
+    <!-- ... -->
+</div>
+</body>
+<script layout:fragment="script" th:inline="javascript">
+    // 페이지 로드 시 실행되는 jQuery 코드
+    $(document).ready(function() {
+        // 네비게이션 메뉴의 각 탭을 클릭할 때 active 클래스를 변경하는 이벤트 핸들러
+        $('.nav-link').on('click', function() {
+            // 클릭된 요소의 href 값을 가져와 변수에 저장
+            var href = $(this).attr('href');
+            // 해당 탭에 active 클래스를 추가하고 다른 탭의 active 클래스를 제거
+            $(this).addClass('active').parent().siblings().find('.nav-link').removeClass('active');
+        });
+    });
+</script>
+</html>

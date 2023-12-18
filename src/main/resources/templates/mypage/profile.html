@@ -30,19 +30,19 @@
 </head>
 <body>
 <div layout:fragment="content">
-<h1 style="margin-top: 50px; font-size: 30px"><strong>마이페이지</strong></h1><br><br>
+    <h1 style="margin-top: 50px; font-size: 30px"><strong>마이페이지</strong></h1><br><br>
     <div class="row">
-    <!-- 왼쪽 탭 -->
+        <!-- 왼쪽 탭 -->
         <div class="col-md-2">
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
-                <a class="nav-link" href="/mypage/profile" data-toggle="pill">내 정보</a>
+                    <a class="nav-link" href="/mypage/profile" data-toggle="pill">내 정보</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="/mypage/review" data-toggle="pill">내가 쓴 리뷰</a>
+                    <a class="nav-link" href="/mypage/review" data-toggle="pill">내가 쓴 리뷰</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="/mypage/inquiry" data-toggle="pill">내가 쓴 문의</a>
+                    <a class="nav-link" href="/mypage/inquiry" data-toggle="pill">내가 쓴 문의</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/mypage/order" data-toggle="pill">티켓 구매 내역</a>
@@ -57,10 +57,13 @@
                         <h3 style="margin-top: 20px;"><b>내 프로필 정보</b></h3>
                     </div>
                     <div class="card-body">
-                        <div class="form-group">
-                            <label for="profileImage">프로필 사진</label>
-                            <img id="profileImage" th:if="${memberDTO.profileImg != null}" th:src="|/view/s_${memberDTO.profileImg}|" th:data-src="${memberDTO.profileImg}" alt="프로필" width="100" height="100">
-<!--                            <img id="profileImage" th:if="${MemberDTO.profileImg != null}" th:src="${MemberDTO.profileImg}" alt="프로필" width="100" height="100">-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="profileImage">프로필 사진</label>
+                                    <img id="profileImage" class="img-fluid d-block" th:if="${memberDTO.profileImg != null}" th:src="|/view/s_${memberDTO.profileImg}|" th:data-src="${memberDTO.profileImg}" alt="프로필" width="100" height="100">
+                                </div>
+                            </div>
                         </div>
 
                         <div class="row">
@@ -104,8 +107,8 @@
             </div>
         </div>
     </div>
-<!-- 필요한 스크립트 -->
-<!-- ... -->
+    <!-- 필요한 스크립트 -->
+    <!-- ... -->
 </div>
 </body>
 <script layout:fragment="script" th:inline="javascript">

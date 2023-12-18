@@ -37,13 +37,47 @@ public class UpDownController {
     @Value("${com.example.upload.ConveniencePath}")
     private String uploadConveniencePath;
 
+    @PostConstruct
+    public void init(){
+        File tempFolder01 = new File(uploadBasePath);
+        File tempFolder02 = new File(uploadPath);
+        File tempFolder03 = new File(uploadAttractionPath);
+        File tempFolder04 = new File(uploadShopPath);
+        File tempFolder05 = new File(uploadConveniencePath);
+
+        if(!tempFolder01.exists()){
+            tempFolder01.mkdirs();
+        }
+        if(!tempFolder02.exists()){
+            tempFolder02.mkdirs();
+        }
+        if(!tempFolder03.exists()){
+            tempFolder03.mkdirs();
+        }
+        if(!tempFolder04.exists()){
+            tempFolder04.mkdirs();
+        }
+        if(!tempFolder05.exists()){
+            tempFolder05.mkdirs();
+        }
+
+        uploadBasePath = tempFolder01.getAbsolutePath();
+        uploadPath = tempFolder02.getAbsolutePath();
+        uploadAttractionPath = tempFolder03.getAbsolutePath();
+        uploadShopPath = tempFolder04.getAbsolutePath();
+        uploadConveniencePath = tempFolder05.getAbsolutePath();
+
+        log.info("---------------");
+        log.info(uploadPath);
+    }
+
     @ApiOperation(value = "Upload Post", notes = "POST 방식으로 파일 등록")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public List<UploadResultDTO> upload(UploadFileDTO uploadFileDTO){ // dto 로 이미지 파일을 받음
         log.info("-------------upload post");
         log.info(uploadFileDTO);
         if(uploadFileDTO.getFiles() != null) { // dto 에 파일이 있다면
-           final List<UploadResultDTO> list = new ArrayList<>(); // UploadResultDTO 리스트를 만들고
+            final List<UploadResultDTO> list = new ArrayList<>(); // UploadResultDTO 리스트를 만들고
             for(MultipartFile multipartFile : uploadFileDTO.getFiles()) { // 반복문을 돌려 만약 파일을 여러개 받았으면 하나하나 multipartFile 에 저장
                 String originalName = multipartFile.getOriginalFilename(); // 파일의 이름을 originalName 에 저장
                 log.info(multipartFile.getOriginalFilename());
@@ -187,37 +221,5 @@ public class UpDownController {
         resultMap.put("result", removed);
         return resultMap;
     }
-    @PostConstruct
-    public void init(){
-        File tempFolder01 = new File(uploadBasePath);
-        File tempFolder02 = new File(uploadPath);
-        File tempFolder03 = new File(uploadAttractionPath);
-        File tempFolder04 = new File(uploadShopPath);
-        File tempFolder05 = new File(uploadConveniencePath);
 
-        if(!tempFolder01.exists()){
-            tempFolder01.mkdirs();
-        }
-        if(!tempFolder02.exists()){
-            tempFolder02.mkdirs();
-        }
-        if(!tempFolder03.exists()){
-            tempFolder03.mkdirs();
-        }
-        if(!tempFolder04.exists()){
-            tempFolder04.mkdirs();
-        }
-        if(!tempFolder05.exists()){
-            tempFolder05.mkdirs();
-        }
-
-        uploadBasePath = tempFolder01.getAbsolutePath();
-        uploadPath = tempFolder02.getAbsolutePath();
-        uploadAttractionPath = tempFolder03.getAbsolutePath();
-        uploadShopPath = tempFolder04.getAbsolutePath();
-        uploadConveniencePath = tempFolder05.getAbsolutePath();
-
-        log.info("---------------");
-        log.info(uploadPath);
-    }
 }

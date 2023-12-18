@@ -1,12 +1,14 @@
 package com.example.smartparkpj.controller;
 
 import com.example.smartparkpj.dto.*;
+import com.example.smartparkpj.security.dto.MemberSecurityDTO;
 import com.example.smartparkpj.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -420,15 +422,16 @@ public class AdminController {
 
     @GetMapping("/member/management")
     public void MemberList(Model model) {
+        log.info("================회원 목록================");
         List<MemberDTO> memberDTOList = memberService.selectAll();
         log.info("================회원 목록================");
         log.info(memberDTOList.size());
         model.addAttribute("memberDTO", memberDTOList);
     }
 
-    @GetMapping("/member/detailManagement")
+    @GetMapping("/member/page/profile")
     public void getDetailManagement(int mno, Model model) {
-        log.info("================회원 탈퇴 상세================");
+        log.info("================회원 정보 상세================");
         log.info(mno);
         model.addAttribute("memberDTO", memberService.selectOne(mno));
     }
@@ -441,4 +444,43 @@ public class AdminController {
 
         return "redirect:/admin/member/management";
     }
+
+    private final MypageService mypageService;
+
+    @GetMapping("/member/page/order")
+    public void order(String email_id, Model model, int mno) {
+        log.info("GetMapping/order ...");
+        log.info("================회원 주문 내역================");
+
+        model.addAttribute("orderDTO", mypageService.getMyOrder(email_id));
+        model.addAttribute("memberDTO", memberService.selectOne(mno));
+        log.info(mypageService);
+    }
+
+    @GetMapping("/member/page/review")
+    public void review(int mno, Model model) {
+        log.info("GetMapping/review ...");
+        log.info("================회원 리뷰 내역================");
+
+        model.addAttribute("reviewDTO", mypageService.getMyReview(mno));
+        model.addAttribute("memberDTO", memberService.selectOne(mno));
+    }
+
+    @GetMapping("/member/page/inquiry")
+    public void inquiry(int mno, Model model) {
+        log.info("GetMapping/inquiry");
+        log.info("================문의 내역================");
+
+        model.addAttribute("inquiryDTO", mypageService.getMyInquiry(mno));
+        model.addAttribute("memberDTO", memberService.selectOne(mno));
+    }
+
+    @GetMapping("/member/page/reason")
+    public void reason(int mno, Model model) {
+        log.info("GetMapping/inquiry");
+        log.info("================회원탈퇴 신청 사유================");
+
+        model.addAttribute("memberDTO", memberService.selectOne(mno));
+    }
+
 }

@@ -134,7 +134,6 @@
     <script src="/js/member/register.js"></script>
     <script src="/js/member/upload.js"></script>
 </div>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script layout:fragment="script" th:inline="javascript">
 
     const xhr = new XMLHttpRequest(); // ajax 쓰겠다는 코드
@@ -302,18 +301,16 @@
             phoneSpan.style.display = 'block';
         }
         else  {
-
             phoneSpan.innerHTML = "사용 가능한 번호 입니다."
             phoneSpan.style.color = "green";
             phoneSpan.style.display = 'block';
             confirmCheck.ph = true;
             phone.value = fncSetPhoneFormat(phone.value);
-
         }
     })
 
     // 이름 검사
-    member.addEventListener('focusout', function () {
+    member.addEventListener('input', function () {
         const nameSpan = document.querySelector("span[name=name-span]")
         confirmCheck.name = false;
 
@@ -452,7 +449,7 @@
         }
     });
 
-    passwdRe.addEventListener('focusout', function () {
+    passwdRe.addEventListener('input', function () {
         console.log("passwdRe focusout")
         const warnPE = document.querySelector("span[name=passwordRE-span]")
 
@@ -510,7 +507,7 @@
     function showUploadFile({uuid, fileName, link}) {
         const str = `<div class="card col-4">
           <div class="card-header d-flex justify-content-center">
-            <button class="btn-sm btn-primary" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
+            <button type="button" class="btn-sm btn-primary" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
           </div>
           <div class="card-body">
                 <img src="/view/${link}" data-src="${uuid+"_"+fileName}">

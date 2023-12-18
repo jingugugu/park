@@ -99,4 +99,9 @@ public class MemberMapperTests {
         memberMapper.removeMember(memberVO);
     }
 
+    @Test
+    public void selectAll() {
+        memberMapper.selectAll();
+    }
+
 }
