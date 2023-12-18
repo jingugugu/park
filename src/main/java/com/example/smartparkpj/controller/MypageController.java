@@ -33,7 +33,7 @@ public class MypageController {
             mno = memberSecurityDTO.getMno();
         }
 
-        model.addAttribute("MemberDTO", mypageService.getMemberInformatrion(mno));
+        model.addAttribute("memberDTO", mypageService.getMemberInformatrion(mno));
     }
 
     @GetMapping("/order")

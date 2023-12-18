@@ -59,36 +59,37 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="profileImage">프로필 사진</label>
-                            <img id="profileImage" th:if="${MemberDTO.profileImg != null}" th:src="${MemberDTO.profileImg}" alt="프로필" width="100" height="100">
+                            <img id="profileImage" th:if="${memberDTO.profileImg != null}" th:src="|/view/s_${memberDTO.profileImg}|" th:data-src="${memberDTO.profileImg}" alt="프로필" width="100" height="100">
+<!--                            <img id="profileImage" th:if="${MemberDTO.profileImg != null}" th:src="${MemberDTO.profileImg}" alt="프로필" width="100" height="100">-->
                         </div>
 
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="memberName">이름</label>
-                                    <input id="memberName" type="text" th:value="${MemberDTO.member_name}" class="form-control" disabled>
+                                    <input id="memberName" type="text" th:value="${memberDTO.member_name}" class="form-control" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label for="birthday">생년월일</label>
-                                    <input id="birthday" type="text" th:value="${MemberDTO.birthday}" class="form-control" disabled>
+                                    <input id="birthday" type="text" th:value="${memberDTO.birthday}" class="form-control" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label for="nickName">닉네임</label>
-                                    <input id="nickName" type="text" th:value="${MemberDTO.nickName}" class="form-control" disabled>
+                                    <input id="nickName" type="text" th:value="${memberDTO.nickName}" class="form-control" disabled>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="email">이메일</label>
-                                    <input id="email" type="text" th:value="${MemberDTO.email_id}" class="form-control" disabled>
+                                    <input id="email" type="text" th:value="${memberDTO.email_id}" class="form-control" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label for="phone">연락처</label>
-                                    <input id="phone" type="text" th:value="${#strings.substring(MemberDTO.phone, 0, 3) + '-' + #strings.substring(MemberDTO.phone, 3, 7) + '-' + #strings.substring(MemberDTO.phone, 7)}" class="form-control" disabled>
+                                    <input id="phone" type="text" th:if="${memberDTO.phone != null} "th:value="${#strings.substring(memberDTO.phone, 0, 3) + '-' + #strings.substring(memberDTO.phone, 3, 7) + '-' + #strings.substring(memberDTO.phone, 7)}" class="form-control" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label for="addDate">가입날짜</label>
-                                    <input id="addDate" type="text" th:value="${#temporals.format(MemberDTO.addDate, 'yyyy-MM-dd')}" class="form-control" disabled>
+                                    <input id="addDate" type="text" th:value="${#temporals.format(memberDTO.addDate, 'yyyy-MM-dd')}" class="form-control" disabled>
                                 </div>
                             </div>
                         </div>
