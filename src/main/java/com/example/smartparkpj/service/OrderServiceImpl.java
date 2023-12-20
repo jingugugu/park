@@ -98,13 +98,13 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public void modifyFinished(String orderVO) {
-        orderMapper.updateFinished(orderVO);
+    public void modifyFinished(int ono) {
+        orderMapper.updateFinished(ono);
     }
 
     @Override
-    public void modifyHasAbility(String orderVO) {
-        orderMapper.updateHasAbility(orderVO);
+    public void modifyHasAbility(int ono) {
+        orderMapper.updateHasAbility(ono);
     }
 
     @Override

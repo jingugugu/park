@@ -57,12 +57,12 @@ public class MainController {
                     if (endDate.isBefore(toDay)) {
                         log.info("PostMapping3!!!");
                         // endDate가 현재 날짜와 시간보다 이전인 경우에 수행할 작업 티켓 사용 가능 여부 를 0으로 바꿈
-                        orderService.modifyFinished(email);
+                        orderService.modifyFinished(dtoList.getOno());
                     }
                     if (endDate.plusDays(3).isBefore(toDay)) {
                         log.info("PostMapping3.5!!!");
                         //endDate 로 부터 3일 뒤 의 날짜가 현재 날짜보다 더 전 시간이면 리뷰작성 가능 여부 를 0 으로 바꿈
-                        orderService.modifyHasAbility(email);
+                        orderService.modifyHasAbility(dtoList.getOno());
                     }
                 } catch (DateTimeParseException e) {
                     // 날짜 형식이 맞지 않을 경우 예외 처리

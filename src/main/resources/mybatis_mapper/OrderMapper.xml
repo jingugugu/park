@@ -24,12 +24,12 @@
     </select>
 
     <select id="updateFinished" resultType="com.example.smartparkpj.domain.OrderVO">
-        UPDATE `order` SET finished = 0 WHERE email_id = #{email_id}
+        UPDATE `order` SET finished = 0 WHERE ono = #{ono}
     </select>
 
 
     <select id="updateHasAbility" resultType="com.example.smartparkpj.domain.OrderVO">
-        UPDATE `order` SET has_ability = 0 WHERE email_id = #{email_id}
+        UPDATE `order` SET has_ability = 0 WHERE ono = #{ono}
     </select>
 
     <select id="selectOneMax" resultType="com.example.smartparkpj.domain.OrderVO">

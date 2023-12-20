@@ -17,10 +17,6 @@ public interface ReviewMapper {
 
     void insert(ReviewVO reviewVO);
 
-    MemberVO setOne(String email_id);//리뷰 내용에 필요한 맴버 값
-
-    ReviewVO score(int facility_no, String type);//별점 총점 평균
-
     List<ReviewVO> reviewScore(int facility_no, String type);//리뷰 들고 오기
 
     void delete(int rno);//리뷰 댓글 삭제 시팔 정신좀 차리고 햇깔리지마라(고지훈)
@@ -34,4 +30,8 @@ public interface ReviewMapper {
     float getAvgScore(int facility_no, String type);
 
     void addReviewImg(ReviewImageVO reviewImageVO);
+
+    ReviewVO getOne(int rno);
+
+    List<ReviewVO> myReviewInFacility(int mno, String type, int facility_no);
 }

@@ -40,7 +40,7 @@ public class TicketServiceImpl implements TicketService{
 
     @Override
     public void remove(int tno) {
-        ticketMapper.delet(tno);
+        ticketMapper.delete(tno);
     }
 
     @Override

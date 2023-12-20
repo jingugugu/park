@@ -1,6 +1,7 @@
 package com.example.smartparkpj.service;
 
 import com.example.smartparkpj.domain.MemberVO;
+import com.example.smartparkpj.domain.OrderVO;
 import com.example.smartparkpj.domain.ReviewImageVO;
 import com.example.smartparkpj.domain.ReviewVO;
 import com.example.smartparkpj.dto.*;
@@ -30,6 +31,10 @@ public class ReviewServiceImpl implements ReviewService {
     private final ShopMapper shopMapper;
 
     private final ConvenienceMapper convenienceMapper;
+
+    private final MyPageMapper myPageMapper;
+
+    private final TicketMapper ticketMapper;
 
 
     @Override
@@ -82,14 +87,6 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public MemberDTO setOne(String email_id) {
-        MemberVO memberVO = reviewMapper.setOne(email_id);
-        MemberDTO memberDTO = modelMapperConfig.map(memberVO, MemberDTO.class);
-
-        return memberDTO;
-    }
-
-    @Override
     public int reviewScore(int facility_no, String type) {
         List<ReviewVO> reviewVOS = reviewMapper.reviewScore(facility_no, type);
         int totalScore = 0; // 총합 초기화
@@ -106,8 +103,11 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void delete(int rno) {
+    public ReviewDTO delete(int rno) {
+        ReviewDTO reviewDTO = modelMapperConfig.map(reviewMapper.getOne(rno),ReviewDTO.class);
         reviewMapper.delete(rno);
+
+        return reviewDTO;
     }
 
     @Override
@@ -129,6 +129,41 @@ public class ReviewServiceImpl implements ReviewService {
             dtoList.add(reviewDTO);
         }
         return dtoList;
+    }
+
+    @Override
+    public List<OrderDTO> getAvailableOrderList(int mno, String type, int facility_no) {
+        List<ReviewVO> reviewVOList = reviewMapper.myReviewInFacility(mno, type, facility_no);
+        List<OrderVO> orderVOList = myPageMapper.myOrder(memberMapper.selectOne(mno).getEmail_id());
+        List<OrderDTO> orderDTOList = new ArrayList<>();
+        boolean flag = true;
+        for(OrderVO orderVO : orderVOList){
+            if(!reviewVOList.isEmpty()) {
+                log.info("reviewVOList ===================  " + reviewVOList);
+                for (ReviewVO reviewVO : reviewVOList) {
+                    if (orderVO.getOno() == reviewVO.getOno()) {
+                        flag = false;
+                        break;
+                    }
+                    flag = true;
+                }
+                if(orderVO.isHas_ability() && flag){
+                    OrderDTO orderDTO = modelMapperConfig.map(orderVO, OrderDTO.class);
+                    orderDTO.setTname(ticketMapper.selectOne(orderDTO.getTno()).getTname());
+                    orderDTOList.add(orderDTO);
+                }
+            }
+            else{
+                log.info("reviewVOList ===================  " + reviewVOList);
+                if (orderVO.isHas_ability()) {
+                    OrderDTO orderDTO = modelMapperConfig.map(orderVO, OrderDTO.class);
+                    orderDTO.setTname(ticketMapper.selectOne(orderDTO.getTno()).getTname());
+                    orderDTOList.add(orderDTO);
+                }
+            }
+        }
+
+        return orderDTOList;
     }
 
     @Override

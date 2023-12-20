@@ -11,9 +11,9 @@ public interface OrderService {
 
     List<OrderDTO> getOneAll(String email_id);
 
-    void modifyFinished(String orderVO);
+    void modifyFinished(int ono);
 
-    void modifyHasAbility(String orderVO);
+    void modifyHasAbility(int ono);
 
     OrderDTO getOne(int mno);
 

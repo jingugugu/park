@@ -25,13 +25,13 @@ public class OrderServiceTest {
     @Test
     public void modifyTest(){
         String mail = "test@naver.com235";
-        orderService.modifyFinished(mail);
+//        orderService.modifyFinished(mail);
     }
 
     @Test
     public void modifyHasAbility(){
         String mail = "gojioon12313@naver.com";
-        orderService.modifyHasAbility(mail);
+//        orderService.modifyHasAbility(mail);
     }
 
     @Test

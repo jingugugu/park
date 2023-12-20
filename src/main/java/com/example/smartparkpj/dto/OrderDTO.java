@@ -23,4 +23,5 @@ public class OrderDTO {
     private int people_count; // 인원수
     private int has_ability; // 리뷰 작성 가능 여부
     private int price;//총가격
+    private String tname; // 티켓 이름
 }

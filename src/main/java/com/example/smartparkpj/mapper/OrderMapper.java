@@ -15,7 +15,7 @@ public interface OrderMapper {
 
     OrderVO selectOneNow(String email_id);
 
-    void updateFinished(String orderVO);
+    void updateFinished(int ono);
 
-    void updateHasAbility(String orderVO);
+    void updateHasAbility(int ono);
 }

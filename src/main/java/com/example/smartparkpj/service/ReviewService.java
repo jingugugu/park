@@ -1,6 +1,5 @@
 package com.example.smartparkpj.service;
 
-import com.example.smartparkpj.domain.MemberVO;
 import com.example.smartparkpj.domain.ReviewVO;
 import com.example.smartparkpj.dto.*;
 
@@ -11,17 +10,17 @@ public interface ReviewService {
 
     void insert(ReviewDTO reviewDTO);
 
-    MemberDTO setOne(String email_id);//리뷰 내용에 필요한 맴버 값
-
     int reviewScore(int facility_no, String type);//리뷰 들고 오기
 
-    void delete(int rno);
+    ReviewDTO delete(int rno);
 
     void like_count(int rno);
 
     void like_countDown(int rno);
 
     List<ReviewDTO> getAll();
+
+    List<OrderDTO> getAvailableOrderList(int mno, String type, int facility_no); // 리뷰 작성 가능한 티켓 리스트
 
     void reviewImageIn(ReviewImageDTO reviewImageDTO);
 }

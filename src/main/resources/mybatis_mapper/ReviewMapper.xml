@@ -17,12 +17,12 @@
         VALUES(#{content}, #{mno}, now(), #{score}, #{facility_no}, #{type}, #{ono})
     </select>
 
-    <select id="selectOneType" resultType="com.example.smartparkpj.domain.ReviewVO">
-        SELECT * FROM review order by rno desc LIMIT #{skip}, #{size}
+    <select id="getOne" resultType="com.example.smartparkpj.domain.ReviewVO">
+        SELECT * FROM review where rno = #{rno}
     </select>
 
-    <select id="setOne" resultType="com.example.smartparkpj.domain.MemberVO">
-        SELECT * FROM member where email_id = #{email_id}
+    <select id="myReviewInFacility" resultType="com.example.smartparkpj.domain.ReviewVO">
+        SELECT * FROM review where mno = #{mno} and type = #{type} and facility_no = #{facility_no}
     </select>
 
     <select id="reviewScore" resultType="com.example.smartparkpj.domain.ReviewVO">

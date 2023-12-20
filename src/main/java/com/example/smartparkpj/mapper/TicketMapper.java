@@ -12,7 +12,7 @@ public interface TicketMapper {
 
     TicketVO selectOne(int tno);
 
-    void delet(int tno);
+    void delete(int tno);
 
     void insert(TicketVO ticketVO);
 }
