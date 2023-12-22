@@ -8,7 +8,7 @@
         INSERT INTO `like` (rno, mno) VALUES (#{rno}, #{mno})
     </select>
 
-    <select id="delet" resultType="com.example.smartparkpj.domain.LikeVO">
+    <select id="delete" resultType="com.example.smartparkpj.domain.LikeVO">
         DELETE from `like` WHERE rno = #{rno} AND mno = #{mno}
     </select>
 
@@ -18,5 +18,9 @@
 
     <select id="selectAll" resultType="com.example.smartparkpj.domain.LikeVO">
         SELECT * FROM `like` where  mno = #{mno}
+    </select>
+
+    <select id="selectOne" resultType="int">
+        SELECT count(*) FROM `like` where mno = #{mno} and rno = #{rno}
     </select>
 </mapper>

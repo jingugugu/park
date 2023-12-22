@@ -34,7 +34,7 @@ public class LikeServiceImpl implements LikeService{
 
     @Override
     public void remove(int rno, int mno) {
-        likeMapper.delet(rno, mno);
+        likeMapper.delete(rno, mno);
     }
 
     @Override

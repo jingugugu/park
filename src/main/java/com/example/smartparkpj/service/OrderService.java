@@ -15,7 +15,7 @@ public interface OrderService {
 
     void modifyHasAbility(int ono);
 
-    OrderDTO getOne(int mno);
+    OrderDTO getOne(int ono);
 
     OrderDTO getOneNow(String email_id);
 }

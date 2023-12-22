@@ -1,9 +1,6 @@
 package com.example.smartparkpj.service;
 
-import com.example.smartparkpj.domain.MemberVO;
-import com.example.smartparkpj.domain.OrderVO;
-import com.example.smartparkpj.domain.ReviewImageVO;
-import com.example.smartparkpj.domain.ReviewVO;
+import com.example.smartparkpj.domain.*;
 import com.example.smartparkpj.dto.*;
 import com.example.smartparkpj.mapper.*;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +33,10 @@ public class ReviewServiceImpl implements ReviewService {
 
     private final TicketMapper ticketMapper;
 
+    private final LikeMapper likeMapper;
+
+    private final OrderMapper orderMapper;
+
 
     @Override
     public PageResponseDTO<ReviewDTO>getList(PageRequestDTO pageRequestDTO) {
@@ -46,12 +47,25 @@ public class ReviewServiceImpl implements ReviewService {
 
             int mno = reviewVO.getMno();
             MemberVO memberVO = memberMapper.selectOne(mno);
+            OrderVO orderVO = orderMapper.selectOne(reviewVO.getOno());
+            TicketVO ticketVO = ticketMapper.selectOne(orderVO.getTno());
+
+            int has_ability = 0;
+            if(orderVO.isHas_ability()){
+                has_ability = 1;
+            }
+            String tname = ticketVO.getTname();
+            int liked = likeMapper.selectOne(mno,reviewVO.getRno());
             String nickName = memberVO.getNickName();
             String email_id = memberVO.getEmail_id();
+
 
             ReviewDTO reviewDTO = modelMapperConfig.map(reviewVO, ReviewDTO.class);
             reviewDTO.setNickName(nickName);
             reviewDTO.setEmail_id(email_id);//이메일 아이디 하나 추가 합니다 커스텀 마이징(삭제 조건 검사)
+            reviewDTO.setTname(tname);
+            reviewDTO.setLiked(liked);
+            reviewDTO.setHas_ability(has_ability);
             dioList.add(reviewDTO);
             log.info(dioList);
         }

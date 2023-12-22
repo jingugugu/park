@@ -11,7 +11,7 @@ public interface OrderMapper {
 
     List<OrderVO> selectOneAll(String email_id);//마이페이지 에서 활용 가능
 
-    OrderVO selectOneMax(int ono);
+    OrderVO selectOne(int ono);
 
     OrderVO selectOneNow(String email_id);
 

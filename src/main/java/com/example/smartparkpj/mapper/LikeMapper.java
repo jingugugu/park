@@ -12,9 +12,11 @@ import java.util.List;
 public interface LikeMapper {
     void insert(LikeVO likeVO);
 
-    void delet(int rno, int mno);
+    void delete(int rno, int mno);
 
     LikeVO setOne(int rno, int mno);
 
     List<LikeVO> selectAll(int mno);
+
+    int selectOne(int mno, int rno);
 }

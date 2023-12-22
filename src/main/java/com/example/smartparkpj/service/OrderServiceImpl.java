@@ -108,8 +108,8 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public OrderDTO getOne(int mno) {
-        OrderVO orderVO = orderMapper.selectOneMax(mno);
+    public OrderDTO getOne(int ono) {
+        OrderVO orderVO = orderMapper.selectOne(ono);
         OrderDTO orderDTO = modelMapperConfig.map(orderVO, OrderDTO.class);
 
         return orderDTO;

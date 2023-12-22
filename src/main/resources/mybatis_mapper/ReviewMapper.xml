@@ -5,11 +5,11 @@
 <mapper namespace="com.example.smartparkpj.mapper.ReviewMapper">
 
     <select id="selectList" resultType="com.example.smartparkpj.domain.ReviewVO">
-        SELECT r.*, m.nickName from `review` r INNER JOIN `member` m ON r.mno = m.mno WHERE facility_no = #{facility_no} AND type = #{type} order by rno desc LIMIT #{skip}, #{size}
+        SELECT * from `review` WHERE facility_no = #{facility_no} AND type = #{type} order by rno desc LIMIT #{skip}, #{size}
     </select>
 
     <select id="getCount" resultType="int">
-        select count(*) from `review`
+        select count(*) from `review` WHERE facility_no = #{facility_no} AND type = #{type}
     </select>
 
     <select id="insert" resultType="com.example.smartparkpj.domain.ReviewVO"><!-- 여기까 지함 -->

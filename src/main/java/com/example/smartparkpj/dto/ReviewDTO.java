@@ -23,4 +23,7 @@ public class ReviewDTO {
     private int ono;//티켓 구매 넘버
     private String nickName;//조인 용 가져온 닉네임(member 값)
     private String email_id;//이메일 아이디 하나 추가 합니다(삭제 조건 값)
+    private int liked; // 로그인 유저의 좋아요 여부
+    private int has_ability; // 리뷰 작성 가능 여부
+    private String tname; // 티켓 이름
 }

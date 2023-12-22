@@ -258,6 +258,7 @@
             padding: 0 0.2em;
             text-align: center;
             width: 5em;
+            margin-left: 10px;
         }
 
         .star-rating input {
@@ -279,20 +280,33 @@
         .star-rating label:hover ~ label {
             -webkit-text-fill-color: #fff58c;
         }
+        .order-select{
+            width: 50%;
+            margin-top: 20px;
+            height: 40px !important;
+        }
+        .comment-form{
+            list-style-type: none;
+            border: 1px solid #c4c3c3;
+            padding: 50px 0 0 5%;
+        }
+        #deleteBtn{
+            text-decoration: none;
+            float: right;
+            margin-top: -20px;
+            margin-right: 100px;
+            font-size: 15px;
+            cursor: pointer;
+            border: none;
+        }
+        #deleteBtn:hover{
+            color: #d9d8d8;
+        }
     </style>
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 </head>
 <body>
 <div layout:fragment="content">
-    <!-- 수정된 리뷰 평균 별점 표시 부분 -->
-<!--    <div class="average-rating">-->
-<!--        <p>리뷰 평균 별점: <span th:text="${reviewScore}"></span></p>-->
-<!--        &lt;!&ndash; 별표 표시 &ndash;&gt;-->
-<!--        <span class="star-rating" th:each="i : ${#numbers.sequence(1, 5)}">-->
-<!--            <span th:if="${i le reviewScore}">★</span>-->
-<!--            <span th:unless="${i le reviewScore}">☆</span>-->
-<!--        </span>-->
-<!--    </div>-->
 
     <div th:if="${markerDTO.type eq '어트랙션'}">
         <h2 th:text="${facilityDTO.aname}"></h2>
@@ -435,11 +449,16 @@
             <div class=" col-lg-12 col-md-12">
                 <div class="comment-title">
                     <li class="comment-list">
-                        <div th:each="review : ${responseDTO.dtoList}" style="list-style-type: none;">
+                        <div class="comment-form" th:each="review : ${responseDTO.dtoList}">
 <!--                            <h2 th:text="${review.email_id}" style="display: none"></h2>-->
 <!--                            <h2 th:text="${#authentication.getName()}" style="display: none"></h2>-->
                                 <!--위에 값음 삭제 버튼 조건 용-->
-                                <div class="comment-author" th:text="${review.nickName}"></div>
+                                <div class="comment-author">
+                                    <span th:text="${review.nickName}" style="margin-right: 6.5%;"></span>
+                                    <i class="fa-regular fa-credit-card"></i>
+                                    <span th:text="${review.tname}"></span>
+
+                                </div>
                                 <div class="comment-info" style="margin-bottom: 50px">
                                     <h4 th:text="${review.score}" style="height: 0; overflow: hidden;"></h4>
                                     <!-- 별표 표시 -->
@@ -457,14 +476,20 @@
                                     <div class="comment-content">
                                         <p th:text="${review.content}"></p>
                                     </div>
-                                    <a th:href="@{/like/add(rno=${review.rno}, mno=${review.mno}, facility_no=${review.facility_no}, type=${review.type})}" class="reply-link" style="font-size: 15px">좋아요</a>
-                                    <span th:text="${review.like_count}"></span>
+                                    <div class="reply-link" style="font-size: 15px; border: none;">
+                                        <a class="reply-like" th:href="@{/like/add(rno=${review.rno}, mno=${review.mno}, facility_no=${review.facility_no}, type=${review.type})}" th:if="${review.liked} > 0">
+                                            <i class="fa-solid fa-thumbs-up" style="font-size: 25px;"></i>
+                                        </a>
+                                        <a class="reply-like" th:href="@{/like/add(rno=${review.rno}, mno=${review.mno}, facility_no=${review.facility_no}, type=${review.type})}" th:if="${review.liked} <= 0">
+                                            <i class="fa-regular fa-thumbs-up" style="font-size: 25px;"></i>
+                                        </a>
+                                        <span th:text="${review.like_count}"></span>
+                                    </div>
                                     <!--좋아요 작업 해줘야함-->
 
                                     <!--삭제 버튼 처리 -->
-                                    <a class="reply-link"
-                                       th:if="${review.email_id} == ${#authentication.getName()}"
-                                       style="float: right; margin-top: -70px; margin-right: 200px; font-size: 15px; cursor: pointer;"
+                                    <a class="reply-link" id="deleteBtn"
+                                       th:if="${review.email_id eq #authentication.getName() and review.has_ability > 0}"
                                        th:onclick="'javascript:confirmDelete(\'' + ${review.rno} + '\');'">
                                         삭제
                                     </a>
@@ -475,7 +500,7 @@
         </div>
         <!--리뷰 리스트 칸 입니다-->
     </div>
-    <div class="float-end" >
+    <div class="float-end" th:if="${responseDTO.total > 0}">
         <ul class="pagination flex-wrap" style="display: flex">
             <li class="page-item" th:if="${responseDTO.prev}">
                 <a class="page-link" th:data-num="${responseDTO.start - 1}">Previos</a>
@@ -511,16 +536,18 @@
                 </div>
 
                 <div th:if="${!orderDTOList.isEmpty()}">
-                    <select class="form-control" id="orderSelect" name="ono">
+                    <select class="form-control order-select" id="orderSelect" name="ono">
                         <option th:each="orderDTO : ${orderDTOList}"
                                 th:value="${orderDTO.ono}"
-                                th:text="${orderDTO.tname}">
+                                th:text="${orderDTO.tname} + ' (' + ${#strings.replace(orderDTO.startDate, 'T', ' ')} + ' ~ ' + ${#strings.replace(orderDTO.endDate, 'T', ' ')} + ')'">
                         </option>
                     </select>
                 </div>
+                <div th:if="${orderDTOList.isEmpty()}">
+                    <p>리뷰 작성이 가능한 티켓이 없습니다.</p>
+                </div>
                 <input type="number" name="facility_no" th:value="${markerDTO.facility_no}" style="display: none;">
                 <input type="text" name="type" th:value="${markerDTO.type}" style="display: none;">
-                <br><br>
 
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">
@@ -529,14 +556,6 @@
                             <textarea class="form-control" id="content" name="content" rows="6" style="height: 200px;" required></textarea>
                         </div>
                     </div>
-
-                    <!-- 이미지 첨부
-                    <div class="form-floating mb-3">
-                      <div class="uploadHidden">
-                        <input class="btn btn-info btn-add" id="fileName" name="fileName" value="이미지 첨부"/>
-                      </div>
-                    </div>-->
-
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         <div class="form-group">
                             <label class="control-label" for="email_id" style="display: none">Name</label>
@@ -546,42 +565,40 @@
 
                     <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">
                         <div class="form-group">
-                            <button id="singlebutton" name="singlebutton" class="btn btn-primary btn-sm">Submit</button>
+                            <button type="button" id="review-submit" name="review-submit" class="btn btn-primary btn-sm">등록</button>
                         </div>
                     </div>
                 </div>
             </form>
-            <!--모달창-->
-            <div class="modal uploadModal" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Upload FIle</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="input-group mb-3">
-                                <input type="file" name="files" class="form-control" multiple style="width: 300px;"> <!--multiple 을 이용해서 파일 여러개 선택 가능 -->
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary uploadBtn">Upload</button>
-                            <button type="button" class="btn btn-outline-dark closeUploadBtn">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- register modal -->
-            <!-- 첨부 파일 섬네일을 보여줄 부분-->
-            <div class="row mt-3">
-                <div class="col">
-                    <div class="container-fluid d-flex uploadResult" style="flex-wrap: wrap;">
-                    </div>
-                </div>
-            </div>
-
         </div>
     </th:block>
+    <!--모달창-->
+    <div class="modal" id="modal-order">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- 모달 헤더 -->
+                <div class="modal-header">
+                    <h4 class="modal-title">알림</h4>
+                    <button type="button" class="close" onclick="closeModal()" style="border: none;">&times;</button>
+                </div>
+
+                <!-- 모달 본문 -->
+                <div class="modal-body">
+                    <p>리뷰를 작성할 수 없습니다.</p>
+                    <p>티켓을 구매하거나 리뷰를 삭제해주세요.</p>
+                </div>
+
+                <!-- 모달 푸터 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">닫기</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <!--리뷰 작성 칸 다시 시작 끝-->
+    <script src="https://kit.fontawesome.com/2404a35405.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> <!-- axios 비동기 통신 스크립트 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
@@ -607,28 +624,46 @@
         },
         loop: true
     });
-    document.querySelector(".pagination").addEventListener("click",function (e) {
-        e.preventDefault();
-        e.stopPropagation();
+    if(document.querySelector(".pagination") !== null) {
+        document.querySelector(".pagination").addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
 
-        const target = e.target;
+            const target = e.target;
 
-        if (target.tagName !== 'A') {
+            if (target.tagName !== 'A') {
+                return;
+            }
+            const num = target.getAttribute("data-num");
+
+            const formObj = document.querySelector("form");
+
+            formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`;
+
+            formObj.submit();
+        }, false)
+    }
+
+    document.querySelector('#review-submit').addEventListener('click', function(){
+        const orderSelect = document.getElementById('orderSelect');
+        // const selectedOption = orderSelect.options[orderSelect.selectedIndex];
+
+        if(!confirm("리뷰를 등록하시겠습니까?"))
             return;
+
+        if (orderSelect == null) {
+            $('#modal-order').modal('show');
+            // 또는 모달 창을 띄우는 등의 작업을 수행할 수 있습니다.
+        } else {
+            const formObj = document.querySelector("form");
+            formObj.submit();
         }
-        const num = target.getAttribute("data-num");
 
-        const formObj = document.querySelector("form");
-
-        formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`;
-
-        formObj.submit();
-    },false)
-
-    //--------------- 삭제 버튼 처리 ---------------
+    })
 
     });
 
+    //--------------- 삭제 버튼 처리 ---------------
     function confirmDelete(reviewId) {
         var result = confirm("삭제하시겠습니까?");
 
@@ -639,6 +674,11 @@
             // "취소"를 눌렀을 때의 처리
             // 필요하다면 추가적인 로직을 넣을 수 있습니다.
         }
+    }
+
+    function closeModal() {
+        var modal = document.getElementById('modal-order');
+        $(modal).modal('hide');
     }
 </script>
 </body>
