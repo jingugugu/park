@@ -11,7 +11,13 @@
     <style>
         /* 추가된 CSS */
         .nav-link:hover {
-            background-color: #1c4827; /* 호버시 배경색 변경 */
+            background-color: #8825a9; /* 호버시 배경색 변경 */
+        }
+
+        /* .nav-link.active에 대해 구체적인 선택자를 사용하여 스타일 재정의 */
+        ul.nav.nav-pills.flex-column li.nav-item a.nav-link.active {
+            background-color: #8825a9; /*원하는 배경색*/;
+            color: white; /*원하는 텍스트 색상*/;
         }
 
         .card {
@@ -42,7 +48,7 @@
     <h1 style="margin-top: 50px; font-size: 30px"><strong>회원정보</strong></h1><br><br>
     <div class="row">
         <!-- 왼쪽 탭 -->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
                     <a class="nav-link" th:href="|@{/admin/member/page/profile(mno =${memberDTO.mno})}|" data-toggle="pill">회원 정보</a>
@@ -112,22 +118,46 @@
 </div>
 </body>
 <script layout:fragment="script" th:inline="javascript">
-    // 페이지 로드 시 실행되는 jQuery 코드
+    /* table에서 tr 클릭 이벤트 관련  */
     $(document).ready(function() {
         // 네비게이션 메뉴의 각 탭을 클릭할 때 active 클래스를 변경하는 이벤트 핸들러
         $('.nav-link').on('click', function() {
             // 클릭된 요소의 href 값을 가져와 변수에 저장
-            var href = $(this).attr('href');
+            let href = $(this).attr('href');
             // 해당 탭에 active 클래스를 추가하고 다른 탭의 active 클래스를 제거
             $(this).addClass('active').parent().siblings().find('.nav-link').removeClass('active');
         });
+
+        // 각 주문 항목을 클릭했을 때 해당 링크로 이동하는 이벤트 핸들러
+        $('.order').on('click', function() {
+            let link = $(this).find('a').attr('href');
+            window.location.href = link;
+        });
     });
 
-    let statusText = document.getElementById('statusText');
-    if (statusText.textContent === '사용가능') {
-        statusText.style.color = 'blue';
-    } else {
-        statusText.style.color = 'red';
-    }
+
+    /* 왼쪽 내비게이션의 반응형 이벤트 관련 */
+    $(document).ready(function() {
+        // 현재 페이지 URL 가져오기
+        let currentPageUrl = window.location.pathname;
+
+        // 각 탭의 링크 URL과 현재 페이지 URL 비교하여 active 클래스 적용
+        $('.nav-link').each(function() {
+            let tabUrl = $(this).attr('href');
+            tabUrl = tabUrl.split('?')[0];
+
+            // 현재 페이지 URL과 탭의 링크 URL이 일치하는 경우 active 클래스 추가
+            if (currentPageUrl === tabUrl) {
+                $(this).addClass('active');
+            }
+        });
+    });
+
+    // let statusText = document.getElementById('statusText');
+    // if (statusText.textContent === '사용가능') {
+    //     statusText.style.color = 'blue';
+    // } else {
+    //     statusText.style.color = 'red';
+    // }
 </script>
 </html>
