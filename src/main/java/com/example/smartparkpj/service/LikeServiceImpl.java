@@ -27,9 +27,8 @@ public class LikeServiceImpl implements LikeService{
     private final ModelMapper modelMapperConfig;
 
     @Override
-    public void insert(LikeDTO likeDTO) {
-        LikeVO likeVO = modelMapperConfig.map(likeDTO, LikeVO.class);
-        likeMapper.insert(likeVO);
+    public void insert(int rno, int mno) {
+        likeMapper.insert(rno, mno);
     }
 
     @Override
@@ -45,14 +44,13 @@ public class LikeServiceImpl implements LikeService{
        return likeDTO;
     }
 
+
     @Override
-    public List<LikeDTO> selectAll(int mno) {
-        List<LikeVO> voLsit = likeMapper.selectAll(mno);
-        List<LikeDTO> dtoList = new ArrayList<>();
-        for(LikeVO likeVO : voLsit){
-            LikeDTO likeDTO = modelMapperConfig.map(likeVO, LikeDTO.class);
-            dtoList.add(likeDTO);
+    public boolean checkLiked(int rno, int mno) {
+        if(likeMapper.selectOne(mno, rno) == 0){
+            return false;
         }
-        return dtoList;
+        else
+            return true;
     }
 }

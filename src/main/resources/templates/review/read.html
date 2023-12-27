@@ -302,6 +302,9 @@
         #deleteBtn:hover{
             color: #d9d8d8;
         }
+        .reply-like:hover{
+            cursor: pointer;
+        }
     </style>
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 </head>
@@ -442,82 +445,8 @@
         </div>
         <!-- 추가적인 편의시설 페이지 요소들을 여기에 추가 -->
     </div>
-    <!--comments start-->
-    <div class="comment-area">
-        <!--리뷰 리스트 칸 입니다-->
-        <div class="row">
-            <div class=" col-lg-12 col-md-12">
-                <div class="comment-title">
-                    <li class="comment-list">
-                        <div class="comment-form" th:each="review : ${responseDTO.dtoList}">
-<!--                            <h2 th:text="${review.email_id}" style="display: none"></h2>-->
-<!--                            <h2 th:text="${#authentication.getName()}" style="display: none"></h2>-->
-                                <!--위에 값음 삭제 버튼 조건 용-->
-                                <div class="comment-author">
-                                    <span th:text="${review.nickName}" style="margin-right: 6.5%;"></span>
-                                    <i class="fa-regular fa-credit-card"></i>
-                                    <span th:text="${review.tname}"></span>
 
-                                </div>
-                                <div class="comment-info" style="margin-bottom: 50px">
-                                    <h4 th:text="${review.score}" style="height: 0; overflow: hidden;"></h4>
-                                    <!-- 별표 표시 -->
-                                    <span th:each="i : ${#numbers.sequence(1, 5)}">
-                                        <span th:if="${i le review.score}">
-                                            ★
-                                        </span>
-                                        <span th:unless="${i le review.score}">
-                                            ☆ <!-- 별표가 아닌 경우는 빈 별로 처리하거나 원하는 다른 아이콘을 넣을 수 있습니다 -->
-                                        </span>
-                                    </span>
-                                    <div class="meta">
-                                        <div class="comment-meta-date" th:text="${#temporals.format(review.addDate, 'yyyy-MM-dd HH:mm')}"></div>
-                                    </div>
-                                    <div class="comment-content">
-                                        <p th:text="${review.content}"></p>
-                                    </div>
-                                    <div class="reply-link" style="font-size: 15px; border: none;">
-                                        <a class="reply-like" th:href="@{/like/add(rno=${review.rno}, mno=${review.mno}, facility_no=${review.facility_no}, type=${review.type})}" th:if="${review.liked} > 0">
-                                            <i class="fa-solid fa-thumbs-up" style="font-size: 25px;"></i>
-                                        </a>
-                                        <a class="reply-like" th:href="@{/like/add(rno=${review.rno}, mno=${review.mno}, facility_no=${review.facility_no}, type=${review.type})}" th:if="${review.liked} <= 0">
-                                            <i class="fa-regular fa-thumbs-up" style="font-size: 25px;"></i>
-                                        </a>
-                                        <span th:text="${review.like_count}"></span>
-                                    </div>
-                                    <!--좋아요 작업 해줘야함-->
-
-                                    <!--삭제 버튼 처리 -->
-                                    <a class="reply-link" id="deleteBtn"
-                                       th:if="${review.email_id eq #authentication.getName() and review.has_ability > 0}"
-                                       th:onclick="'javascript:confirmDelete(\'' + ${review.rno} + '\');'">
-                                        삭제
-                                    </a>
-                                </div>
-                        </div>
-                </div>
-            </div>
-        </div>
-        <!--리뷰 리스트 칸 입니다-->
-    </div>
-    <div class="float-end" th:if="${responseDTO.total > 0}">
-        <ul class="pagination flex-wrap" style="display: flex">
-            <li class="page-item" th:if="${responseDTO.prev}">
-                <a class="page-link" th:data-num="${responseDTO.start - 1}">Previos</a>
-            </li>
-            <th:block th:each="i:${#numbers.sequence(responseDTO.start, responseDTO.end)}">
-                <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'">
-                    <a class="page-link" th:data-num="${i}">[[${i}]]</a>
-                </li>
-            </th:block>
-            <li class="page-item" th:if="${responseDTO.next}">
-                <a class="page-link" th:data-num="${responseDTO.end +1}">NEXT</a>
-            </li>
-        </ul>
-    </div>
-
-    <!--comments close-->
-
+    <br><br>
     <th:block th:if="${#authentication.principal != 'anonymousUser'}">
         <div class="leave-comments">
             <h2 class="comment-title">리뷰 작성하기</h2>
@@ -572,6 +501,86 @@
             </form>
         </div>
     </th:block>
+    <!--comments start-->
+    <div class="comment-area">
+        <!--리뷰 리스트 칸 입니다-->
+        <div class="row">
+            <div class=" col-lg-12 col-md-12">
+                <div class="comment-title">
+                    <li class="comment-list">
+                        <div class="comment-form" th:each="review : ${responseDTO.dtoList}">
+<!--                            <h2 th:text="${review.email_id}" style="display: none"></h2>-->
+<!--                            <h2 th:text="${#authentication.getName()}" style="display: none"></h2>-->
+                                <!--위에 값음 삭제 버튼 조건 용-->
+                                <div class="comment-author">
+                                    <span th:text="${review.nickName}" style="margin-right: 6.5%;"></span>
+                                    <i class="fa-regular fa-credit-card"></i>
+                                    <span th:text="${review.tname}"></span>
+
+                                </div>
+                                <div class="comment-info" style="margin-bottom: 50px">
+                                    <h4 th:text="${review.score}" style="height: 0; overflow: hidden;"></h4>
+                                    <!-- 별표 표시 -->
+                                    <span th:each="i : ${#numbers.sequence(1, 5)}">
+                                        <span th:if="${i le review.score}">
+                                            ★
+                                        </span>
+                                        <span th:unless="${i le review.score}">
+                                            ☆ <!-- 별표가 아닌 경우는 빈 별로 처리하거나 원하는 다른 아이콘을 넣을 수 있습니다 -->
+                                        </span>
+                                    </span>
+                                    <div class="meta">
+                                        <div class="comment-meta-date" th:text="${#temporals.format(review.addDate, 'yyyy-MM-dd HH:mm')}"></div>
+                                    </div>
+                                    <div class="comment-content">
+                                        <p th:text="${review.content}"></p>
+                                    </div>
+                                    <div class="reply-link" style="display: flex; flex-direction: row; font-size: 15px; border: none;">
+<!--                                        th:href="@{/like/add(rno=${review.rno}, mno=${review.mno}, facility_no=${review.facility_no}, type=${review.type})}"-->
+                                        <div class="reply-like" th:if="${review.liked} > 0" style="margin-right: 1%;">
+                                            <i class="fa-solid fa-thumbs-up" style="font-size: 25px;"></i>
+                                            <input type="hidden" name="liked" value="true">
+                                        </div>
+                                        <div class="reply-like" th:if="${review.liked} <= 0" style="margin-right: 1%;">
+                                            <i class="fa-regular fa-thumbs-up" style="font-size: 25px;"></i>
+                                            <input type="hidden" name="liked" value="false">
+                                        </div>
+                                        <input type="hidden" name="rno" th:value="${review.rno}">
+                                        <input type="hidden" name="mno" th:value="${review.mno}">
+                                        <span th:text="${review.like_count}"></span>
+                                    </div>
+                                    <!--좋아요 작업 해줘야함-->
+
+                                    <!--삭제 버튼 처리 -->
+                                    <a class="reply-link" id="deleteBtn"
+                                       th:if="${review.email_id eq #authentication.getName() and review.has_ability > 0}"
+                                       th:onclick="'javascript:confirmDelete(\'' + ${review.rno} + '\');'">
+                                        삭제
+                                    </a>
+                                </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <!--리뷰 리스트 칸 입니다-->
+    </div>
+    <div class="float-end" th:if="${responseDTO.total > 0}">
+        <ul class="pagination flex-wrap" style="display: flex">
+            <li class="page-item" th:if="${responseDTO.prev}">
+                <a class="page-link" th:data-num="${responseDTO.start - 1}">Previos</a>
+            </li>
+            <th:block th:each="i:${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'">
+                    <a class="page-link" th:data-num="${i}">[[${i}]]</a>
+                </li>
+            </th:block>
+            <li class="page-item" th:if="${responseDTO.next}">
+                <a class="page-link" th:data-num="${responseDTO.end +1}">NEXT</a>
+            </li>
+        </ul>
+    </div>
+
+    <!--comments close-->
     <!--모달창-->
     <div class="modal" id="modal-order">
         <div class="modal-dialog">
@@ -607,59 +616,83 @@
 </div>
 <script layout:fragment="script" th:inline="javascript">
     document.addEventListener("DOMContentLoaded",function (){
-    const swiper = new Swiper('.imgRollArea', {
-        slidesPerView: 1,  // 보여질 슬라이드 수
-        spaceBetween: 10,  // 슬라이드 간 간격
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev'
-        },
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true
-        },
-        autoplay: {
-            delay: 3500,  // 슬라이드 전환 간격 (밀리초)
-            disableOnInteraction: true  // 사용자 상호작용 후에도 계속 자동 전환할지 여부
-        },
-        loop: true
-    });
-    if(document.querySelector(".pagination") !== null) {
-        document.querySelector(".pagination").addEventListener("click", function (e) {
-            e.preventDefault();
-            e.stopPropagation();
+        const likeBtns = document.querySelectorAll('.reply-like');
 
-            const target = e.target;
+        likeBtns.forEach(function(likeBtn) {
+            likeBtn.addEventListener('click', function () {
+                const rno = likeBtn.nextElementSibling.value;
+                const mno = likeBtn.nextElementSibling.nextElementSibling.value;
+                console.log("rno : " + rno);
+                console.log("mno : " + mno);
+                replyLike({rno,mno}).then( result => {
+                    const likeResult = result;
+                    console.log("likeResult" + likeResult);
+                    if (likeResult) {
+                        if(likeBtn.lastElementChild.value === "true"){
+                            likeBtn.innerHTML = '<i class="fa-regular fa-thumbs-up" style="font-size: 25px;"></i>\n' +
+                                                '<input type="hidden" name="liked" value="false">';
+                        }
+                        else{
+                            likeBtn.innerHTML = '<i class="fa-solid fa-thumbs-up" style="font-size: 25px;"></i>\n' +
+                                '<input type="hidden" name="liked" value="true">';
+                        }
+                    }
+                })
+            })
+        })
+        const swiper = new Swiper('.imgRollArea', {
+            slidesPerView: 1,  // 보여질 슬라이드 수
+            spaceBetween: 10,  // 슬라이드 간 간격
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev'
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true
+            },
+            autoplay: {
+                delay: 3500,  // 슬라이드 전환 간격 (밀리초)
+                disableOnInteraction: true  // 사용자 상호작용 후에도 계속 자동 전환할지 여부
+            },
+            loop: true
+        });
+        if(document.querySelector(".pagination") !== null) {
+            document.querySelector(".pagination").addEventListener("click", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
 
-            if (target.tagName !== 'A') {
-                return;
-            }
-            const num = target.getAttribute("data-num");
+                const target = e.target;
 
-            const formObj = document.querySelector("form");
+                if (target.tagName !== 'A') {
+                    return;
+                }
+                const num = target.getAttribute("data-num");
 
-            formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`;
+                const formObj = document.querySelector("form");
 
-            formObj.submit();
-        }, false)
-    }
+                formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`;
 
-    document.querySelector('#review-submit').addEventListener('click', function(){
-        const orderSelect = document.getElementById('orderSelect');
-        // const selectedOption = orderSelect.options[orderSelect.selectedIndex];
-
-        if(!confirm("리뷰를 등록하시겠습니까?"))
-            return;
-
-        if (orderSelect == null) {
-            $('#modal-order').modal('show');
-            // 또는 모달 창을 띄우는 등의 작업을 수행할 수 있습니다.
-        } else {
-            const formObj = document.querySelector("form");
-            formObj.submit();
+                formObj.submit();
+            }, false)
         }
 
-    })
+        document.querySelector('#review-submit').addEventListener('click', function(){
+            const orderSelect = document.getElementById('orderSelect');
+            // const selectedOption = orderSelect.options[orderSelect.selectedIndex];
+
+            if(!confirm("리뷰를 등록하시겠습니까?"))
+                return;
+
+            if (orderSelect == null) {
+                $('#modal-order').modal('show');
+                // 또는 모달 창을 띄우는 등의 작업을 수행할 수 있습니다.
+            } else {
+                const formObj = document.querySelector("form");
+                formObj.submit();
+            }
+
+        })
 
     });
 

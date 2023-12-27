@@ -1,16 +1,13 @@
 package com.example.smartparkpj.mapper;
 
 import com.example.smartparkpj.domain.LikeVO;
-import com.example.smartparkpj.domain.ReviewVO;
-import com.example.smartparkpj.domain.TicketVO;
-import com.example.smartparkpj.dto.LikeDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
 public interface LikeMapper {
-    void insert(LikeVO likeVO);
+    void insert(int rno, int mno);
 
     void delete(int rno, int mno);
 

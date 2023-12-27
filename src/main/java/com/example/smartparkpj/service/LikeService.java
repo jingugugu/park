@@ -7,11 +7,11 @@ import com.example.smartparkpj.dto.ReviewDTO;
 import java.util.List;
 
 public interface LikeService {
-    void insert(LikeDTO likeDTO);
+    void insert(int rno, int mno);
 
     void remove(int rno, int mno);
 
     LikeDTO setOne(int rno, int mno);
 
-    List<LikeDTO> selectAll(int mno);
+    boolean checkLiked(int rno, int mno);
 }

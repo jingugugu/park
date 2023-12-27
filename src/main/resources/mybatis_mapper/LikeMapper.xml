@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.smartparkpj.mapper.LikeMapper">
 
-    <select id="insert" resultType="com.example.smartparkpj.domain.LikeVO">
+    <select id="insert">
         INSERT INTO `like` (rno, mno) VALUES (#{rno}, #{mno})
     </select>
 
