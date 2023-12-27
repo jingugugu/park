@@ -513,15 +513,21 @@
 <!--                            <h2 th:text="${#authentication.getName()}" style="display: none"></h2>-->
                                 <!--위에 값음 삭제 버튼 조건 용-->
                                 <div class="comment-author">
-                                    <span th:text="${review.nickName}" style="margin-right: 6.5%;"></span>
+                                    <div th:text="${review.nickName}" style="padding-bottom: 20px;"></div>
+                                    <div>
                                     <i class="fa-regular fa-credit-card"></i>
                                     <span th:text="${review.tname}"></span>
-
-                                </div>
-                                <div class="comment-info" style="margin-bottom: 50px">
+                                    </div>
                                     <h4 th:text="${review.score}" style="height: 0; overflow: hidden;"></h4>
                                     <!-- 별표 표시 -->
-                                    <span th:each="i : ${#numbers.sequence(1, 5)}">
+
+                                    <style>
+                                     .star-score {
+                                         color: gold;
+                                     }
+                                    </style>
+
+                                    <span class="star-score" th:each="i : ${#numbers.sequence(1, 5)}">
                                         <span th:if="${i le review.score}">
                                             ★
                                         </span>
