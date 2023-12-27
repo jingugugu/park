@@ -8,6 +8,13 @@
 <head>
     <meta charset="UTF-8">
     <title>회원정보</title>
+    <style>
+        /* 각 셀에 호버 효과 추가 */
+        tr.management:hover {
+            background-color: #d9d4d5;
+            cursor: pointer; /* 마우스 커서를 포인터로 변경하여 클릭 가능한 것처럼 보이게 함 */
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -29,7 +36,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="memberDTO : ${memberDTO}">
+                            <tr th:each="memberDTO : ${memberDTO}" class="tr management">
                                 <td> <a th:href="|@{/admin/member/page/profile(mno =${memberDTO.mno})}|"
                                     th:text="${memberDTO.email_id}"/>
                                 </td>
@@ -48,6 +55,14 @@
 
 <script layout:fragment="script" th:inline="javascript">
 
+    /* table에서 tr 클릭 이벤트 관련  */
+    $(document).ready(function() {
+        // 각 리뷰 행을 클릭했을 때 해당 링크로 이동하는 이벤트 핸들러
+        $('.management').on('click', function() {
+            let link = $(this).find('a').attr('href');
+            window.location.href = link;
+        });
+    });
 </script>
 </body>
 </html>

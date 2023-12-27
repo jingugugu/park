@@ -11,12 +11,19 @@
     <style>
         /* 추가된 CSS */
         .nav-link:hover {
-            background-color: #1c4827; /* 호버시 배경색 변경 */
+            background-color: #8825a9; /* 호버시 배경색 변경 */
         }
+
         /* 활성화된 메뉴 항목의 배경색과 텍스트 색상 변경 */
         .nav-link.active {
-            background-color: #1c4827; /* 배경색 */
+            background-color: #8825a9; /* 배경색 */
             color: white; /* 텍스트 색상 */
+        }
+
+        /* .nav-link.active에 대해 구체적인 선택자를 사용하여 스타일 재정의 */
+        ul.nav.nav-pills.flex-column li.nav-item a.nav-link.active {
+            background-color: #8825a9; /*원하는 배경색*/;
+            color: white; /*원하는 텍스트 색상*/;
         }
     </style>
 </head>
@@ -25,7 +32,7 @@
     <h1 style="margin-top: 50px; font-size: 30px"><strong>회원정보</strong></h1><br><br>
     <div class="row">
         <!-- 왼쪽 탭 -->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
                     <a class="nav-link" th:href="|@{/admin/member/page/profile(mno =${memberDTO.mno})}|" data-toggle="pill">회원 정보</a>
@@ -93,6 +100,23 @@
             var href = $(this).attr('href');
             // 해당 탭에 active 클래스를 추가하고 다른 탭의 active 클래스를 제거
             $(this).addClass('active').parent().siblings().find('.nav-link').removeClass('active');
+        });
+    });
+
+    /* 왼쪽 내비게이션의 반응형 이벤트 관련 */
+    $(document).ready(function() {
+        // 현재 페이지 URL 가져오기
+        let currentPageUrl = window.location.pathname;
+
+        // 각 탭의 링크 URL과 현재 페이지 URL 비교하여 active 클래스 적용
+        $('.nav-link').each(function() {
+            let tabUrl = $(this).attr('href');
+            tabUrl = tabUrl.split('?')[0];
+
+            // 현재 페이지 URL과 탭의 링크 URL이 일치하는 경우 active 클래스 추가
+            if (currentPageUrl === tabUrl) {
+                $(this).addClass('active');
+            }
         });
     });
 

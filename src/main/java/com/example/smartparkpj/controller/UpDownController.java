@@ -28,7 +28,6 @@ public class UpDownController {
     @Value("${com.example.upload.basePath}")
     private String uploadBasePath;
     @Value("${com.example.upload.tempPath}")
-//    @Value("${com.example.smartparkpj.upload.path}")
     private String uploadPath;
     @Value("${com.example.upload.AttractionPath}")
     private String uploadAttractionPath;
