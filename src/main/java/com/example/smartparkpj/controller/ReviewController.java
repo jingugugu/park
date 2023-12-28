@@ -44,6 +44,7 @@ public class ReviewController {
 
         String type = markerDTO.getType();
         int facility_no = markerDTO.getFacility_no();
+        int mno = 0;
 
         pageRequestDTO.setType(type);
         pageRequestDTO.setFacility_no(facility_no);
@@ -51,21 +52,23 @@ public class ReviewController {
         log.info("시설 타입 : " + type);
         log.info("시설 넘버 : " + facility_no);
 
-        log.info("pageRequestDTO" + reviewService.getList(pageRequestDTO));
-
         log.info("review 별점 평균 : " + reviewService.reviewScore(facility_no, type));//별점 평균 점수
         if(bindingResult.hasErrors()){
             pageRequestDTO = PageRequestDTO.builder().build();
         }
 
+        if(authentication != null){
+            MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) authentication.getPrincipal();
+            mno = memberSecurityDTO.getMno();
+            model.addAttribute("orderDTOList", reviewService.getAvailableOrderList(mno, type, facility_no));
+        }
 
         model.addAttribute("markerDTO", markerDTO);
-        model.addAttribute("responseDTO", reviewService.getList(pageRequestDTO));
         model.addAttribute("reviewScore", reviewService.reviewScore(facility_no, type));//평균점수
+        model.addAttribute("responseDTO", reviewService.getList(pageRequestDTO,mno));
         model.addAttribute("facilityDTO",enterService.getMarkerOne(type,facility_no));
         if(authentication != null) {
             MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO)authentication.getPrincipal();
-            model.addAttribute("orderDTOList", reviewService.getAvailableOrderList(memberSecurityDTO.getMno(), type, facility_no));
         }
 
     }

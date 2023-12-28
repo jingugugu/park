@@ -288,7 +288,7 @@
         .comment-form{
             list-style-type: none;
             border: 1px solid #c4c3c3;
-            padding: 50px 0 0 5%;
+            padding: 50px 0 20px 5%;
         }
         #deleteBtn{
             text-decoration: none;
@@ -509,9 +509,6 @@
                 <div class="comment-title">
                     <li class="comment-list">
                         <div class="comment-form" th:each="review : ${responseDTO.dtoList}">
-<!--                            <h2 th:text="${review.email_id}" style="display: none"></h2>-->
-<!--                            <h2 th:text="${#authentication.getName()}" style="display: none"></h2>-->
-                                <!--위에 값음 삭제 버튼 조건 용-->
                                 <div class="comment-author">
                                     <div th:text="${review.nickName}" style="padding-bottom: 20px;"></div>
                                     <div>
@@ -532,7 +529,7 @@
                                             ★
                                         </span>
                                         <span th:unless="${i le review.score}">
-                                            ☆ <!-- 별표가 아닌 경우는 빈 별로 처리하거나 원하는 다른 아이콘을 넣을 수 있습니다 -->
+                                            ☆
                                         </span>
                                     </span>
                                     <div class="meta">
@@ -542,7 +539,6 @@
                                         <p th:text="${review.content}"></p>
                                     </div>
                                     <div class="reply-link" style="display: flex; flex-direction: row; font-size: 15px; border: none;">
-<!--                                        th:href="@{/like/add(rno=${review.rno}, mno=${review.mno}, facility_no=${review.facility_no}, type=${review.type})}"-->
                                         <div class="reply-like" th:if="${review.liked} > 0" style="margin-right: 1%;">
                                             <i class="fa-solid fa-thumbs-up" style="font-size: 25px;"></i>
                                             <input type="hidden" name="liked" value="true">
@@ -553,9 +549,9 @@
                                         </div>
                                         <input type="hidden" name="rno" th:value="${review.rno}">
                                         <input type="hidden" name="mno" th:value="${review.mno}">
+                                        <input type="hidden" name="like_count" th:value="${review.like_count}">
                                         <span th:text="${review.like_count}"></span>
                                     </div>
-                                    <!--좋아요 작업 해줘야함-->
 
                                     <!--삭제 버튼 처리 -->
                                     <a class="reply-link" id="deleteBtn"
@@ -628,6 +624,7 @@
             likeBtn.addEventListener('click', function () {
                 const rno = likeBtn.nextElementSibling.value;
                 const mno = likeBtn.nextElementSibling.nextElementSibling.value;
+                const like_count = likeBtn.nextElementSibling.nextElementSibling.nextElementSibling;
                 console.log("rno : " + rno);
                 console.log("mno : " + mno);
                 replyLike({rno,mno}).then( result => {
@@ -637,10 +634,14 @@
                         if(likeBtn.lastElementChild.value === "true"){
                             likeBtn.innerHTML = '<i class="fa-regular fa-thumbs-up" style="font-size: 25px;"></i>\n' +
                                                 '<input type="hidden" name="liked" value="false">';
+                                like_count.value = parseInt(like_count.value, 10) - 1;
+                                like_count.nextElementSibling.innerHTML = like_count.value;
                         }
                         else{
                             likeBtn.innerHTML = '<i class="fa-solid fa-thumbs-up" style="font-size: 25px;"></i>\n' +
                                 '<input type="hidden" name="liked" value="true">';
+                            like_count.value = parseInt(like_count.value, 10) + 1;
+                            like_count.nextElementSibling.innerHTML = like_count.value;
                         }
                     }
                 })

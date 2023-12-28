@@ -6,7 +6,7 @@ import com.example.smartparkpj.dto.*;
 import java.util.List;
 
 public interface ReviewService {
-    PageResponseDTO<ReviewDTO> getList(PageRequestDTO pageRequestDTO);
+    PageResponseDTO<ReviewDTO> getList(PageRequestDTO pageRequestDTO, int mno);
 
     void insert(ReviewDTO reviewDTO);
 

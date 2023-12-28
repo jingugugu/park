@@ -39,14 +39,14 @@ public class ReviewServiceImpl implements ReviewService {
 
 
     @Override
-    public PageResponseDTO<ReviewDTO>getList(PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<ReviewDTO>getList(PageRequestDTO pageRequestDTO, int mno) {
         List<ReviewVO> voList = reviewMapper.selectList(pageRequestDTO);
 
-        List<ReviewDTO> dioList = new ArrayList<>();
+        List<ReviewDTO> dtoList = new ArrayList<>();
         for(ReviewVO reviewVO : voList){
 
-            int mno = reviewVO.getMno();
-            MemberVO memberVO = memberMapper.selectOne(mno);
+            int ReviewMno = reviewVO.getMno();
+            MemberVO memberVO = memberMapper.selectOne(ReviewMno);
             OrderVO orderVO = orderMapper.selectOne(reviewVO.getOno());
             TicketVO ticketVO = ticketMapper.selectOne(orderVO.getTno());
 
@@ -66,14 +66,13 @@ public class ReviewServiceImpl implements ReviewService {
             reviewDTO.setTname(tname);
             reviewDTO.setLiked(liked);
             reviewDTO.setHas_ability(has_ability);
-            dioList.add(reviewDTO);
-            log.info(dioList);
+            dtoList.add(reviewDTO);
         }
 
         int total = reviewMapper.getCount(pageRequestDTO);
 
         PageResponseDTO<ReviewDTO> pageResponseDTO = PageResponseDTO.<ReviewDTO>withAll()
-                .dtoList(dioList)
+                .dtoList(dtoList)
                 .total(total)
                 .pageRequestDTO(pageRequestDTO)
                 .build();
