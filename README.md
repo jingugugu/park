@@ -46,3 +46,83 @@
  ![스크린샷 2023-11-29 오후 12 18 10](https://github.com/jingugugu/park/assets/116573862/d7df642c-19f8-469d-b92d-f1702802f13a)
  
  <h2>5.구현기능</h2>
+
+ <details>
+  <summary>회원관련</summary>
+  <h3>회원가입</h3>
+  로그인 페이지에서 회원가입을 클릭하여 회원가입 페이지로 이동합니다.
+  
+  ![로그인창](https://github.com/jingugugu/park/assets/116573862/313e7e78-0bc0-4910-bb8b-e67500a3f4d2)
+
+  비어있는 항목이 있으면 회원가입 처리를 거절합니다.
+
+  ![스크린샷 2023-11-29 오후 7 05 04](https://github.com/jingugugu/park/assets/116573862/ede323c7-3260-4e91-b66d-4334f9b81217)
+
+  이메일인증을 클릭하여 해당 이메일로 인증키를 발송받은 후 이메일인증을 완료합니다.
+
+  ![스크린샷 2024-01-25 오후 3 20 55](https://github.com/jingugugu/park/assets/116573862/c7f43e1b-4767-4f3f-8cf2-f85edf718c80)
+
+  ![스크린샷 2024-01-25 오후 3 21 16](https://github.com/jingugugu/park/assets/116573862/170afb24-6614-4e67-b5e6-b2de62e14f05)
+
+  ![스크린샷 2024-01-25 오후 3 21 34](https://github.com/jingugugu/park/assets/116573862/2997155e-69a2-44b1-8b27-c4884e77a36b)
+
+  모든 항목을 입력후 유효성검사 통과후에 회원가입을 완료합니다.
+
+  ![스크린샷 2024-01-25 오후 3 23 58](https://github.com/jingugugu/park/assets/116573862/eb224aa6-0ff7-406d-b06b-c91c1edb841d)
+
+  <h3>로그인</h3>
+  로그인 시도 시 Spring Security 를 이용하여 가입된 아이디와 비밀번호를 비교하여 일치한다면 로그인이 성공하고, 일치하지 않다면 경고 메세지를 출력합니다.
+  자동 로그인 기능도 지원하여 자동 로그인 선택 여부를 선택하여 로그인을 할 수 있습니다.
+
+  ![로그인](https://github.com/jingugugu/park/assets/116573862/dbfe4324-c0cf-4b76-8c7c-7704d31ba326)
+
+  카카오 로그인도 지원합니다
+
+  ![카카오로그인](https://github.com/jingugugu/park/assets/116573862/c98a67a7-74fd-433b-96d9-a72adcc5565c)
+
+  <h3>비밀번호 찾기</h3>
+  이메일 인증을 통하여 인증키 확인시 비밀번호 수정이 가능합니다.
+
+  <img width="1129" alt="비밀번호찾기" src="https://github.com/jingugugu/park/assets/116573862/dd1595f6-8c77-4d0a-ac88-e22cca7af0e8">
+
+  <img width="905" alt="비밀번호찾기2" src="https://github.com/jingugugu/park/assets/116573862/f3eb4486-ce7b-4e8d-8911-d817b34d2e4f">
+
+  <h3>마이페이지</h3>
+  마이페이지에서 내 정보를 확인,수정,탈퇴 가 가능하고 내가 작성한 리뷰, 문의, 티켓구매내역을 확인할 수 있습니다.
+
+  ![스크린샷 2024-01-25 오후 4 21 48](https://github.com/jingugugu/park/assets/116573862/c35124f6-f3f0-4975-9a48-fbc456d16865)
+  ![스크린샷 2024-01-25 오후 4 23 22](https://github.com/jingugugu/park/assets/116573862/ecfa0ce2-0f9a-485f-8f11-680be1e37231)
+  ![스크린샷 2024-01-25 오후 4 23 32](https://github.com/jingugugu/park/assets/116573862/d413a028-ecf6-43bb-8215-55213279e0bd)
+  ![스크린샷 2024-01-25 오후 4 23 37](https://github.com/jingugugu/park/assets/116573862/adda44a2-0f34-4af9-8433-3387b5f5bc1b)
+
+  <h3>정보수정</h3>
+  정보수정은 기존 비밀번호를 입력받아야 수정이 가능하며, 비밀번호 변경을 원하는 경우 비밀번호 변경을 클릭 후 원하는 비밀번호를 입력합니다.
+  
+  <img width="905" alt="정보수정2" src="https://github.com/jingugugu/park/assets/116573862/adfe5a2e-6b81-4792-b626-5d11f5e01875">
+  <img width="905" alt="정보수정" src="https://github.com/jingugugu/park/assets/116573862/1d36ef21-7f4e-4bf9-8abb-36d08c3474a2">
+
+  <h3>회원탈퇴</h3>
+  회원탈퇴는 바로 탈퇴처리가 이루어지지 않고 탈퇴 신청을 하고 관리자가 검토 후 탈퇴처리를 하는 형식입니다.
+  
+  ![스크린샷 2024-01-25 오후 4 43 34](https://github.com/jingugugu/park/assets/116573862/a05b91e9-0a10-4db0-9687-247ec6ea515c)
+ </details>
+
+<details>
+  <summary>티켓예매</summary>
+  ㄹㄹㄹㄹ
+</details>
+
+<details>
+  <summary>고객문의</summary>
+  ㄴㅁㅎㄴㅎ
+</details>
+
+<details>
+  <summary>내부시설 위치/리뷰</summary>
+  ㅁㄴㅇㄹㄴㅁㅇㄹ
+</details>
+
+<details>
+  <summary>관리자</summary>
+  ㄴㅁㅇㄹㄴㅇㄹ
+</details>
