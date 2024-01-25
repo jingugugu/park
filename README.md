@@ -205,3 +205,5 @@
 <h2>6.전체적인 기능구현 영상</h2>
 
 https://youtu.be/E_9O2JzCBUM
+
+[![Video Label](http://img.youtube.com/vi/E_9O2JzCBUM/0.jpg)](https://youtu.be/E_9O2JzCBUM?t=0s)
