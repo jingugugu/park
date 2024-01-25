@@ -202,4 +202,6 @@
   ![스크린샷 2024-01-25 오후 7 28 48](https://github.com/jingugugu/park/assets/116573862/34f920f2-c00d-42f4-938d-aee8bc9ec67e)
 </details>
 
+<h2>6.전체적인 기능구현 영상</h2>
 
+https://youtu.be/E_9O2JzCBUM
