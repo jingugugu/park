@@ -209,4 +209,4 @@ https://youtu.be/E_9O2JzCBUM
 [![Video Label](http://img.youtube.com/vi/E_9O2JzCBUM/0.jpg)](https://youtu.be/E_9O2JzCBUM?t=0s)
 
 <h2>7. 배포용 주소</h2>
-ec2-3-38-11-205.ap-northeast-2.compute.amazonaws.com
+http://ec2-3-38-11-205.ap-northeast-2.compute.amazonaws.com
