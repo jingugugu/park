@@ -208,5 +208,8 @@ https://youtu.be/E_9O2JzCBUM
 
 [![Video Label](http://img.youtube.com/vi/E_9O2JzCBUM/0.jpg)](https://youtu.be/E_9O2JzCBUM?t=0s)
 
-<h2>7. 배포용 주소</h2>
-http://ec2-3-38-11-205.ap-northeast-2.compute.amazonaws.com
+<h2>7. 배포</h2>
+<img width="1138" alt="스크린샷 2024-03-04 23 59 20" src="https://github.com/jingugugu/park/assets/116573862/28f1797b-0f53-4807-8312-9b27a1bd7b01">
+<img width="1439" alt="스크린샷 2024-03-05 00 00 32" src="https://github.com/jingugugu/park/assets/116573862/463bfc86-811f-4aeb-b9cb-2b6dcc9388c2">
+
+
